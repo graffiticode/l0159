@@ -14,12 +14,44 @@ function isNonNullNonEmptyObject(obj) {
   );
 }
 
+const shuffle = unshuffled =>
+    unshuffled.map(value => ({ value, sort: Math.random() }))
+    .sort((a, b) => a.sort - b.sort)
+    .map(({ value }) => value);
+
+const cardsFromFacts = facts =>
+      facts.map(fact => [{
+        title: fact[0], text: fact[0]
+      }, {
+        title: fact[1], text: fact[1]
+      }]).flat();
+
 export const View = () => {
   const [ id, setId ] = useState();
   const [ accessToken, setAccessToken ] = useState();
   const [ doGetData, setDoGetData ] = useState(true);
   const [ recompile, setRecompile ] = useState(false);
   const [ height, setHeight ] = useState(0);
+
+  const [ state ] = useState(createState({}, (data, { type, args }) => {
+    console.log("L0159 state.apply() type=" + type + " args=" + JSON.stringify(args, null, 2));
+    switch (type) {
+    case "compiled":
+      return {
+        ...data,
+        ...args,
+      };
+    case "update":
+      setRecompile(true);
+      return {
+        ...data,
+        ...args,
+      };
+    default:
+      console.error(false, `Unimplemented action type: ${type}`);
+      return data;
+    }
+  }));
 
   useEffect(() => {
     if (window.location.search) {
@@ -37,25 +69,18 @@ export const View = () => {
     }
   }, [id]);
 
-  const [ state ] = useState(createState({}, (data, { type, args }) => {
-    // console.log("L0159 state.apply() type=" + type + " args=" + JSON.stringify(args, null, 2));
-    switch (type) {
-    case "compiled":
-      return {
-        ...data,
-        ...args,
-      };
-    case "change":
-      setRecompile(true);
-      return {
-        ...data,
-        ...args,
-      };
-    default:
-      console.error(false, `Unimplemented action type: ${type}`);
-      return data;
-    }
-  }));
+  useEffect(() => {
+    setRecompile(true);
+    // if (facts) {
+    //   const cards = shuffle(cardsFromFacts(facts));
+    //   state.apply({
+    //     type: "update",
+    //     args: {
+    //       cards,
+    //     },
+    //   });
+    // }
+  }, []);
 
   const dataResp = useSWR(
     doGetData && id && {
@@ -84,6 +109,7 @@ export const View = () => {
   );
 
   if (compileResp.data) {
+    console.log("compileResp=" + JSON.stringify(compileResp.data));
     assert(compileResp.data.data === undefined);
     state.apply({
       type: "compiled",

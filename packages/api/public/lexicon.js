@@ -1,4 +1,16 @@
 window.gcexports.globalLexicon = {
+  "concentration" : {
+    "tk": 1,
+    "name": "CONCENTRATION",
+    "cls": "function",
+    "length": 2
+  },
+  "facts" : {
+    "tk": 1,
+    "name": "FACTS",
+    "cls": "function",
+    "length": 1
+  },
   "hello" : {
     "tk": 1,
     "name": "HELLO",

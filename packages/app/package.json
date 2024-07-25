@@ -25,6 +25,7 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
+    "@tailwindcss/aspect-ratio": "^0.4.2",
     "assert": "^2.1.0",
     "bent": "^7.3.12",
     "react": "^18.2.0",
