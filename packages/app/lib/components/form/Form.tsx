@@ -1,11 +1,14 @@
+import { Palette } from "./Palette";
 import "../../index.css";
-// import { useState, useEffect } from "react";
+import { useState } from "react";
 
 // import { ThemeToggle } from "./ThemeToggle";
 
-// function classNames(...classes) {
-//   return classes.filter(Boolean).join(' ')
-// }
+function classNames(...classes) {
+  const className = classes.filter(Boolean).join(' ')
+  console.log("classNames() className=" + className);
+  return className;
+}
 
 // function renderJSON(data) {
 //   delete data.schema;
@@ -41,8 +44,28 @@ import "../../index.css";
 
 export const Form = ({ state }) => {
   const { cards, source } = state.data;
+  const [ player, setPlayer ] = useState({color: "gray"});
+
+  const choosePlayer = (player) => {
+    /*
+    setHotBand(band);
+    const newBands = [
+      ...bands,
+      band,
+    ];
+    */
+    setPlayer(player);
+    state.apply({
+      type: "update",
+      args: {
+        player: player,
+      },
+    });
+  }
+
   const flipCard = index => {
     cards[index].flipped = !cards[index].flipped;
+    cards[index].color = player.color;
     state.apply({
       type: "update",
       args: {
@@ -50,16 +73,27 @@ export const Form = ({ state }) => {
       },
     });
   };
+
   return (
-    <ul role="list" className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-4 sm:gap-x-6 xl:gap-x-8">
+    <div className="grid grid-cols-12">
+      <Palette player={player} choosePlayer={choosePlayer} />
+      <div className="col-span-11">
+      <ul role="list" className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-4 sm:gap-x-6 xl:gap-x-8">
       {cards.map((card, index) => (
-        <li key={index} className="relative">
+          <li key={index} className="relative">
           <div
-        onClick={() => flipCard(index)}
-        className="group aspect-h-7 aspect-w-10 block w-full overflow-hidden rounded-lg bg-gray-100">
+            onClick={() => flipCard(index)}
+            className="group aspect-h-7 aspect-w-10 block w-full overflow-hidden"
+          >
           {
             card.flipped &&
-              <div className="flex items-center justify-center my-auto py-auto">{card.title}</div> ||
+              <div
+               className={classNames(
+                 "flex items-center justify-center my-auto py-auto",
+                 `bg-${card.color}-50`
+               )}>
+              {card.title}
+              </div> ||
               <img alt="" src={source} className="pointer-events-none object-cover group-hover:opacity-75" />
           }
           <button
@@ -72,5 +106,7 @@ export const Form = ({ state }) => {
         </li>
       ))}
     </ul>
+      </div>
+      </div>
   )
 }
