@@ -2,58 +2,17 @@ import { Palette } from "./Palette";
 import "../../index.css";
 import { useState } from "react";
 
-// import { ThemeToggle } from "./ThemeToggle";
-
 function classNames(...classes) {
   const className = classes.filter(Boolean).join(' ')
   console.log("classNames() className=" + className);
   return className;
 }
 
-// function renderJSON(data) {
-//   delete data.schema;
-//   delete data.theme;
-//   return (
-//     <pre className="text-xs">{JSON.stringify(data, null, 2)}</pre>
-//   );
-// }
-
-// function render({ state }) {
-//   const { data } = state;
-//   if (typeof data?.hello === "string") {
-//     return <span className="text-sm">{`hello, ${data.hello}!`}</span>;
-//   } else {
-//     return renderJSON(data);
-//   }
-// }
-
-/*
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/aspect-ratio'),
-    ],
-  }
-  ```
-*/
-
 export const Form = ({ state }) => {
   const { cards, source } = state.data;
   const [ player, setPlayer ] = useState({color: "gray"});
 
   const choosePlayer = (player) => {
-    /*
-    setHotBand(band);
-    const newBands = [
-      ...bands,
-      band,
-    ];
-    */
     setPlayer(player);
     state.apply({
       type: "update",
@@ -90,7 +49,7 @@ export const Form = ({ state }) => {
               <div
                className={classNames(
                  "flex items-center justify-center my-auto py-auto",
-                 `bg-${card.color}-50`
+                 `bg-${card.color}-100`
                )}>
               {card.title}
               </div> ||
