@@ -4,12 +4,11 @@ import { useState } from "react";
 
 function classNames(...classes) {
   const className = classes.filter(Boolean).join(' ')
-  console.log("classNames() className=" + className);
   return className;
 }
 
 export const Form = ({ state }) => {
-  const { cards, source } = state.data;
+  const { cards } = state.data;
   const [ player, setPlayer ] = useState({color: "gray"});
 
   const choosePlayer = (player) => {
@@ -18,13 +17,30 @@ export const Form = ({ state }) => {
       type: "update",
       args: {
         player: player,
+        cards: cards.map(card => (card.flipped = false, card)),
       },
     });
   }
 
   const flipCard = index => {
-    cards[index].flipped = !cards[index].flipped;
-    cards[index].color = player.color;
+    if (!cards[index].matched) {
+      cards[index].flipped = !cards[index].flipped;
+    }
+    const flippedCards = cards.filter(card => card.flipped);
+    const count = flippedCards.length;
+    if (count === 0) {
+    } else if (count === 1) {
+      cards[index].color = player.color;
+    } else if (count === 2) {
+      cards[index].color = player.color;
+      if (flippedCards[0].factId === flippedCards[1].factId) {
+        flippedCards[0].matched = true;
+        flippedCards[1].matched = true;
+      }
+    } else {
+      flippedCards.forEach(card => card.flipped = false);
+      cards[index].flipped = !cards[index].flipped;
+    }
     state.apply({
       type: "update",
       args: {
@@ -47,19 +63,36 @@ export const Form = ({ state }) => {
           {
             card.flipped &&
               <div
-               className={classNames(
+                className={classNames(
                  "flex items-center justify-center my-auto py-auto",
-                 `bg-${card.color}-100`
-               )}>
-              {card.title}
+                 card.matched && "bg-green-200" || `bg-${card.color}-100`
+                )}>
+              {
+                card.face.indexOf("https") >= 0 &&
+                  <img alt="" src={card.face} className="pointer-events-none object-cover group-hover:opacity-75" /> ||
+                  card.face
+              }
               </div> ||
-              <img alt="" src={source} className="pointer-events-none object-cover group-hover:opacity-75" />
+              <div
+                className={classNames(
+                 "flex items-center justify-center my-auto py-auto",
+                 card.matched && `bg-${card.color}-100`
+                )}>
+              {
+                !card.matched && (
+                  card.back.indexOf("https") >= 0 &&
+                    <img alt="" src={card.back} className="pointer-events-none object-cover group-hover:opacity-75" /> ||
+                    card.back
+                ) ||
+                  <div />
+              }
+              </div>
           }
           <button
         type="button"
         className="absolute inset-0 focus:outline-none"
           >
-          <span className="sr-only">View details for {card.title}</span>
+          <span className="sr-only">View details for {card.face}</span>
             </button>
           </div>
         </li>

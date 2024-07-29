@@ -1,6 +1,5 @@
 function classNames(...classes) {
   const className = classes.filter(Boolean).join(' ')
-  console.log("classNames() className=" + className);
   return className;
 }
 
