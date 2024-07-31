@@ -24,27 +24,12 @@ export function Palette({ player, choosePlayer }) {
       <div className={
              classNames(
                "h-6",
-               player.color === "green" && "bg-green-100"
-             )}
-      >
-        <button
-          type="button"
-          className="w-4 h-4 m-1 transition bg-green-400"
-          onClick={() => choosePlayer({
-            color: "green",
-          })}
-        >
-        </button>
-      </div>
-      <div className={
-             classNames(
-               "h-6",
                player.color === "blue" && "bg-blue-100"
              )}
       >
         <button
           type="button"
-          className="w-4 h-4 m-1 transition bg-blue-400"
+          className="w-4 h-4 m-1 transition bg-blue-100 bg-blue-400"
           onClick={() => choosePlayer({
             color: "blue",
           })}

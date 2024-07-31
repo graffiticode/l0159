@@ -1,15 +1,22 @@
 import { Palette } from "./Palette";
 import "../../index.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function classNames(...classes) {
   const className = classes.filter(Boolean).join(' ')
   return className;
 }
 
+const shuffle = unshuffled =>
+    unshuffled.map(value => ({ value, sort: Math.random() }))
+    .sort((a, b) => a.sort - b.sort)
+    .map(({ value }) => value);
+
+const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+
 export const Form = ({ state }) => {
-  const { cards } = state.data;
-  const [ player, setPlayer ] = useState({color: "gray"});
+  const [ cards, setCards ] = useState(state.data.cards);
+  const [ player, setPlayer ] = useState({color: "red"});
 
   const choosePlayer = (player) => {
     setPlayer(player);
@@ -38,9 +45,16 @@ export const Form = ({ state }) => {
         flippedCards[1].matched = true;
       }
     } else {
-      flippedCards.forEach(card => card.flipped = false);
+      // Turn flipped cards over.
+      flippedCards.forEach(card => (
+        card.color = card.matched && card.color || null,
+        card.flipped = false
+      ));
+      // Flip current card face up.
+      cards[index].color = player.color;
       cards[index].flipped = !cards[index].flipped;
     }
+    setCards(cards);
     state.apply({
       type: "update",
       args: {
@@ -49,8 +63,20 @@ export const Form = ({ state }) => {
     });
   };
 
+  useEffect(() => {
+    // Shuffle the deck with each reload.
+    const cards = shuffle(state.data.cards);
+    setCards(cards);
+    state.apply({
+      type: "update",
+      args: {
+        cards,
+      },
+    });
+  }, []);
+
   return (
-    <div className="grid grid-cols-12">
+    <div className="grid grid-cols-12 border-green-300 border-blue-300 border-red-300">
       <Palette player={player} choosePlayer={choosePlayer} />
       <div className="col-span-11">
       <ul role="list" className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-4 sm:gap-x-6 xl:gap-x-8">
@@ -64,25 +90,25 @@ export const Form = ({ state }) => {
             card.flipped &&
               <div
                 className={classNames(
-                 "flex items-center justify-center my-auto py-auto",
-                 card.matched && "bg-green-200" || `bg-${card.color}-100`
+                 "flex items-center justify-center my-auto py-auto rounded-lg",
+                 card.matched && "border border-2 border-green-300" || `border border-2 border-${card.color}-300`
                 )}>
               {
                 card.face.indexOf("https") >= 0 &&
-                  <img alt="" src={card.face} className="pointer-events-none object-cover group-hover:opacity-75" /> ||
+                  <img alt="" src={card.face} className="p-2 pointer-events-none object-cover group-hover:opacity-75" /> ||
                   card.face
               }
               </div> ||
               <div
                 className={classNames(
-                 "flex items-center justify-center my-auto py-auto",
-                 card.matched && `bg-${card.color}-100`
+                 "flex items-center justify-center my-auto py-auto rounded-lg border border-2",
+                  card.matched && `bg-${card.color}-100 border-${card.color}-300`
                 )}>
               {
                 !card.matched && (
                   card.back.indexOf("https") >= 0 &&
-                    <img alt="" src={card.back} className="pointer-events-none object-cover group-hover:opacity-75" /> ||
-                    card.back
+                    <img alt="" src={card.back} className="pointer-events-none group-hover:opacity-75" /> ||
+                    card.back || letters[index]
                 ) ||
                   <div />
               }

@@ -5,25 +5,18 @@ import {
   Compiler as BasisCompiler
 } from '@graffiticode/basis';
 
-const shuffle = unshuffled =>
-    unshuffled.map(value => ({ value, sort: Math.random() }))
-    .sort((a, b) => a.sort - b.sort)
-    .map(({ value }) => value);
-
-const source = 'https://images.unsplash.com/photo-1582053433976-25c00369fc93?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=512&q=80';
-
 const cardsFromFacts = facts =>
-      shuffle(facts.map((fact, index) => [{
+      facts.map((fact, index) => [{
         id: index * 2,
         factId: index,
-        back: source,
         face: fact[0],
+        back: "",
       }, {
         id: index * 2 + 1,
         factId: index,
-        back: source,
         face: fact[1],
-      }]).flat());
+        back: "",
+      }]).flat();
 
 export class Checker extends BasisChecker {
   HELLO(node, options, resume) {

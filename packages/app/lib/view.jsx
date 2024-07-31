@@ -109,7 +109,6 @@ export const View = () => {
   );
 
   if (compileResp.data) {
-    console.log("compileResp=" + JSON.stringify(compileResp.data));
     assert(compileResp.data.data === undefined);
     state.apply({
       type: "compiled",
