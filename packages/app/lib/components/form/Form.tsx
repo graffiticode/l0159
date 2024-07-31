@@ -43,6 +43,12 @@ export const Form = ({ state }) => {
       if (flippedCards[0].factId === flippedCards[1].factId) {
         flippedCards[0].matched = true;
         flippedCards[1].matched = true;
+        if (cards[index].factId !== flippedCards[0].factId) {
+          // Clicked on already matched card (flipped card count is two).
+          flippedCards.forEach(card => (
+            card.flipped = false
+          ));
+        }
       }
     } else {
       // Turn flipped cards over.
@@ -108,7 +114,8 @@ export const Form = ({ state }) => {
                 !card.matched && (
                   card.back.indexOf("https") >= 0 &&
                     <img alt="" src={card.back} className="pointer-events-none group-hover:opacity-75" /> ||
-                    card.back || letters[index]
+                    card.back ||
+                    letters[index]
                 ) ||
                   <div />
               }
