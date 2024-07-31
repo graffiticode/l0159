@@ -14,11 +14,16 @@ const shuffle = unshuffled =>
 
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
+const nextPlayer = player => (
+  player.color === "red" && {color: "blue"} || {color: "red"}
+);
+
 export const Form = ({ state }) => {
   const [ cards, setCards ] = useState(state.data.cards);
   const [ player, setPlayer ] = useState({color: "red"});
 
   const choosePlayer = (player) => {
+    console.log("choosePlayer() player=" + JSON.stringify(player));
     setPlayer(player);
     state.apply({
       type: "update",
@@ -39,16 +44,20 @@ export const Form = ({ state }) => {
     } else if (count === 1) {
       cards[index].color = player.color;
     } else if (count === 2) {
-      cards[index].color = player.color;
       if (flippedCards[0].factId === flippedCards[1].factId) {
         flippedCards[0].matched = true;
         flippedCards[1].matched = true;
         if (cards[index].factId !== flippedCards[0].factId) {
-          // Clicked on already matched card (flipped card count is two).
+          // Clicked on already matched card (flipped card count is still two).
           flippedCards.forEach(card => (
             card.flipped = false
           ));
+        } else {
+          cards[index].color = player.color;
         }
+      } else {
+        cards[index].color = player.color;
+        setPlayer(nextPlayer(player));
       }
     } else {
       // Turn flipped cards over.
