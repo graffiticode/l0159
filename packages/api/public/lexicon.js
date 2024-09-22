@@ -1,13 +1,25 @@
 window.gcexports.globalLexicon = {
-  "concentration" : {
+  "match" : {
     "tk": 1,
-    "name": "CONCENTRATION",
+    "name": "MATCH",
+    "cls": "function",
+    "length": 2
+  },
+  "memory" : {
+    "tk": 1,
+    "name": "MEMORY",
     "cls": "function",
     "length": 2
   },
   "facts" : {
     "tk": 1,
     "name": "FACTS",
+    "cls": "function",
+    "length": 1
+  },
+  "img" : {
+    "tk": 1,
+    "name": "IMG",
     "cls": "function",
     "length": 1
   },

@@ -19,11 +19,10 @@ const nextPlayer = player => (
 );
 
 export const Form = ({ state }) => {
-  const [ cards, setCards ] = useState(state.data.cards);
+  const [ cards, setCards ] = useState(null);
   const [ player, setPlayer ] = useState({color: "red"});
 
   const choosePlayer = (player) => {
-    console.log("choosePlayer() player=" + JSON.stringify(player));
     setPlayer(player);
     state.apply({
       type: "update",
@@ -80,7 +79,9 @@ export const Form = ({ state }) => {
 
   useEffect(() => {
     // Shuffle the deck with each reload.
-    const cards = shuffle(state.data.cards);
+    const keyCards = shuffle(state.data.pairs.map(pair => pair[0]));
+    const valCards = shuffle(state.data.pairs.map(pair => pair[1]));
+    const cards = keyCards.concat(valCards);
     setCards(cards);
     state.apply({
       type: "update",
@@ -91,8 +92,12 @@ export const Form = ({ state }) => {
   }, []);
 
   return (
+    cards &&
     <div className="grid grid-cols-12 border-green-300 border-blue-300 border-red-300">
-      <Palette player={player} choosePlayer={choosePlayer} />
+      {
+        false &&
+          <Palette player={player} choosePlayer={choosePlayer} />
+      }
       <div className="col-span-11">
       <ul role="list" className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-4 sm:gap-x-6 xl:gap-x-8">
       {cards.map((card, index) => (
@@ -141,6 +146,6 @@ export const Form = ({ state }) => {
       ))}
     </ul>
       </div>
-      </div>
+      </div> || <div />
   )
 }

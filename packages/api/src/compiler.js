@@ -5,18 +5,19 @@ import {
   Compiler as BasisCompiler
 } from '@graffiticode/basis';
 
-const cardsFromFacts = facts =>
-      facts.map((fact, index) => [{
-        id: index * 2,
-        factId: index,
-        face: fact[0],
-        back: "",
-      }, {
-        id: index * 2 + 1,
-        factId: index,
-        face: fact[1],
-        back: "",
-      }]).flat();
+const cardPairsFromFacts = (facts, match) => (
+  facts.map((fact, index) => [{
+    id: index * 2,
+    factId: index,
+    face: fact[0],
+    back: match && fact[0] || "",
+  }, {
+    id: index * 2 + 1,
+    factId: index,
+    face: fact[1],
+    back: match && fact[1] || "",
+  }])
+);
 
 export class Checker extends BasisChecker {
   HELLO(node, options, resume) {
@@ -41,8 +42,23 @@ export class Transformer extends BasisTransformer {
     });
   }
 
-  CONCENTRATION(node, options, resume) {
+  MEMORY(node, options, resume) {
     this.visit(node.elts[0], options, async (e0, v0) => {
+      this.visit(node.elts[1], options, async (e1, v1) => {
+        const data = options?.data || {};
+        const err = [];
+        const val = {
+          ...v0,
+          ...v1,
+          ...data,
+        };
+        resume(err, val);
+      });
+    });
+  }
+
+  MATCH(node, options, resume) {
+    this.visit(node.elts[0], {...options, match: true}, async (e0, v0) => {
       this.visit(node.elts[1], options, async (e1, v1) => {
         const data = options?.data || {};
         const err = [];
@@ -59,9 +75,24 @@ export class Transformer extends BasisTransformer {
   FACTS(node, options, resume) {
     this.visit(node.elts[0], options, async (e0, v0) => {
       const data = options?.data || {};
+      const match = options.match
       const err = [];
       const val = {
-        cards: cardsFromFacts(v0),
+        facts: v0,
+        pairs: cardPairsFromFacts(v0, options.match),
+        ...data,
+      };
+      resume(err, val);
+    });
+  }
+
+  IMG(node, options, resume) {
+    this.visit(node.elts[0], options, async (e0, v0) => {
+      const data = options?.data || {};
+      const err = [];
+      const val = {
+        type: "image",
+        data: v0,
         ...data,
       };
       resume(err, val);

@@ -5,14 +5,26 @@
   "description": "A starter language",
   "type": "object",
   "properties": {
-    "hello": {
-      "description": "The person, place or thing being greeted",
-      "type": "string",
-    },
-    "theme": {
-      "description": "Light or dark theme",
-      "type": "string",
-      "enum": ["light", "dark"],
+    "facts": {
+      "description": "List of facts",
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["type", "data"],
+          "properties": {
+            "type": {
+              "type": "string",
+              "description": "type of asset"
+            },
+            "data": {
+              "type": "string",
+              "description": "data to display (e.g. url or text)"
+            }
+          }
+        }
+      }
     }
   },
   "required": ["hello"]

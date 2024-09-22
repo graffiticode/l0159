@@ -3,7 +3,6 @@ import useSWR from 'swr';
 import { Form } from "./components";
 import { createState } from "./lib/state";
 import { compile, getData } from './swr/fetchers';
-import assert from "assert";
 import './index.css';
 
 function isNonNullNonEmptyObject(obj) {
@@ -91,7 +90,6 @@ export const View = () => {
   );
 
   if (dataResp.data) {
-    assert(dataResp.data.data === undefined);
     state.apply({
       type: "compiled",
       args: dataResp.data,
@@ -109,7 +107,6 @@ export const View = () => {
   );
 
   if (compileResp.data) {
-    assert(compileResp.data.data === undefined);
     state.apply({
       type: "compiled",
       args: compileResp.data,
