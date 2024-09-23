@@ -50,7 +50,7 @@ const renderFlashcards = ({ state, cards, flipCard }) => {
               {
                 card.face.indexOf("https") >= 0 &&
                   <img alt="" src={card.face} className="p-2 pointer-events-none object-cover group-hover:opacity-75" /> ||
-                  <div className="text-4xl font-bold text-slate-700">
+                  <div className="text-9xl font-bold text-slate-700">
                   {
                     parse(katex.renderToString(card.face, {
                       displayMode: true,
@@ -70,7 +70,7 @@ const renderFlashcards = ({ state, cards, flipCard }) => {
                 !card.matched && (
                   card.back.indexOf("https") >= 0 &&
                     <img alt="" src={card.back} className="pointer-events-none group-hover:opacity-75" /> ||
-                  <div className="text-4xl font-bold text-slate-700">
+                  <div className="text-9xl font-bold text-slate-700">
                   {
                     parse(katex.renderToString(card.back, {
                       displayMode: true,
