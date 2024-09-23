@@ -1,7 +1,7 @@
 import katex from 'katex';
 import parse from 'html-react-parser';
 
-import { Palette } from "./Palette";
+import { Palette, NavBar } from "./Palette";
 import "../../index.css";
 import { useEffect, useState } from "react";
 
@@ -21,96 +21,17 @@ const nextPlayer = player => (
     player.color
 );
 
-export const Form = ({ state }) => {
-  const [ cards, setCards ] = useState(null);
-  const [ player, setPlayer ] = useState(
-    state.data.type === "flashcards" &&
-      {color: "slate"} ||
-      {color: "blue"}
-  );
-
-  const choosePlayer = (player) => {
-    setPlayer(player);
-    state.apply({
-      type: "update",
-      args: {
-        player: player,
-        cards: cards.map(card => (card.flipped = false, card)),
-      },
-    });
-  }
-
-  const flipCard = index => {
-    if (!cards[index].matched) {
-      cards[index].flipped = !cards[index].flipped;
-    }
-    const flippedCards = cards.filter(card => card.flipped);
-    const count = flippedCards.length;
-    if (count === 0) {
-    } else if (count === 1) {
-      cards[index].color = player.color;
-    } else if (count === 2) {
-      if (flippedCards[0].factId === flippedCards[1].factId) {
-        flippedCards[0].matched = true;
-        flippedCards[1].matched = true;
-        if (cards[index].factId !== flippedCards[0].factId) {
-          // Clicked on already matched card (flipped card count is still two).
-          flippedCards.forEach(card => (
-            card.flipped = false
-          ));
-        } else {
-          cards[index].color = player.color;
-        }
-      } else {
-        cards[index].color = player.color;
-        setPlayer(nextPlayer(player));
-      }
-    } else {
-      // Turn flipped cards over.
-      flippedCards.forEach(card => (
-        card.color = card.matched && card.color || null,
-        card.flipped = false
-      ));
-      // Flip current card face up.
-      cards[index].color = player.color;
-      cards[index].flipped = !cards[index].flipped;
-    }
-    setCards(cards);
-    state.apply({
-      type: "update",
-      args: {
-        cards,
-      },
-    });
-  };
-
-  useEffect(() => {
-    console.log("useEffect() state=" + JSON.stringify(state, null, 2));
-    // Shuffle the deck with each reload.
-    const keyCards = shuffle(state.data.pairs.map(pair => pair[0]));
-    const valCards =
-          state.data.type === "flashcards" && [] ||
-          shuffle(state.data.pairs.map(pair => pair[1]));
-    const cards = keyCards.concat(valCards);
-    setCards(cards);
-    state.apply({
-      type: "update",
-      args: {
-        cards,
-      },
-    });
-  }, []);
-
+const renderFlashcards = ({ state, cards, flipCard }) => {
+  const { type } = state.data;
   return (
-    cards &&
     <div className="grid grid-cols-12 border-green-300 border-blue-300 border-red-300">
       {
-        false &&
-          <Palette player={player} choosePlayer={choosePlayer} />
+        type === "flashcards" &&
+          <NavBar />
       }
-      <div className="col-span-11">
-      <ul role="list" className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-4 sm:gap-x-6 xl:gap-x-8">
-      { (state.data.type === "flashcards" &&
+      <div className="col-span-10">
+      <ul role="list" className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-1 sm:gap-x-6 xl:gap-x-8">
+      { (type === "flashcards" &&
          cards.slice(0, 1) ||
          cards)
         .map((card, index) => (
@@ -175,5 +96,165 @@ export const Form = ({ state }) => {
     </ul>
       </div>
       </div> || <div />
+  )
+}
+
+export const Form = ({ state }) => {
+  const { type, pairs } = state.data;
+  const [ cards, setCards ] = useState(null);
+  const [ player, setPlayer ] = useState(
+    type === "flashcards" &&
+      {color: "slate"} ||
+      {color: "blue"}
+  );
+
+  const choosePlayer = (player) => {
+    setPlayer(player);
+    state.apply({
+      type: "update",
+      args: {
+        player: player,
+        cards: cards.map(card => (card.flipped = false, card)),
+      },
+    });
+  }
+
+  const flipCard = index => {
+    if (!cards[index].matched) {
+      cards[index].flipped = !cards[index].flipped;
+    }
+    const flippedCards = cards.filter(card => card.flipped);
+    const count = flippedCards.length;
+    if (count === 0) {
+    } else if (count === 1) {
+      cards[index].color = player.color;
+    } else if (count === 2) {
+      if (flippedCards[0].factId === flippedCards[1].factId) {
+        flippedCards[0].matched = true;
+        flippedCards[1].matched = true;
+        if (cards[index].factId !== flippedCards[0].factId) {
+          // Clicked on already matched card (flipped card count is still two).
+          flippedCards.forEach(card => (
+            card.flipped = false
+          ));
+        } else {
+          cards[index].color = player.color;
+        }
+      } else {
+        cards[index].color = player.color;
+        setPlayer(nextPlayer(player));
+      }
+    } else {
+      // Turn flipped cards over.
+      flippedCards.forEach(card => (
+        card.color = card.matched && card.color || null,
+        card.flipped = false
+      ));
+      // Flip current card face up.
+      cards[index].color = player.color;
+      cards[index].flipped = !cards[index].flipped;
+    }
+    setCards(cards);
+    state.apply({
+      type: "update",
+      args: {
+        cards,
+      },
+    });
+  };
+
+  useEffect(() => {
+    console.log("useEffect() state=" + JSON.stringify(state, null, 2));
+    // Shuffle the deck with each reload.
+    const keyCards = shuffle(pairs.map(pair => pair[0]));
+    const valCards =
+          type === "flashcards" && [] ||
+          shuffle(pairs.map(pair => pair[1]));
+    const cards = keyCards.concat(valCards);
+    setCards(cards);
+    state.apply({
+      type: "update",
+      args: {
+        cards,
+      },
+    });
+  }, []);
+
+  return (
+    cards && (
+      type === "flashcards" && renderFlashcards({ state, cards, flipCard }) ||
+      <div className="grid grid-cols-12 border-green-300 border-blue-300 border-red-300">
+      {
+        type === "flashcards" &&
+          <Palette player={player} choosePlayer={choosePlayer} />
+      }
+      <div className="col-span-10">
+      <ul role="list" className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-4 sm:gap-x-6 xl:gap-x-8">
+      { (type === "flashcards" &&
+         cards.slice(0, 1) ||
+         cards)
+        .map((card, index) => (
+          <li key={index} className="relative">
+          <div
+            onClick={() => flipCard(index)}
+            className="group aspect-h-7 aspect-w-10 block w-full overflow-hidden"
+          >
+          {
+            card.flipped &&
+              <div
+                className={classNames(
+                 "flex items-center justify-center my-auto py-auto rounded-lg",
+                 card.matched && "border border-2 border-green-300" || `border border-2 border-${card.color}-600`
+                )}>
+              {
+                card.face.indexOf("https") >= 0 &&
+                  <img alt="" src={card.face} className="p-2 pointer-events-none object-cover group-hover:opacity-75" /> ||
+                  <div className="text-4xl font-bold text-slate-700">
+                  {
+                    parse(katex.renderToString(card.face, {
+                      displayMode: true,
+                      output: "html",
+                      throwOnError: false
+                    }))
+                  }
+                  </div>
+              }
+              </div> ||
+              <div
+                className={classNames(
+                 "flex items-center justify-center my-auto py-auto rounded-lg border border-2",
+                  card.matched && `bg-${card.color}-100 border-${card.color}-300`
+                )}>
+              {
+                !card.matched && (
+                  card.back.indexOf("https") >= 0 &&
+                    <img alt="" src={card.back} className="pointer-events-none group-hover:opacity-75" /> ||
+                  <div className="text-4xl font-bold text-slate-700">
+                  {
+                    parse(katex.renderToString(card.back, {
+                      displayMode: true,
+                      output: "html",
+                      throwOnError: false
+                    }))
+                  }
+                  </div>
+                ) ||
+                  <div />
+              }
+              </div>
+          }
+          <button
+        type="button"
+        className="absolute inset-0 focus:outline-none"
+          >
+          <span className="sr-only">View details for {card.face}</span>
+            </button>
+          </div>
+        </li>
+      ))}
+      </ul>
+        </div>
+      </div> || <div />
+    )
   )
 }

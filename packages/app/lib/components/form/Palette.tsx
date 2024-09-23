@@ -39,3 +39,36 @@ export function Palette({ player, choosePlayer }) {
     </div>
   )
 }
+
+export function NavBar() {
+  return (
+    <div className="w-15 border flex flex-col gap-1 mr-2 p-1">
+      <div className={
+             classNames(
+               "h-6",
+               "bg-red-100"
+             )}
+      >
+        <button
+          type="button"
+          className="w-4 h-4 m-1 transition bg-red-400"
+          onClick={() => {}}
+        >
+        </button>
+      </div>
+      <div className={
+             classNames(
+               "h-6",
+               "bg-blue-100"
+             )}
+      >
+        <button
+          type="button"
+          className="w-4 h-4 m-1 transition bg-blue-100 bg-blue-400"
+          onClick={() => () => {}}
+        >
+        </button>
+      </div>
+    </div>
+  )
+}
