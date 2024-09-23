@@ -94,7 +94,7 @@ const renderFlashcards = ({ state, cards, flipCard }) => {
     </ul>
       <PageNav />
     </div>
-    </div> || <div />
+      </div>
   )
 }
 
