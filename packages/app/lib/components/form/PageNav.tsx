@@ -12,8 +12,8 @@ export function PageNav() {
     >
       <div className="hidden sm:block">
         <p className="text-sm text-gray-700">
-          Showing <span className="font-medium">1</span> to <span className="font-medium">10</span> of{' '}
-          <span className="font-medium">20</span> results
+          Showing <span className="font-medium">1</span> of{' '}
+          <span className="font-medium">10</span> flash cards
         </p>
       </div>
       <div className="flex flex-1 justify-between sm:justify-end">
