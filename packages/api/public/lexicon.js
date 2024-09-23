@@ -1,4 +1,10 @@
 window.gcexports.globalLexicon = {
+  "flashcards" : {
+    "tk": 1,
+    "name": "FLASHCARDS",
+    "cls": "function",
+    "length": 2
+  },
   "match" : {
     "tk": 1,
     "name": "MATCH",

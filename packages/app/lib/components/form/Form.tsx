@@ -1,3 +1,6 @@
+import katex from 'katex';
+import parse from 'html-react-parser';
+
 import { Palette } from "./Palette";
 import "../../index.css";
 import { useEffect, useState } from "react";
@@ -12,15 +15,19 @@ const shuffle = unshuffled =>
     .sort((a, b) => a.sort - b.sort)
     .map(({ value }) => value);
 
-const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-
 const nextPlayer = player => (
-  player.color === "red" && {color: "blue"} || {color: "red"}
+    player.color === "red" && {color: "blue"} ||
+    player.color === "blue" && {color: "red"} ||
+    player.color
 );
 
 export const Form = ({ state }) => {
   const [ cards, setCards ] = useState(null);
-  const [ player, setPlayer ] = useState({color: "red"});
+  const [ player, setPlayer ] = useState(
+    state.data.type === "flashcards" &&
+      {color: "slate"} ||
+      {color: "blue"}
+  );
 
   const choosePlayer = (player) => {
     setPlayer(player);
@@ -78,9 +85,12 @@ export const Form = ({ state }) => {
   };
 
   useEffect(() => {
+    console.log("useEffect() state=" + JSON.stringify(state, null, 2));
     // Shuffle the deck with each reload.
     const keyCards = shuffle(state.data.pairs.map(pair => pair[0]));
-    const valCards = shuffle(state.data.pairs.map(pair => pair[1]));
+    const valCards =
+          state.data.type === "flashcards" && [] ||
+          shuffle(state.data.pairs.map(pair => pair[1]));
     const cards = keyCards.concat(valCards);
     setCards(cards);
     state.apply({
@@ -100,7 +110,10 @@ export const Form = ({ state }) => {
       }
       <div className="col-span-11">
       <ul role="list" className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-4 sm:gap-x-6 xl:gap-x-8">
-      {cards.map((card, index) => (
+      { (state.data.type === "flashcards" &&
+         cards.slice(0, 1) ||
+         cards)
+        .map((card, index) => (
           <li key={index} className="relative">
           <div
             onClick={() => flipCard(index)}
@@ -111,12 +124,20 @@ export const Form = ({ state }) => {
               <div
                 className={classNames(
                  "flex items-center justify-center my-auto py-auto rounded-lg",
-                 card.matched && "border border-2 border-green-300" || `border border-2 border-${card.color}-300`
+                 card.matched && "border border-2 border-green-300" || `border border-2 border-${card.color}-600`
                 )}>
               {
                 card.face.indexOf("https") >= 0 &&
                   <img alt="" src={card.face} className="p-2 pointer-events-none object-cover group-hover:opacity-75" /> ||
-                  card.face
+                  <div className="text-4xl font-bold text-slate-700">
+                  {
+                    parse(katex.renderToString(card.face, {
+                      displayMode: true,
+                      output: "html",
+                      throwOnError: false
+                    }))
+                  }
+                  </div>
               }
               </div> ||
               <div
@@ -128,8 +149,15 @@ export const Form = ({ state }) => {
                 !card.matched && (
                   card.back.indexOf("https") >= 0 &&
                     <img alt="" src={card.back} className="pointer-events-none group-hover:opacity-75" /> ||
-                    card.back ||
-                    letters[index]
+                  <div className="text-4xl font-bold text-slate-700">
+                  {
+                    parse(katex.renderToString(card.back, {
+                      displayMode: true,
+                      output: "html",
+                      throwOnError: false
+                    }))
+                  }
+                  </div>
                 ) ||
                   <div />
               }

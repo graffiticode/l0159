@@ -25,5 +25,9 @@
       "<rootDir>/packages/",
       "<rootDir>/node_modules/"
     ]
+  },
+  "dependencies": {
+    "html-react-parser": "^5.1.16",
+    "katex": "^0.16.11"
   }
 }

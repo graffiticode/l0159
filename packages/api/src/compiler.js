@@ -5,17 +5,37 @@ import {
   Compiler as BasisCompiler
 } from '@graffiticode/basis';
 
-const cardPairsFromFacts = (facts, match) => (
+const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+
+// match - front and back same fact
+// memory - front fact, back letter
+// flashcards - front fact, back matching fact
+const createBack = ({ type, fact, id, index }) => (
+  console.log("createBack() type=" + type + " index=" + index + " fact=" + JSON.stringify(fact, null, 2)),
+  type === "match" && fact[index] ||
+    type === "memory" && letters[id] ||
+    type === "flashcards" && index === 0 && fact[0] ||
+    null
+);
+
+const createFace = ({ type, fact, index }) => (
+  type === "match" && fact[index] ||
+    type === "memory" && fact[index] ||
+    type === "flashcards" && index === 0 && fact[1] ||
+    null
+);
+
+const cardPairsFromFacts = (facts, type) => (
   facts.map((fact, index) => [{
     id: index * 2,
     factId: index,
-    face: fact[0],
-    back: match && fact[0] || "",
+    face: createFace({fact, type, index: 0}),
+    back: createBack({fact, type, id: index * 2, index: 0}),
   }, {
     id: index * 2 + 1,
     factId: index,
-    face: fact[1],
-    back: match && fact[1] || "",
+    face: createFace({fact, type, index: 1}),
+    back: createBack({fact, type, id: index * 2 + 1, index: 1}),
   }])
 );
 
@@ -42,12 +62,29 @@ export class Transformer extends BasisTransformer {
     });
   }
 
-  MEMORY(node, options, resume) {
-    this.visit(node.elts[0], options, async (e0, v0) => {
+  FLASHCARDS(node, options, resume) {
+    this.visit(node.elts[0], {...options, type: "flashcards"}, async (e0, v0) => {
       this.visit(node.elts[1], options, async (e1, v1) => {
         const data = options?.data || {};
         const err = [];
         const val = {
+          type: "flashcards",
+          ...v0,
+          ...v1,
+          ...data,
+        };
+        resume(err, val);
+      });
+    });
+  }
+
+  MEMORY(node, options, resume) {
+    this.visit(node.elts[0], {...options, type: "memory"}, async (e0, v0) => {
+      this.visit(node.elts[1], options, async (e1, v1) => {
+        const data = options?.data || {};
+        const err = [];
+        const val = {
+          type: "memory",
           ...v0,
           ...v1,
           ...data,
@@ -58,11 +95,12 @@ export class Transformer extends BasisTransformer {
   }
 
   MATCH(node, options, resume) {
-    this.visit(node.elts[0], {...options, match: true}, async (e0, v0) => {
+    this.visit(node.elts[0], {...options, type: "match"}, async (e0, v0) => {
       this.visit(node.elts[1], options, async (e1, v1) => {
         const data = options?.data || {};
         const err = [];
         const val = {
+          type: "match",
           ...v0,
           ...v1,
           ...data,
@@ -75,11 +113,11 @@ export class Transformer extends BasisTransformer {
   FACTS(node, options, resume) {
     this.visit(node.elts[0], options, async (e0, v0) => {
       const data = options?.data || {};
-      const match = options.match
+      const type = options.type
       const err = [];
       const val = {
         facts: v0,
-        pairs: cardPairsFromFacts(v0, options.match),
+        pairs: cardPairsFromFacts(v0, type),
         ...data,
       };
       resume(err, val);
