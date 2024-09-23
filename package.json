@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.1.5",
+    "base64-js": "^1.5.1",
     "html-react-parser": "^5.1.16",
     "katex": "^0.16.11"
   }
