@@ -1,7 +1,9 @@
 import katex from 'katex';
 import parse from 'html-react-parser';
 
-import { Palette, NavBar } from "./Palette";
+import { Palette } from "./Palette";
+import { PageNav } from "./PageNav";
+
 import "../../index.css";
 import { useEffect, useState } from "react";
 
@@ -25,11 +27,7 @@ const renderFlashcards = ({ state, cards, flipCard }) => {
   const { type } = state.data;
   return (
     <div className="grid grid-cols-12 border-green-300 border-blue-300 border-red-300">
-      {
-        type === "flashcards" &&
-          <NavBar />
-      }
-      <div className="col-span-11">
+      <div className="col-span-12">
       <ul role="list" className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-1 sm:gap-x-6 xl:gap-x-8">
       { (type === "flashcards" &&
          cards.slice(0, 1) ||
@@ -94,8 +92,9 @@ const renderFlashcards = ({ state, cards, flipCard }) => {
         </li>
       ))}
     </ul>
-      </div>
-      </div> || <div />
+      <PageNav />
+    </div>
+    </div> || <div />
   )
 }
 
