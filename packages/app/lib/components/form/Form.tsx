@@ -29,7 +29,7 @@ const renderFlashcards = ({ state, cards, flipCard }) => {
         type === "flashcards" &&
           <NavBar />
       }
-      <div className="col-span-10">
+      <div className="col-span-11">
       <ul role="list" className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-1 sm:gap-x-6 xl:gap-x-8">
       { (type === "flashcards" &&
          cards.slice(0, 1) ||
