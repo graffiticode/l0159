@@ -50,7 +50,9 @@ export function PageNav({ state, cards }) {
         <a
           href="#"
           onClick={() => {
-            cards[cardIndex].flipped = false;
+            if (!cards[cardIndex].checked) {
+              cards[cardIndex].flipped = false;
+            }
             state.apply({
               type: "update",
               args: {
@@ -66,7 +68,9 @@ export function PageNav({ state, cards }) {
         <a
           href="#"
           onClick={() => {
-            cards[cardIndex].flipped = false;
+            if (!cards[cardIndex].checked) {
+              cards[cardIndex].flipped = false;
+            }
             state.apply({
               type: "update",
               args: {
