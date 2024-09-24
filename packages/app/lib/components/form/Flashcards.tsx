@@ -26,9 +26,7 @@ function classNames(...classes) {
 export const Flashcards = ({ state, cards }) => {
   const { cardIndex } = state.data;
   const flipCard = index => {
-    if (!cards[index].matched) {
-      cards[index].flipped = !cards[index].flipped;
-    }
+    cards[index].flipped = !cards[index].flipped;
     state.apply({
       type: "update",
       args: {

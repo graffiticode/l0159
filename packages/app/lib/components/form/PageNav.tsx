@@ -49,24 +49,32 @@ export function PageNav({ state, cards }) {
         </a>
         <a
           href="#"
-          onClick={() => { state.apply({
-            type: "update",
-            args: {
-              cardIndex: prevIndex(),
-            }
-          })}}
+          onClick={() => {
+            cards[cardIndex].flipped = false;
+            state.apply({
+              type: "update",
+              args: {
+                cards,
+                cardIndex: prevIndex(),
+              }
+            })
+          }}
           className="relative ml-3 inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:outline-offset-0"
         >
           Previous
         </a>
         <a
           href="#"
-          onClick={() => { state.apply({
-            type: "update",
-            args: {
-              cardIndex: nextIndex(),
-            }
-          })}}
+          onClick={() => {
+            cards[cardIndex].flipped = false;
+            state.apply({
+              type: "update",
+              args: {
+                cards,
+                cardIndex: nextIndex(),
+              }
+            })
+          }}
           className="relative ml-3 inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:outline-offset-0"
         >
           Next
