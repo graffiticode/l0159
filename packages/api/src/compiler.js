@@ -69,6 +69,7 @@ export class Transformer extends BasisTransformer {
         const err = [];
         const val = {
           type: "flashcards",
+          cardIndex: 0,
           ...v0,
           ...v1,
           ...data,

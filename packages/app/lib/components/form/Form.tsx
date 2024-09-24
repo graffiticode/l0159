@@ -1,7 +1,6 @@
 import katex from 'katex';
 import 'katex/dist/katex.min.css';
 
-import { Palette } from "./Palette";
 import { PageNav } from "./PageNav";
 
 import "../../index.css";
@@ -23,8 +22,7 @@ const nextPlayer = player => (
     player.color
 );
 
-const KaTeX = ({latex}) => {
-  console.log("KaTeX() latex=" + latex);
+const KaTeX = ({ latex }) => {
   const ref = useRef();
   useEffect(() => {
     katex.render(latex, ref.current, {
@@ -37,18 +35,16 @@ const KaTeX = ({latex}) => {
 }
 
 const renderFlashcards = ({ state, cards, flipCard }) => {
-  const { type } = state.data;
+  const { cardIndex } = state.data;
   return (
     <div className="grid grid-cols-12 border-green-300 border-blue-300 border-red-300">
       <div className="col-span-12">
       <ul role="list" className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-1 sm:gap-x-6 xl:gap-x-8">
-      { (type === "flashcards" &&
-         cards.slice(0, 1) ||
-         cards)
-        .map((card, index) => (
+      {
+        cards.slice(cardIndex, cardIndex + 1).map((card, index) => (
           <li key={index} className="relative">
           <div
-            onClick={() => flipCard(index)}
+            onClick={() => flipCard(cardIndex)}
             className="group aspect-h-7 aspect-w-10 block w-full overflow-hidden"
           >
           {
@@ -93,7 +89,7 @@ const renderFlashcards = ({ state, cards, flipCard }) => {
         </li>
       ))}
     </ul>
-      <PageNav />
+      <PageNav state={state} cards={cards} />
     </div>
       </div>
   )
@@ -107,17 +103,6 @@ export const Form = ({ state }) => {
       {color: "slate"} ||
       {color: "blue"}
   );
-
-  const choosePlayer = (player) => {
-    setPlayer(player);
-    state.apply({
-      type: "update",
-      args: {
-        player: player,
-        cards: cards.map(card => (card.flipped = false, card)),
-      },
-    });
-  }
 
   const flipCard = index => {
     if (!cards[index].matched) {
@@ -182,18 +167,12 @@ export const Form = ({ state }) => {
 
   return (
     cards && (
-      type === "flashcards" && renderFlashcards({ state, cards, flipCard }) ||
+      type === "flashcards" &&
+        renderFlashcards({ state, cards, flipCard }) ||
       <div className="grid grid-cols-12 border-green-300 border-blue-300 border-red-300">
-      {
-        type === "flashcards" &&
-          <Palette player={player} choosePlayer={choosePlayer} />
-      }
       <div className="col-span-10">
       <ul role="list" className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-4 sm:gap-x-6 xl:gap-x-8">
-      { (type === "flashcards" &&
-         cards.slice(0, 1) ||
-         cards)
-        .map((card, index) => (
+      { cards.map((card, index) => (
           <li key={index} className="relative">
           <div
             onClick={() => flipCard(index)}
