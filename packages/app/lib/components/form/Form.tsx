@@ -1,11 +1,11 @@
 import katex from 'katex';
-import parse from 'html-react-parser';
+import 'katex/dist/katex.min.css';
 
 import { Palette } from "./Palette";
 import { PageNav } from "./PageNav";
 
 import "../../index.css";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 function classNames(...classes) {
   const className = classes.filter(Boolean).join(' ')
@@ -22,6 +22,19 @@ const nextPlayer = player => (
     player.color === "blue" && {color: "red"} ||
     player.color
 );
+
+const KaTeX = ({latex}) => {
+  console.log("KaTeX() latex=" + latex);
+  const ref = useRef();
+  useEffect(() => {
+    katex.render(latex, ref.current, {
+      displayMode: true,
+      output: "html",
+      throwOnError: true
+    });
+  }, [latex]);
+  return <div ref={ref} />;
+}
 
 const renderFlashcards = ({ state, cards, flipCard }) => {
   const { type } = state.data;
@@ -48,14 +61,8 @@ const renderFlashcards = ({ state, cards, flipCard }) => {
               {
                 card.face.indexOf("https") >= 0 &&
                   <img alt="" src={card.face} className="p-2 pointer-events-none object-cover group-hover:opacity-75" /> ||
-                  <div className="text-9xl font-bold text-slate-700">
-                  {
-                    parse(katex.renderToString(card.face, {
-                      displayMode: true,
-                      output: "html",
-                      throwOnError: false
-                    }))
-                  }
+                  <div className="text-5xl font-bold text-slate-700">
+                  <KaTeX latex={card.face} />
                   </div>
               }
               </div> ||
@@ -68,14 +75,8 @@ const renderFlashcards = ({ state, cards, flipCard }) => {
                 !card.matched && (
                   card.back.indexOf("https") >= 0 &&
                     <img alt="" src={card.back} className="pointer-events-none group-hover:opacity-75" /> ||
-                  <div className="text-9xl font-bold text-slate-700">
-                  {
-                    parse(katex.renderToString(card.back, {
-                      displayMode: true,
-                      output: "html",
-                      throwOnError: false
-                    }))
-                  }
+                  <div className="text-5xl font-bold text-slate-700">
+                  <KaTeX latex={card.back} />
                   </div>
                 ) ||
                   <div />
@@ -209,13 +210,7 @@ export const Form = ({ state }) => {
                 card.face.indexOf("https") >= 0 &&
                   <img alt="" src={card.face} className="p-2 pointer-events-none object-cover group-hover:opacity-75" /> ||
                   <div className="text-4xl font-bold text-slate-700">
-                  {
-                    parse(katex.renderToString(card.face, {
-                      displayMode: true,
-                      output: "html",
-                      throwOnError: false
-                    }))
-                  }
+                  <KaTeX latex={card.face} />
                   </div>
               }
               </div> ||
@@ -229,13 +224,7 @@ export const Form = ({ state }) => {
                   card.back.indexOf("https") >= 0 &&
                     <img alt="" src={card.back} className="pointer-events-none group-hover:opacity-75" /> ||
                   <div className="text-4xl font-bold text-slate-700">
-                  {
-                    parse(katex.renderToString(card.back, {
-                      displayMode: true,
-                      output: "html",
-                      throwOnError: false
-                    }))
-                  }
+                  <KaTeX latex={card.back} />
                   </div>
                 ) ||
                   <div />
