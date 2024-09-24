@@ -1,14 +1,12 @@
-// const items = [
-//   { id: 1, title: 'Back End Developer', department: 'Engineering', type: 'Full-time', location: 'Remote' },
-//   { id: 2, title: 'Front End Developer', department: 'Engineering', type: 'Full-time', location: 'Remote' },
-//   { id: 3, title: 'User Interface Designer', department: 'Design', type: 'Full-time', location: 'Remote' },
-// ]
+import { CheckIcon } from '@heroicons/react/20/solid'
 
-
+function classNames(...classes) {
+  const className = classes.filter(Boolean).join(' ')
+  return className;
+}
 
 export function PageNav({ state, cards }) {
   const { cardIndex } = state.data;
-  console.log("PageNav() cards=" + JSON.stringify(cards, null, 2));
   const prevIndex = () =>
         cards.length - 1 !== 0 && (
           cardIndex === 0 && cards.length - 1 ||
@@ -21,7 +19,7 @@ export function PageNav({ state, cards }) {
   return (
     <nav
       aria-label="Pagination"
-      className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6"
+      className="flex items-center justify-between bg-white px-4 py-3 sm:px-6"
     >
       <div className="hidden sm:block">
         <p className="text-sm text-gray-700">
@@ -32,13 +30,32 @@ export function PageNav({ state, cards }) {
       <div className="flex flex-1 justify-between sm:justify-end">
         <a
           href="#"
+          onClick={() => {
+            cards[cardIndex].checked = !cards[cardIndex].checked
+             state.apply({
+             type: "update",
+             args: {
+              cards,
+             },
+          });
+        }}
+      >
+      <CheckIcon aria-hidden="true" className={classNames(
+        "relative inline-flex items-center ring-1 ring-inset ring-gray-300 focus-visible:outline-offset-0 rounded-full mx-4 p-2 h-8 w-8",
+        cards[cardIndex].checked &&
+          "hover:bg-green-100 bg-green-200" ||
+          "hover:bg-gray-100 bg-white"
+      )} />
+        </a>
+        <a
+          href="#"
           onClick={() => { state.apply({
             type: "update",
             args: {
               cardIndex: prevIndex(),
             }
           })}}
-          className="relative inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:outline-offset-0"
+          className="relative ml-3 inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:outline-offset-0"
         >
           Previous
         </a>
