@@ -36,14 +36,12 @@ const KaTeX = ({ latex }) => {
 }
 
 export const Form = ({ state }) => {
-  const { type, pairs } = state.data;
-  const [ cards, setCards ] = useState(null);
+  const { type, pairs, cards } = state.data;
   const [ player, setPlayer ] = useState(
     type === "flashcards" &&
       {color: "slate"} ||
       {color: "blue"}
   );
-
   const flipCard = index => {
     if (!cards[index].matched) {
       cards[index].flipped = !cards[index].flipped;
@@ -79,7 +77,6 @@ export const Form = ({ state }) => {
       cards[index].color = player.color;
       cards[index].flipped = !cards[index].flipped;
     }
-    setCards(cards);
     state.apply({
       type: "update",
       args: {
@@ -95,7 +92,6 @@ export const Form = ({ state }) => {
           type === "flashcards" && [] ||
           shuffle(pairs.map(pair => pair[1]));
     const cards = keyCards.concat(valCards);
-    setCards(cards);
     state.apply({
       type: "update",
       args: {
@@ -105,9 +101,9 @@ export const Form = ({ state }) => {
   }, []);
 
   return (
-    cards && (
+    state.data.cards && (
       type === "flashcards" &&
-        <Flashcards state={state} cards={cards} /> ||
+        <Flashcards state={state} /> ||
         <div className="grid grid-cols-12 border-green-300 border-blue-300 border-red-300">
         <div className="col-span-10">
         <ul role="list" className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-4 sm:gap-x-6 xl:gap-x-8">

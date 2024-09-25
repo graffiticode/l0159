@@ -23,8 +23,8 @@ function classNames(...classes) {
   return className;
 }
 
-export const Flashcards = ({ state, cards }) => {
-  const { cardIndex } = state.data;
+export const Flashcards = ({ state }) => {
+  const { cards, cardIndex } = state.data;
   const flipCard = index => {
     cards[index].flipped = !cards[index].flipped;
     state.apply({
@@ -87,7 +87,7 @@ export const Flashcards = ({ state, cards }) => {
         </li>
       ))}
     </ul>
-      <PageNav state={state} cards={cards} />
+      <PageNav state={state} />
     </div>
       </div>
   )

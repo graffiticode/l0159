@@ -5,8 +5,8 @@ function classNames(...classes) {
   return className;
 }
 
-export function PageNav({ state, cards }) {
-  const { cardIndex } = state.data;
+export function PageNav({ state }) {
+  const { cards, cardIndex } = state.data;
   const prevIndex = () =>
         cards.length - 1 !== 0 && (
           cardIndex === 0 && cards.length - 1 ||
