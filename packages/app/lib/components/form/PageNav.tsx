@@ -27,7 +27,12 @@ export function PageNav({ state }) {
           <span className="font-medium">{cards.length}</span>
         </p>
       </div>
-      <div className="-mt-px flex">
+      {
+        !revealed &&
+          <div className="-mt-px flex">
+          Reveal
+          </div> ||
+          <div className="-mt-px flex">
       <div className="flex-col">
       <div className="text-xs font-light text-gray-600 pb-2">
         How well do you know this?
