@@ -106,7 +106,7 @@ export function PageNav({ state }) {
           </div> ||
           <div className="flex-col">
           <div className="text-xs text-center font-light text-gray-600 pb-2">
-          How do you feel about this?
+          How well do you know this?
           </div>
           <div className="-mt-px flex justify-center items-center px-auto">
           <a
