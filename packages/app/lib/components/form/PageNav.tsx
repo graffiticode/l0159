@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { ArrowRightIcon, ArrowLeftIcon } from '@heroicons/react/20/solid'
 
 function classNames(...classes) {
@@ -6,7 +7,7 @@ function classNames(...classes) {
 }
 
 export function PageNav({ state }) {
-  const [ reavealed, setRevealed ] = useState(false);
+  const [ revealed, setRevealed ] = useState(false);
   const { cards, cardIndex } = state.data;
   const prevIndex = () =>
         cards.length - 1 !== 0 && (
@@ -17,7 +18,6 @@ export function PageNav({ state }) {
   const nextIndex = () =>
         cardIndex !== cards.length - 1 && cardIndex + 1 ||
         0;
-  let revealed = false;
   return (
     <nav
       aria-label="Pagination"
@@ -35,7 +35,17 @@ export function PageNav({ state }) {
           <div className="font-light text-xs text-white ring-indigo-600 hover:ring-1 bg-indigo-600 rounded-full px-6 py-2">
           <a
           href="#"
-          onClick={() => setRevealed(true)}
+          onClick={() => {
+            cards[cardIndex].flipped = true;
+            setRevealed(true);
+            state.apply({
+              type: "update",
+              args: {
+                cards,
+                cardIndex,
+              }
+            })
+          }}
         >
           Reveal
         </a>
@@ -72,9 +82,8 @@ export function PageNav({ state }) {
           <a
           href="#"
           onClick={() => {
-            if (!cards[cardIndex].checked) {
-              cards[cardIndex].flipped = false;
-            }
+            cards[cardIndex].flipped = false;
+            setRevealed(false);
             state.apply({
               type: "update",
               args: {
@@ -92,9 +101,8 @@ export function PageNav({ state }) {
         <a
           href="#"
           onClick={() => {
-            if (!cards[cardIndex].checked) {
-              cards[cardIndex].flipped = false;
-            }
+            cards[cardIndex].flipped = false;
+            setRevealed(false);
             state.apply({
               type: "update",
               args: {
