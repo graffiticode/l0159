@@ -6,6 +6,7 @@ function classNames(...classes) {
 }
 
 export function PageNav({ state }) {
+  const [ reavealed, setRevealed ] = useState(false);
   const { cards, cardIndex } = state.data;
   const prevIndex = () =>
         cards.length - 1 !== 0 && (
@@ -32,7 +33,12 @@ export function PageNav({ state }) {
       {
         !revealed &&
           <div className="font-light text-xs text-white ring-indigo-600 hover:ring-1 bg-indigo-600 rounded-full px-6 py-2">
-            Reveal
+          <a
+          href="#"
+          onClick={() => setRevealed(true)}
+        >
+          Reveal
+        </a>
           </div> ||
           <div className="flex-col">
           <div className="text-xs font-light text-gray-600 pb-2">
