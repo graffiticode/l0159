@@ -21,7 +21,7 @@ export function PageNav({ state }) {
   return (
     <nav
       aria-label="Pagination"
-      className="flex items-center justify-between bg-white px-4 sm:px-6"
+      className="flex items-center justify-between bg-white px-4 sm:px-6 h-12"
     >
       <div className="-mt-px flex w-0 flex-1">
         <p className="text-sm text-gray-700">
@@ -51,28 +51,28 @@ export function PageNav({ state }) {
         </a>
           </div> ||
           <div className="flex-col">
-          <div className="text-xs font-light text-gray-600 pb-2">
+          <div className="text-xs text-center font-light text-gray-600 pb-2">
           How well do you know this?
           </div>
           <div className="-mt-px flex justify-center items-center px-auto">
           <a
         href="#"
-        className="font-medium text-xs text-gray-700 focus-visible:outline-offset-0 rounded-full mx-1 p-2 h-8 w-8 hover:ring-2 ring-[#F78A72] bg-[#F78A72] text-center"
+        className="font-medium text-xs text-gray-700 focus-visible:outline-offset-0 rounded-full mx-1 p-2 h-8 w-11 hover:ring-2 ring-[#F78A72] bg-[#F78A72] text-center"
           >
-          1
+          0
         </a>
           <a
         href="#"
         aria-current="page"
-        className="font-medium text-xs text-gray-700 focus-visible:outline-offset-0 rounded-full mx-1 p-2 h-8 w-8 hover:ring-1 ring-[#EFCB4B] bg-[#EFCB4B] text-center align-middle"
+        className="font-medium text-xs text-gray-700 focus-visible:outline-offset-0 rounded-full mx-1 p-2 h-8 w-11 hover:ring-1 ring-[#EFCB4B] bg-[#EFCB4B] text-center align-middle"
           >
-          2
+          &hellip;
         </a>
           <a
         href="#"
-        className="font-medium text-xs text-gray-700 focus-visible:outline-offset-0 rounded-full mx-1 p-2 h-8 w-8 hover:ring-1 ring-[#ACDC79] bg-[#ACDC79] text-center align-middle"
+        className="font-medium text-xs text-gray-700 focus-visible:outline-offset-0 rounded-full mx-1 p-2 h-8 w-11 hover:ring-1 ring-[#ACDC79] bg-[#ACDC79] text-center align-middle"
           >
-          3
+          100
         </a>
           </div>
           </div>
