@@ -111,22 +111,19 @@ export function PageNav({ state }) {
           <div className="-mt-px flex justify-center items-center px-auto">
           <a
         href="#"
-        className="font-medium text-xs text-gray-700 focus-visible:outline-offset-0 rounded-full mx-1 p-2 h-8 w-11 hover:ring-2 ring-[#F78A72] bg-[#F78A72] text-center"
+        className="font-medium text-xs text-gray-700 focus-visible:outline-offset-0 rounded-full mx-1 h-5 w-5 hover:ring-2 ring-[#F78A72] bg-[#F78A72] text-center"
           >
-          0
         </a>
           <a
         href="#"
         aria-current="page"
-        className="font-medium text-xs text-gray-700 focus-visible:outline-offset-0 rounded-full mx-1 p-2 h-8 w-11 hover:ring-1 ring-[#EFCB4B] bg-[#EFCB4B] text-center align-middle"
+        className="font-medium text-xs text-gray-700 focus-visible:outline-offset-0 rounded-full mx-1 h-5 w-5 hover:ring-1 ring-[#EFCB4B] bg-[#EFCB4B] text-center align-middle"
           >
-          &hellip;
         </a>
           <a
         href="#"
-        className="font-medium text-xs text-gray-700 focus-visible:outline-offset-0 rounded-full mx-1 p-2 h-8 w-11 hover:ring-1 ring-[#ACDC79] bg-[#ACDC79] text-center align-middle"
+        className="font-medium text-xs text-gray-700 focus-visible:outline-offset-0 rounded-full mx-1 h-5 w-5 hover:ring-1 ring-[#ACDC79] bg-[#ACDC79] text-center align-middle"
           >
-          100
         </a>
           </div>
           </div>
