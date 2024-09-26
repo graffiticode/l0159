@@ -1,4 +1,4 @@
-import { CheckIcon } from '@heroicons/react/20/solid'
+import { ArrowRightIcon, ArrowLeftIcon } from '@heroicons/react/20/solid'
 
 function classNames(...classes) {
   const className = classes.filter(Boolean).join(' ')
@@ -19,34 +19,43 @@ export function PageNav({ state }) {
   return (
     <nav
       aria-label="Pagination"
-      className="flex items-center justify-between bg-white px-4 py-3 sm:px-6"
+      className="flex items-center justify-between bg-white px-4 sm:px-6"
     >
-      <div className="hidden sm:block">
+      <div className="-mt-px flex w-0 flex-1">
         <p className="text-sm text-gray-700">
-          <span className="font-medium">{cardIndex + 1}</span> of{' '}
+          <span className="font-medium">{cardIndex + 1}</span> /{' '}
           <span className="font-medium">{cards.length}</span>
         </p>
       </div>
-      <div className="flex flex-1 justify-between sm:justify-end">
+      <div className="-mt-px flex">
+      <div className="flex-col">
+      <div className="text-xs font-light text-gray-600 pb-2">
+        How well do you know this?
+      </div>
+      <div className="-mt-px flex justify-center items-center px-auto">
         <a
           href="#"
-          onClick={() => {
-            cards[cardIndex].checked = !cards[cardIndex].checked
-             state.apply({
-             type: "update",
-             args: {
-              cards,
-             },
-          });
-        }}
+          className="font-medium text-xs text-gray-700 focus-visible:outline-offset-0 rounded-full mx-1 p-2 h-8 w-8 hover:ring-2 ring-[#F78A72] bg-[#F78A72] text-center"
       >
-      <CheckIcon aria-hidden="true" className={classNames(
-        "relative inline-flex items-center ring-1 ring-inset ring-gray-300 focus-visible:outline-offset-0 rounded-full mx-4 p-2 h-8 w-8",
-        cards[cardIndex].checked &&
-          "hover:bg-green-100 bg-green-200" ||
-          "hover:bg-gray-100 bg-white"
-      )} />
+      1
         </a>
+        <a
+          href="#"
+          aria-current="page"
+          className="font-medium text-xs text-gray-700 focus-visible:outline-offset-0 rounded-full mx-1 p-2 h-8 w-8 hover:ring-1 ring-[#EFCB4B] bg-[#EFCB4B] text-center align-middle"
+      >
+      2
+        </a>
+        <a
+          href="#"
+          className="font-medium text-xs text-gray-700 focus-visible:outline-offset-0 rounded-full mx-1 p-2 h-8 w-8 hover:ring-1 ring-[#ACDC79] bg-[#ACDC79] text-center align-middle"
+      >
+      3
+      </a>
+      </div>
+      </div>
+      </div>
+      <div className="-mt-px flex w-0 flex-1 justify-end">
         <a
           href="#"
           onClick={() => {
@@ -61,9 +70,11 @@ export function PageNav({ state }) {
               }
             })
           }}
-          className="relative ml-3 inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:outline-offset-0"
         >
-          Previous
+      <ArrowLeftIcon aria-hidden="true" className={classNames(
+        "relative inline-flex items-center ring-1 ring-inset ring-gray-300 focus-visible:outline-offset-0 rounded-full mx-1 p-2 h-8 w-8",
+        "hover:bg-gray-100 bg-white"
+      )} />
         </a>
         <a
           href="#"
@@ -79,9 +90,11 @@ export function PageNav({ state }) {
               }
             })
           }}
-          className="relative ml-3 inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:outline-offset-0"
         >
-          Next
+      <ArrowRightIcon aria-hidden="true" className={classNames(
+        "relative inline-flex items-center ring-1 ring-inset ring-gray-300 focus-visible:outline-offset-0 rounded-full mx-1 p-2 h-8 w-8",
+        "hover:bg-gray-100 bg-white"
+      )} />
         </a>
       </div>
     </nav>

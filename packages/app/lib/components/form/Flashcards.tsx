@@ -49,9 +49,9 @@ export const Flashcards = ({ state }) => {
             card.flipped &&
               <div
                 className={classNames(
-                 "flex items-center justify-center my-auto py-auto rounded-lg",
-                 card.matched && "border border-2 border-green-300" || `border border-2 border-${card.color}-600`
+                 "flex items-center justify-center my-auto py-auto"
                 )}>
+              <div className="flex items-center justify-center rounded-lg m-4 shadow-lg w-11/12 h-5/6">
               {
                 card.face.indexOf("https") >= 0 &&
                   <img alt="" src={card.face} className="p-2 pointer-events-none object-cover group-hover:opacity-75" /> ||
@@ -59,12 +59,13 @@ export const Flashcards = ({ state }) => {
                   <KaTeX latex={card.face} />
                   </div>
               }
+            </div>
               </div> ||
               <div
                 className={classNames(
-                 "flex items-center justify-center my-auto py-auto rounded-lg border border-2",
-                  card.matched && `bg-${card.color}-100 border-${card.color}-300`
+                 "flex items-center justify-center py-auto my-auto"
                 )}>
+              <div className="flex items-center justify-center rounded-lg m-4 shadow-lg w-11/12 h-5/6">
               {
                 !card.matched && (
                   card.back.indexOf("https") >= 0 &&
@@ -75,6 +76,7 @@ export const Flashcards = ({ state }) => {
                 ) ||
                   <div />
               }
+            </div>
               </div>
           }
           <button
@@ -87,7 +89,9 @@ export const Flashcards = ({ state }) => {
         </li>
       ))}
     </ul>
+      <div className="mx-4">
       <PageNav state={state} />
+      </div>
     </div>
       </div>
   )
