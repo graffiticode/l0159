@@ -28,6 +28,7 @@
     ]
   },
   "dependencies": {
+    "@headlessui/react": "^2.1.8",
     "@heroicons/react": "^2.1.5",
     "base64-js": "^1.5.1",
     "html-react-parser": "^5.1.16"

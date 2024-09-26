@@ -1,9 +1,60 @@
 import { useState } from "react";
 import { ArrowRightIcon, ArrowLeftIcon } from '@heroicons/react/20/solid'
+import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
+import { EllipsisVerticalIcon } from '@heroicons/react/20/solid'
 
 function classNames(...classes) {
   const className = classes.filter(Boolean).join(' ')
   return className;
+}
+
+function FilterDropdown() {
+  return (
+    <Menu as="div" className="relative inline-block text-left">
+      <div>
+        <MenuButton className="flex items-center rounded-full bg-gray-100 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-100">
+          <span className="sr-only">Open options</span>
+          <EllipsisVerticalIcon aria-hidden="true" className="h-5 w-5" />
+        </MenuButton>
+      </div>
+
+      <MenuItems
+        transition
+        className="absolute right-0 z-10 mt-2 w-9 origin-top-left rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
+      >
+        <div className="py-1">
+          <MenuItem>
+            <a
+              href="#"
+    className="block text-xs text-gray-700 m-2 rounded-full h-5 w-5 border border-1 border-gray-400 hover:ring-1 hover:border-0 ring-gray-400 bg-[#fff]"
+            >
+            </a>
+          </MenuItem>
+          <MenuItem>
+            <a
+              href="#"
+              className="block text-xs text-gray-700 m-2 rounded-full h-5 w-5 hover:ring-1 ring-[#F78A72] bg-[#F78A72]"
+            >
+            </a>
+          </MenuItem>
+          <MenuItem>
+            <a
+              href="#"
+              className="block text-xs text-gray-700 m-2 rounded-full h-5 w-5 hover:ring-1 ring-[#EFCB4B] bg-[#EFCB4B]"
+            >
+            </a>
+          </MenuItem>
+          <MenuItem>
+            <a
+              href="#"
+              className="block text-xs text-gray-700 m-2 rounded-full h-5 w-5 hover:ring-1 ring-[#ACDC79] bg-[#ACDC79]"
+            >
+            </a>
+          </MenuItem>
+        </div>
+      </MenuItems>
+    </Menu>
+  )
 }
 
 export function PageNav({ state }) {
@@ -27,7 +78,10 @@ export function PageNav({ state }) {
         <p className="text-sm text-gray-700">
           <span className="font-medium">{cardIndex + 1}</span> /{' '}
           <span className="font-medium">{cards.length}</span>
-        </p>
+      </p>
+      <div className="pl-4">
+        <FilterDropdown />
+      </div>
       </div>
       <div className="-mt-px flex">
       {
