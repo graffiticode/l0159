@@ -25,7 +25,6 @@ function FilterDropdown({ state }) {
       },
     })
   );
-  console.log("FilterDropdown() filterMark=" + filterMark);
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
@@ -105,8 +104,6 @@ export function PageNav({ state }) {
       return index;
     }
     return 0;
-        // cardIndex !== cards.length - 1 && cardIndex + 1 ||
-    // 0;
   }
   const filteredCount = indexMap.filter(val => val).length;
   const filteredIndex = cards
@@ -119,13 +116,7 @@ export function PageNav({ state }) {
       className="flex items-center justify-between bg-white px-4 sm:px-6 h-12"
     >
       <div className="-mt-px flex w-0 flex-1">
-        <p className="text-sm text-gray-700">
-          <span className="font-medium">{filteredIndex}</span> /{' '}
-          <span className="font-medium">{filteredCount}</span>
-      </p>
-      <div className="pl-4">
         <FilterDropdown state={state} />
-      </div>
       </div>
       <div className="-mt-px flex">
       {
@@ -155,7 +146,7 @@ export function PageNav({ state }) {
           <div className="-mt-px flex justify-center items-center px-auto">
           <a
             href="#"
-            className="font-medium text-xs text-gray-700 focus-visible:outline-offset-0 rounded-full mx-1 h-5 w-5 hover:ring-2 ring-[#F78A72] bg-[#F78A72] text-center"
+            className="font-medium text-xs text-gray-700 focus-visible:outline-offset-0 rounded-full mx-1 h-8 w-8 hover:ring-2 ring-[#F78A72] bg-[#F78A72] text-center"
             onClick={() => {
               cards[cardIndex].mark = "#F78A72";
               state.apply({
@@ -170,7 +161,7 @@ export function PageNav({ state }) {
           <a
             href="#"
             aria-current="page"
-            className="font-medium text-xs text-gray-700 focus-visible:outline-offset-0 rounded-full mx-1 h-5 w-5 hover:ring-1 ring-[#EFCB4B] bg-[#EFCB4B] text-center align-middle"
+            className="font-medium text-xs text-gray-700 focus-visible:outline-offset-0 rounded-full mx-1 h-8 w-8 hover:ring-1 ring-[#EFCB4B] bg-[#EFCB4B] text-center align-middle"
             onClick={() => {
               cards[cardIndex].mark = "#EFCB4B";
               state.apply({
@@ -184,7 +175,7 @@ export function PageNav({ state }) {
         </a>
           <a
             href="#"
-            className="font-medium text-xs text-gray-700 focus-visible:outline-offset-0 rounded-full mx-1 h-5 w-5 hover:ring-1 ring-[#ACDC79] bg-[#ACDC79] text-center align-middle"
+            className="font-medium text-xs text-gray-700 focus-visible:outline-offset-0 rounded-full mx-1 h-8 w-8 hover:ring-1 ring-[#ACDC79] bg-[#ACDC79] text-center align-middle"
             onClick={() => {
               cards[cardIndex].mark = "#ACDC79";
               state.apply({
@@ -199,22 +190,26 @@ export function PageNav({ state }) {
           </div>
           </div>
       }
-          </div>
-          <div className="-mt-px flex w-0 flex-1 justify-end">
-          <a
-          href="#"
-          onClick={() => {
-            cards[cardIndex].flipped = false;
-            setRevealed(false);
-            state.apply({
-              type: "update",
-              args: {
-                cards,
-                cardIndex: prevIndex(),
-              }
-            })
-          }}
-        >
+    </div>
+      <div className="-mt-px flex w-0 flex-1 justify-end">
+      <p className="text-xs text-gray-700 pt-2 pr-2">
+        <span className="font-medium">{filteredIndex}</span> /{' '}
+        <span className="font-medium">{filteredCount}</span>
+      </p>
+      <a
+    href="#"
+    onClick={() => {
+      cards[cardIndex].flipped = false;
+      setRevealed(false);
+      state.apply({
+        type: "update",
+        args: {
+          cards,
+          cardIndex: prevIndex(),
+        }
+      })
+    }}
+      >
       <ArrowLeftIcon aria-hidden="true" className={classNames(
         "relative inline-flex items-center ring-1 ring-inset ring-gray-300 focus-visible:outline-offset-0 rounded-full mx-1 p-2 h-8 w-8",
         "hover:bg-gray-100 bg-white"
