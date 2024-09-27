@@ -8,11 +8,33 @@ function classNames(...classes) {
   return className;
 }
 
-function FilterDropdown() {
+const ringClassname = mark =>
+      mark === "#F78A72" && "ring-[#F78A72]" ||
+      mark === "#EFCB4B" && "ring-[#EFCB4B]" ||
+      mark === "#ACDC79" && "ring-[#ACDC79]" ||
+      "ring-[#DDDDDD]";
+
+function FilterDropdown({ state }) {
+  const [ filterMark, setFilterMark ] = useState(state.data.filterMark || "#DDDDDD");
+  const updateFilter = filterMark => (
+    setFilterMark(filterMark),
+    state.apply({
+      type: "update",
+      args: {
+        filterMark,
+      },
+    })
+  );
+  console.log("FilterDropdown() filterMark=" + filterMark);
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
-        <MenuButton className="flex items-center rounded-full bg-gray-100 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-100">
+        <MenuButton
+          className={classNames(
+            "flex items-center rounded-full bg-white text-gray-400 hover:text-gray-600 focus:outline-none ring-2 ring-offset-2",
+            ringClassname(filterMark)
+          )}
+        >
           <span className="sr-only">Open options</span>
           <EllipsisVerticalIcon aria-hidden="true" className="h-5 w-5" />
         </MenuButton>
@@ -26,7 +48,8 @@ function FilterDropdown() {
           <MenuItem>
             <a
               href="#"
-    className="block text-xs text-gray-700 m-2 rounded-full h-5 w-5 border border-1 border-gray-400 hover:ring-1 hover:border-0 ring-gray-400 bg-[#fff]"
+              className="block text-xs text-gray-700 m-2 rounded-full h-5 w-5 hover:ring-1 ring-[#DDDDDD] bg-[#DDDDDD]"
+              onClick={() => updateFilter("#DDDDDD")}
             >
             </a>
           </MenuItem>
@@ -34,6 +57,7 @@ function FilterDropdown() {
             <a
               href="#"
               className="block text-xs text-gray-700 m-2 rounded-full h-5 w-5 hover:ring-1 ring-[#F78A72] bg-[#F78A72]"
+              onClick={() => updateFilter("#F78A72")}
             >
             </a>
           </MenuItem>
@@ -41,6 +65,7 @@ function FilterDropdown() {
             <a
               href="#"
               className="block text-xs text-gray-700 m-2 rounded-full h-5 w-5 hover:ring-1 ring-[#EFCB4B] bg-[#EFCB4B]"
+              onClick={() => updateFilter("#EFCB4B")}
             >
             </a>
           </MenuItem>
@@ -48,6 +73,7 @@ function FilterDropdown() {
             <a
               href="#"
               className="block text-xs text-gray-700 m-2 rounded-full h-5 w-5 hover:ring-1 ring-[#ACDC79] bg-[#ACDC79]"
+              onClick={() => updateFilter("#ACDC79")}
             >
             </a>
           </MenuItem>
@@ -59,16 +85,34 @@ function FilterDropdown() {
 
 export function PageNav({ state }) {
   const [ revealed, setRevealed ] = useState(false);
-  const { cards, cardIndex } = state.data;
+  const { cards, cardIndex, filterMark } = state.data;
+  const indexMap = cards.map(card => filterMark === "#DDDDDD" || card.mark === filterMark);
+  console.log("PageNav() indexMap=" + JSON.stringify(indexMap));
   const prevIndex = () =>
         cards.length - 1 !== 0 && (
           cardIndex === 0 && cards.length - 1 ||
             cardIndex - 1
         ) ||
         0;
-  const nextIndex = () =>
-        cardIndex !== cards.length - 1 && cardIndex + 1 ||
-        0;
+  const nextIndex = () => {
+    let index;
+    index = indexMap.findIndex((val, index) => index > cardIndex && val)
+    if (index > -1) {
+      return index;
+    }
+    index = indexMap.findIndex((val, index) => index <= cardIndex && val)
+    if (index > -1) {
+      return index;
+    }
+    return 0;
+        // cardIndex !== cards.length - 1 && cardIndex + 1 ||
+    // 0;
+  }
+  const filteredCount = indexMap.filter(val => val).length;
+  const filteredIndex = cards
+        .map((card, index) => (filterMark === "#DDDDDD" || card.mark === filterMark) && index)
+        .filter(index => (console.log("filter() " + index), index !== undefined))
+        .findIndex(index => (console.log("findIndex() " + JSON.stringify(index)), index === cardIndex)) + 1;
   return (
     <nav
       aria-label="Pagination"
@@ -76,11 +120,11 @@ export function PageNav({ state }) {
     >
       <div className="-mt-px flex w-0 flex-1">
         <p className="text-sm text-gray-700">
-          <span className="font-medium">{cardIndex + 1}</span> /{' '}
-          <span className="font-medium">{cards.length}</span>
+          <span className="font-medium">{filteredIndex}</span> /{' '}
+          <span className="font-medium">{filteredCount}</span>
       </p>
       <div className="pl-4">
-        <FilterDropdown />
+        <FilterDropdown state={state} />
       </div>
       </div>
       <div className="-mt-px flex">
@@ -110,19 +154,46 @@ export function PageNav({ state }) {
           </div>
           <div className="-mt-px flex justify-center items-center px-auto">
           <a
-        href="#"
-        className="font-medium text-xs text-gray-700 focus-visible:outline-offset-0 rounded-full mx-1 h-5 w-5 hover:ring-2 ring-[#F78A72] bg-[#F78A72] text-center"
+            href="#"
+            className="font-medium text-xs text-gray-700 focus-visible:outline-offset-0 rounded-full mx-1 h-5 w-5 hover:ring-2 ring-[#F78A72] bg-[#F78A72] text-center"
+            onClick={() => {
+              cards[cardIndex].mark = "#F78A72";
+              state.apply({
+                type: "update",
+                args: {
+                  cards,
+                }
+              })
+            }}
           >
         </a>
           <a
-        href="#"
-        aria-current="page"
-        className="font-medium text-xs text-gray-700 focus-visible:outline-offset-0 rounded-full mx-1 h-5 w-5 hover:ring-1 ring-[#EFCB4B] bg-[#EFCB4B] text-center align-middle"
+            href="#"
+            aria-current="page"
+            className="font-medium text-xs text-gray-700 focus-visible:outline-offset-0 rounded-full mx-1 h-5 w-5 hover:ring-1 ring-[#EFCB4B] bg-[#EFCB4B] text-center align-middle"
+            onClick={() => {
+              cards[cardIndex].mark = "#EFCB4B";
+              state.apply({
+                type: "update",
+                args: {
+                  cards,
+                }
+              })
+            }}
           >
         </a>
           <a
-        href="#"
-        className="font-medium text-xs text-gray-700 focus-visible:outline-offset-0 rounded-full mx-1 h-5 w-5 hover:ring-1 ring-[#ACDC79] bg-[#ACDC79] text-center align-middle"
+            href="#"
+            className="font-medium text-xs text-gray-700 focus-visible:outline-offset-0 rounded-full mx-1 h-5 w-5 hover:ring-1 ring-[#ACDC79] bg-[#ACDC79] text-center align-middle"
+            onClick={() => {
+              cards[cardIndex].mark = "#ACDC79";
+              state.apply({
+                type: "update",
+                args: {
+                  cards,
+                }
+              })
+            }}
           >
         </a>
           </div>
