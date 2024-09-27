@@ -1,7 +1,13 @@
 import { useState } from "react";
-import { ArrowRightIcon, ArrowLeftIcon } from '@heroicons/react/20/solid'
+import {
+  ArrowRightIcon,
+  ArrowLeftIcon,
+  EllipsisVerticalIcon,
+  CheckIcon,
+  MinusIcon,
+  XMarkIcon,
+} from '@heroicons/react/20/solid'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
-import { EllipsisVerticalIcon } from '@heroicons/react/20/solid'
 
 function classNames(...classes) {
   const className = classes.filter(Boolean).join(' ')
@@ -157,6 +163,7 @@ export function PageNav({ state }) {
               })
             }}
           >
+          <XMarkIcon className="m-2 w-4 h-4" />
         </a>
           <a
             href="#"
@@ -172,6 +179,7 @@ export function PageNav({ state }) {
               })
             }}
           >
+          <MinusIcon className="m-2 w-4 h-4" />
         </a>
           <a
             href="#"
@@ -186,6 +194,7 @@ export function PageNav({ state }) {
               })
             }}
           >
+          <CheckIcon className="m-2 w-4 h-4" />
         </a>
           </div>
           </div>
