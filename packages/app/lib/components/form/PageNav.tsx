@@ -1,12 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
-  //Label,
-  Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react'
+  Listbox,
+  ListboxButton,
+  ListboxOption,
+  ListboxOptions
+} from '@headlessui/react'
 
 import {
   ArrowRightIcon,
   ArrowLeftIcon,
-//  EllipsisVerticalIcon,
   CheckIcon,
   MinusIcon,
   XMarkIcon,
@@ -18,88 +20,6 @@ function classNames(...classes) {
   return className;
 }
 
-const bgClassname = mark =>
-      mark === "#F78A72" && "bg-[#F78A72]" ||
-      mark === "#EFCB4B" && "bg-[#EFCB4B]" ||
-      mark === "#ACDC79" && "bg-[#ACDC79]" ||
-      "bg-[#DDDDDD]";
-
-// import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
-
-// const ringClassname = mark =>
-//       mark === "#F78A72" && "ring-[#F78A72]" ||
-//       mark === "#EFCB4B" && "ring-[#EFCB4B]" ||
-//       mark === "#ACDC79" && "ring-[#ACDC79]" ||
-//       "ring-[#DDDDDD]";
-
-// function FilterDropdown({ state }) {
-//   const [ filterMark, setFilterMark ] = useState(state.data.filterMark || "#DDDDDD");
-//   const updateFilter = filterMark => (
-//     setFilterMark(filterMark),
-//     state.apply({
-//       type: "update",
-//       args: {
-//         filterMark,
-//       },
-//     })
-//   );
-//   return (
-//     <Menu as="div" className="relative inline-block text-left">
-//       <div>
-//         <MenuButton
-//           className={classNames(
-//             "flex items-center rounded-full bg-white text-gray-400 hover:text-gray-600 focus:outline-none ring-2 ring-offset-2",
-//             ringClassname(filterMark)
-//           )}
-//         >
-//           <span className="sr-only">Open options</span>
-//           <EllipsisVerticalIcon aria-hidden="true" className="h-5 w-5" />
-//         </MenuButton>
-//       </div>
-
-//       <MenuItems
-//         transition
-//         className="absolute right-0 z-10 mt-2 w-9 origin-top-left rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
-//       >
-//         <div className="py-1">
-//           <MenuItem>
-//             <a
-//               href="#"
-//               className="block text-xs text-gray-700 m-2 rounded-full h-5 w-5 hover:ring-1 ring-[#DDDDDD] bg-[#DDDDDD]"
-//               onClick={() => updateFilter("#DDDDDD")}
-//             >
-//             </a>
-//           </MenuItem>
-//           <MenuItem>
-//             <a
-//               href="#"
-//               className="block text-xs text-gray-700 m-2 rounded-full h-5 w-5 hover:ring-1 ring-[#F78A72] bg-[#F78A72]"
-//               onClick={() => updateFilter("#F78A72")}
-//             >
-//             </a>
-//           </MenuItem>
-//           <MenuItem>
-//             <a
-//               href="#"
-//               className="block text-xs text-gray-700 m-2 rounded-full h-5 w-5 hover:ring-1 ring-[#EFCB4B] bg-[#EFCB4B]"
-//               onClick={() => updateFilter("#EFCB4B")}
-//             >
-//             </a>
-//           </MenuItem>
-//           <MenuItem>
-//             <a
-//               href="#"
-//               className="block text-xs text-gray-700 m-2 rounded-full h-5 w-5 hover:ring-1 ring-[#ACDC79] bg-[#ACDC79]"
-//               onClick={() => updateFilter("#ACDC79")}
-//             >
-//             </a>
-//           </MenuItem>
-//         </div>
-//       </MenuItems>
-//     </Menu>
-//   )
-// }
-
 const colors = {
   gray: "#DDDDDD",
   red: "#F78A72",
@@ -107,16 +27,38 @@ const colors = {
   green: "#ACDC79",
 };
 
+const bgClassname = mark =>
+      mark === "#F78A72" && "bg-[#F78A72]" ||
+      mark === "#EFCB4B" && "bg-[#EFCB4B]" ||
+      mark === "#ACDC79" && "bg-[#ACDC79]" ||
+      "bg-[#DDDDDD]";
+
 const marks = [
   { id: 1, name: "All", color: colors.gray, count: 10 },
   { id: 2, name: "Low", color: colors.red, count: 2 },
   { id: 3, name: "Medium", color: colors.yellow, count: 4 },
   { id: 4, name: "High", color: colors.green, count: 4 },
-]
+];
+
+const getMarkFromColor = color => marks.find(mark => mark.color === color) || marks[0];
+
+const updateMarkCounts = ({ marks, cards }) => {
+  // TODO
+};
 
 function FilterMenu({ state }) {
-  state;
-  const [selected, setSelected] = useState(marks[0])
+  console.log("FilterMenu() state=" + JSON.stringify(state, null, 2));
+  const [ selected, setSelected ] = useState(getMarkFromColor(state.data.filterMark));
+  useEffect(() => {
+    const { color: filterMark } = selected;
+    console.log("FilterMenu() filterMark=" + filterMark);
+    state.apply({
+      type: "update",
+      args: {
+        filterMark,
+      },
+    })
+  }, [selected]);
 
   return (
     <Listbox value={selected} onChange={setSelected}>
@@ -124,7 +66,6 @@ function FilterMenu({ state }) {
       <div className="relative mt-1">
         <ListboxButton className="w-36 relative cursor-default rounded-md bg-white py-1 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none sm:text-xs sm:leading-6">
 
-    {/*      <span className="block truncate">{selected.name}</span>*/}
               <span className={classNames(
                 "absolute inset-y-0 left-0 w-4 h-4 m-2 rounded-full",
                 bgClassname(selected.color)
@@ -146,7 +87,7 @@ function FilterMenu({ state }) {
             <ListboxOption
               key={mark.id}
               value={mark}
-              className="w-36 h-8 group relative cursor-default select-none py-2 pl-3 pr-9 text-gray-900 data-[focus]:bg-gray-200 data-[focus]:text-gray-700"
+              className="w-36 h-8 group relative cursor-default select-none py-2 pl-3 pr-9 text-gray-900 data-[focus]:bg-gray-100 data-[focus]:text-gray-700"
               >
               <span className="w-32 ml-2 pl-2">
               <span className={classNames(
@@ -171,7 +112,7 @@ function FilterMenu({ state }) {
 export function PageNav({ state }) {
   const [ revealed, setRevealed ] = useState(false);
   const { cards, cardIndex, filterMark } = state.data;
-  const indexMap = cards.map(card => filterMark === "#DDDDDD" || card.mark === filterMark);
+  const indexMap = cards.map(card => filterMark === colors.gray || card.mark === filterMark);
   console.log("PageNav() indexMap=" + JSON.stringify(indexMap));
   const prevIndex = () =>
         cards.length - 1 !== 0 && (
@@ -193,7 +134,7 @@ export function PageNav({ state }) {
   }
   const filteredCount = indexMap.filter(val => val).length;
   const filteredIndex = cards
-        .map((card, index) => (filterMark === "#DDDDDD" || card.mark === filterMark) && index)
+        .map((card, index) => (filterMark === colors.gray || card.mark === filterMark) && index)
         .filter(index => (console.log("filter() " + index), index !== undefined))
         .findIndex(index => (console.log("findIndex() " + JSON.stringify(index)), index === cardIndex)) + 1;
   return (
