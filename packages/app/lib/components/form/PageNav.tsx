@@ -42,9 +42,9 @@ const marks = [
 
 const getMarkFromColor = color => marks.find(mark => mark.color === color) || marks[0];
 
-const updateMarkCounts = ({ marks, cards }) => {
-  // TODO
-};
+// const updateMarkCounts = ({ marks, cards }) => {
+//   // TODO
+// };
 
 function FilterMenu({ state }) {
   console.log("FilterMenu() state=" + JSON.stringify(state, null, 2));
