@@ -51,7 +51,7 @@ export const Flashcards = ({ state }) => {
                 className={classNames(
                  "flex items-center justify-center my-auto py-auto"
                 )}>
-              <div className="flex items-center justify-center rounded-lg m-4 shadow-lg w-11/12 h-5/6">
+              <div className="flex items-center justify-center rounded-lg m-4 border-gray-50 border border-0.5 shadow-lg w-11/12 h-5/6">
               {
                 card.face.indexOf("https") >= 0 &&
                   <img alt="" src={card.face} className="p-2 pointer-events-none object-cover group-hover:opacity-75" /> ||
@@ -65,7 +65,7 @@ export const Flashcards = ({ state }) => {
                 className={classNames(
                  "flex items-center justify-center py-auto my-auto"
                 )}>
-              <div className="flex items-center justify-center rounded-lg m-4 shadow-lg w-11/12 h-5/6">
+              <div className="flex items-center justify-center rounded-lg m-4 border-gray-50 border border-0.5 shadow-lg w-11/12 h-5/6">
               {
                 !card.matched && (
                   card.back.indexOf("https") >= 0 &&
