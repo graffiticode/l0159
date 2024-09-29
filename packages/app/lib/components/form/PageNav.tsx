@@ -33,25 +33,19 @@ const bgClassname = mark =>
       mark === "#ACDC79" && "bg-[#ACDC79]" ||
       "bg-[#DDDDDD]";
 
-const marks = [
-  { id: 1, name: "All", color: colors.gray, count: 10 },
-  { id: 2, name: "Low", color: colors.red, count: 2 },
-  { id: 3, name: "Medium", color: colors.yellow, count: 4 },
-  { id: 4, name: "High", color: colors.green, count: 4 },
+const rawMarks = [
+  { id: 1, name: "Show all", color: colors.gray, count: 0 },
+  { id: 2, name: "Low", color: colors.red, count: 0 },
+  { id: 3, name: "Medium", color: colors.yellow, count: 0 },
+  { id: 4, name: "High", color: colors.green, count: 0 },
 ];
 
-const getMarkFromColor = color => marks.find(mark => mark.color === color) || marks[0];
+const getMarkFromColor = color => rawMarks.find(mark => mark.color === color) || rawMarks[0];
 
-// const updateMarkCounts = ({ marks, cards }) => {
-//   // TODO
-// };
-
-function FilterMenu({ state }) {
-  console.log("FilterMenu() state=" + JSON.stringify(state, null, 2));
+function FilterMenu({ state, marks }) {
   const [ selected, setSelected ] = useState(getMarkFromColor(state.data.filterMark));
   useEffect(() => {
     const { color: filterMark } = selected;
-    console.log("FilterMenu() filterMark=" + filterMark);
     state.apply({
       type: "update",
       args: {
@@ -113,7 +107,15 @@ export function PageNav({ state }) {
   const [ revealed, setRevealed ] = useState(false);
   const { cards, cardIndex, filterMark } = state.data;
   const indexMap = cards.map(card => filterMark === colors.gray || card.mark === filterMark);
-  console.log("PageNav() indexMap=" + JSON.stringify(indexMap));
+  const marks = cards.reduce(
+    (marks, card) =>
+      marks.map(mark => (
+        mark.color === card.mark &&
+          {...mark, count: mark.count + 1} ||
+          mark
+      )),
+    (rawMarks[0].count = cards.length, rawMarks)
+  );
   const prevIndex = () =>
         cards.length - 1 !== 0 && (
           cardIndex === 0 && cards.length - 1 ||
@@ -135,15 +137,18 @@ export function PageNav({ state }) {
   const filteredCount = indexMap.filter(val => val).length;
   const filteredIndex = cards
         .map((card, index) => (filterMark === colors.gray || card.mark === filterMark) && index)
-        .filter(index => (console.log("filter() " + index), index !== undefined))
-        .findIndex(index => (console.log("findIndex() " + JSON.stringify(index)), index === cardIndex)) + 1;
+        .filter(index => index !== undefined)
+        .findIndex(index => index === cardIndex) + 1;
   return (
     <nav
       aria-label="Pagination"
       className="flex items-center justify-between bg-white px-4 sm:px-6 h-12"
     >
-      <div className="-mt-px flex w-0 flex-1">
-        <FilterMenu state={state} />
+      <div className="-mt-px flex flex-col w-0 flex-1">
+        <div className="text-xs text-left font-light text-gray-600 pb-2">
+          Cards by confidence level
+        </div>
+      <FilterMenu state={state} marks={marks} />
       </div>
       <div className="-mt-px flex">
       {
@@ -168,7 +173,7 @@ export function PageNav({ state }) {
           </div> ||
           <div className="flex-col">
           <div className="text-xs text-center font-light text-gray-600 pb-2">
-          I got this this?
+          Confidence level
           </div>
           <div className="-mt-px flex justify-center items-center px-auto">
           <a
