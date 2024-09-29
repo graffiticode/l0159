@@ -83,7 +83,7 @@ function FilterMenu({ state, marks }) {
 
         <ListboxOptions
           transition
-          className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-xs font-light shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none data-[closed]:data-[leave]:opacity-0 data-[leave]:transition data-[leave]:duration-100 data-[leave]:ease-in sm:text-xs"
+          className="absolute z-10 mt-1 max-h-60 overflow-auto rounded-md bg-white py-1 text-xs font-light shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none data-[closed]:data-[leave]:opacity-0 data-[leave]:transition data-[leave]:duration-100 data-[leave]:ease-in sm:text-xs"
         >
           {marks.map((mark) => (
             <ListboxOption
@@ -99,7 +99,7 @@ function FilterMenu({ state, marks }) {
               <span className="p-2 text-xs font-light group-data-[selected]:font-semibold">
               {mark.name}
               </span>
-              <span className="absolute inset-y-0 right-0 flex items-center pr-4 text-gray-600 group-data-[focus]:text-gray-700">
+              <span className="absolute inset-y-0 right-0 flex items-center pr-4 text-gray-600 group-data-[focus]:text-gray-700 group-data-[selected]:font-semibold">
               {mark.count}
               </span>
               </span>
@@ -175,7 +175,7 @@ export function PageNav({ state }) {
       <div className="-mt-px flex">
       {
         !revealed &&
-          <div className="font-light text-xs text-white ring-indigo-600 hover:ring-1 bg-gray-600 rounded-full px-6 p-2 mt-7">
+          <div className="font-light text-xs text-white ring-indigo-600 hover:ring-1 bg-indigo-600 rounded-full px-6 p-2 mt-7">
           <a
           href="#"
           onClick={() => {
