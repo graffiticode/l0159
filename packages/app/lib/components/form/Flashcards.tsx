@@ -4,7 +4,7 @@ import 'katex/dist/katex.min.css';
 import { PageNav } from "./PageNav";
 
 import "../../index.css";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const KaTeX = ({ latex }) => {
   const ref = useRef();
@@ -24,9 +24,11 @@ function classNames(...classes) {
 }
 
 export const Flashcards = ({ state }) => {
+  const [ revealed, setRevealed ] = useState(false);
   const { cards, cardIndex } = state.data;
   const flipCard = index => {
-    cards[index].flipped = !cards[index].flipped;
+    setRevealed(true);
+    cards[index].flipped = true;
     state.apply({
       type: "update",
       args: {
@@ -90,7 +92,7 @@ export const Flashcards = ({ state }) => {
       ))}
     </ul>
       <div className="mx-4">
-      <PageNav state={state} />
+      <PageNav state={state} revealed={revealed} setRevealed={setRevealed} />
       </div>
     </div>
       </div>

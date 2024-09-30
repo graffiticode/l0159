@@ -43,8 +43,7 @@ const rawMarks = [
 
 const getMarkFromColor = color => rawMarks.find(mark => mark.color === color) || rawMarks[0];
 
-export function PageNav({ state }) {
-  const [ revealed, setRevealed ] = useState(false);
+export function PageNav({ state, revealed, setRevealed }) {
   const [ selectedMark, setSelectedMark ] = useState(rawMarks[0]);
   const { cards, cardIndex, filterMark } = state.data;
   const indexMap = cards.map(
