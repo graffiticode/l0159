@@ -88,13 +88,7 @@ export function PageNav({ state }) {
         .findIndex(index => index === cardIndex) + 1;
   const handleChange = value => {
     setSelectedMark(value);
-    cards[cardIndex].mark = value.color;
-    state.apply({
-      type: "update",
-      args: {
-        cards,
-      }
-    })
+    cards[cardIndex].selectedMark = value.color;
   };
 
   return (
@@ -222,16 +216,19 @@ export function PageNav({ state }) {
       <a
         href="#"
         onClick={() => {
+          const card = cards[cardIndex];
+          card.flipped = false;
+          card.mark = card.selectedMark;
+          setRevealed(false);
+          state.apply({
+            type: "update",
+            args: {
+              cards,
+              cardIndex: prevIndex(),
+            }
+          })
           setSelectedMark(marks[0]);
-        cards[cardIndex].flipped = false;
-        setRevealed(false);
-        state.apply({
-          type: "update",
-          args: {
-            cards,
-            cardIndex: prevIndex(),
-          }
-        })
+          card.selectedMark = marks[0];
         }}
       >
       <ArrowLeftIcon aria-hidden="true" className={classNames(
@@ -242,8 +239,9 @@ export function PageNav({ state }) {
         <a
           href="#"
           onClick={() => {
-            setSelectedMark(marks[0]);
-            cards[cardIndex].flipped = false;
+            const card = cards[cardIndex];
+            card.flipped = false;
+            card.mark = card.selectedMark;
             setRevealed(false);
             state.apply({
               type: "update",
@@ -252,6 +250,8 @@ export function PageNav({ state }) {
                 cardIndex: nextIndex(),
               }
             })
+            setSelectedMark(marks[0]);
+            card.selectedMark = marks[0];
           }}
         >
       <ArrowRightIcon aria-hidden="true" className={classNames(
