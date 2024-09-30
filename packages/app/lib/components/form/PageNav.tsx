@@ -138,7 +138,7 @@ export function PageNav({
       <div className="-mt-px flex">
       {
         !revealed &&
-          <div className="font-light text-xs text-white ring-gray-600 hover:ring-1 bg-gray-600 rounded-full px-6 p-2 mt-7">
+          <div className="font-light text-xs text-white ring-indigo-600 hover:ring-1 bg-indigo-600 rounded-full px-6 p-2 mt-7">
           <a
           href="#"
           onClick={() => {
