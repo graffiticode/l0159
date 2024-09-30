@@ -94,13 +94,13 @@ export const Flashcards = ({ state }) => {
     </ul>
       <div className="mx-4">
       <PageNav
-    state={state}
-    revealed={revealed}
-    setRevealed={setRevealed}
-    cards={cards}
-    setCards={setCards}
-    cardIndex={cardIndex}
-    setCardIndex={setCardIndex}
+        state={state}
+        revealed={revealed}
+        setRevealed={setRevealed}
+        cards={cards}
+        setCards={setCards}
+        cardIndex={cardIndex}
+        setCardIndex={setCardIndex}
       />
       </div>
     </div>
