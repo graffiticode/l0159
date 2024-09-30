@@ -32,18 +32,12 @@ export const Flashcards = ({ state }) => {
     setCards(cards);
     setCardIndex(cardIndex);
   }, []);
-  const flipCard = index => {
+  const flipCard = () => {
     setRevealed(true);
     setCards([...cards]);
-    state.apply({
-      type: "update",
-      args: {
-        cards,
-      },
-    });
   };
   return (
-    cards.length === 0 && <div /> ||
+    cards.length === 0 && <div></div> ||
     <div className="grid grid-cols-12 border-green-300 border-blue-300 border-red-300">
       <div className="col-span-12">
       <ul role="list" className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-1 sm:gap-x-6 xl:gap-x-8">
@@ -51,7 +45,7 @@ export const Flashcards = ({ state }) => {
         cards.slice(cardIndex, cardIndex + 1).map((card, index) => (
           <li key={index} className="relative">
           <div
-            onClick={() => flipCard(cardIndex)}
+            onClick={() => flipCard()}
             className="group aspect-h-5 aspect-w-10 block w-full overflow-hidden"
           >
           {
