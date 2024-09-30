@@ -58,12 +58,21 @@ export function PageNav({ state, revealed, setRevealed }) {
       )),
     rawMarks
   );
-  const prevIndex = () =>
-        cards.length - 1 !== 0 && (
-          cardIndex === 0 && cards.length - 1 ||
-            cardIndex - 1
-        ) ||
-        0;
+  const prevIndex = () => {
+    const reverseIndexMap = indexMap.reverse();
+    const reverseCardIndex = cards.length - 1 - cardIndex;
+    let index;
+    index = reverseIndexMap.findIndex((val, index) => index > reverseCardIndex && val)
+    if (index > -1) {
+      return cards.length - 1 - index;
+    }
+    index = reverseIndexMap.findIndex((val, index) => index <= reverseCardIndex && val)
+    if (index > -1) {
+      return cards.length - 1 - index;
+    }
+    return 0;
+  }
+
   const nextIndex = () => {
     let index;
     index = indexMap.findIndex((val, index) => index > cardIndex && val)
@@ -76,6 +85,7 @@ export function PageNav({ state, revealed, setRevealed }) {
     }
     return 0;
   }
+
   const filteredCount = indexMap.filter(val => val).length;
   const filteredIndex = cards
         .map((card, index) =>
@@ -85,9 +95,16 @@ export function PageNav({ state, revealed, setRevealed }) {
         )
         .filter(index => index !== -1)
         .findIndex(index => index === cardIndex) + 1;
+
   const handleChange = value => {
     setSelectedMark(value);
     cards[cardIndex].selectedMark = value.color;
+    state.apply({
+      type: "update",
+      args: {
+        cards,
+      }
+    })
   };
 
   return (
@@ -218,7 +235,9 @@ export function PageNav({ state, revealed, setRevealed }) {
           const card = cards[cardIndex];
           card.flipped = false;
           card.mark = card.selectedMark;
+          card.selectedMark = card.undefined;
           setRevealed(false);
+          setSelectedMark(marks[0]);
           state.apply({
             type: "update",
             args: {
@@ -226,8 +245,6 @@ export function PageNav({ state, revealed, setRevealed }) {
               cardIndex: prevIndex(),
             }
           })
-          setSelectedMark(marks[0]);
-          card.selectedMark = marks[0];
         }}
       >
       <ArrowLeftIcon aria-hidden="true" className={classNames(
@@ -241,7 +258,9 @@ export function PageNav({ state, revealed, setRevealed }) {
             const card = cards[cardIndex];
             card.flipped = false;
             card.mark = card.selectedMark;
+            card.selectedMark = card.undefined;
             setRevealed(false);
+            setSelectedMark(marks[0]);
             state.apply({
               type: "update",
               args: {
@@ -249,8 +268,6 @@ export function PageNav({ state, revealed, setRevealed }) {
                 cardIndex: nextIndex(),
               }
             })
-            setSelectedMark(marks[0]);
-            card.selectedMark = marks[0];
           }}
         >
       <ArrowRightIcon aria-hidden="true" className={classNames(
