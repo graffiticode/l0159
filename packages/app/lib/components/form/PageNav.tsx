@@ -79,8 +79,8 @@ export function PageNav({ state }) {
   }
   const filteredCount = indexMap.filter(val => val).length;
   const filteredIndex = cards
-        .map((card, index) => (filterMark === colors.gray || card.mark === filterMark) && index)
-        .filter(index => index !== undefined)
+        .map((card, index) => card.mark === filterMark && index || -1)
+        .filter(index => index !== -1)
         .findIndex(index => index === cardIndex) + 1;
   const handleChange = value => {
     console.log("handleChange() value=" + JSON.stringify(value, null, 2));
