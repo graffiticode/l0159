@@ -79,11 +79,14 @@ export function PageNav({ state }) {
   }
   const filteredCount = indexMap.filter(val => val).length;
   const filteredIndex = cards
-        .map((card, index) => card.mark === filterMark && index || -1)
+        .map((card, index) =>
+          (filterMark === colors.gray && card.mark === undefined || card.mark === filterMark) ?
+            index :
+            -1
+        )
         .filter(index => index !== -1)
         .findIndex(index => index === cardIndex) + 1;
   const handleChange = value => {
-    console.log("handleChange() value=" + JSON.stringify(value, null, 2));
     setSelectedMark(value);
     cards[cardIndex].mark = value.color;
     state.apply({
@@ -144,7 +147,6 @@ export function PageNav({ state }) {
                 key={rawMarks[1].name}
                 value={rawMarks[1]}
                 className={({ checked }) => (
-                  console.log("checked=" + checked),
                   classNames(
                     ringClassname(rawMarks[1].color),
                     checked ? 'ring ring-offset-1' : '',

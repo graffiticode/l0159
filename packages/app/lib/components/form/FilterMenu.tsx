@@ -42,7 +42,7 @@ export function FilterMenu({
                 "absolute inset-y-0 left-0 w-4 h-4 m-2 rounded-full",
                 bgClassname(selected.color)
               )}/>
-              <span className="ml-4 p-2 text-xs font-light group-data-[selected]:font-semibold">
+              <span className="ml-4 px-2 text-xs font-light group-data-[selected]:font-semibold">
               {selected.name}
               </span>
 
