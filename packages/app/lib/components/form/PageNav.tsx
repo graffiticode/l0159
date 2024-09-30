@@ -43,12 +43,22 @@ const rawMarks = [
 
 const getMarkFromColor = color => rawMarks.find(mark => mark.color === color) || rawMarks[0];
 
-export function PageNav({ state, revealed, setRevealed }) {
+export function PageNav({
+  state,
+  revealed,
+  setRevealed,
+  cards,
+  setCards,
+  cardIndex,
+  setCardIndex,
+}) {
+  const [ filterMark, setFilterMark ] = useState(colors.gray);
   const [ selectedMark, setSelectedMark ] = useState(rawMarks[0]);
-  const { cards, cardIndex, filterMark } = state.data;
+
   const indexMap = cards.map(
     card => filterMark === colors.gray && !card.mark || card.mark === filterMark
   );
+
   const marks = cards.reduce(
     (marks, card) =>
       marks.map(mark => (
@@ -58,6 +68,7 @@ export function PageNav({ state, revealed, setRevealed }) {
       )),
     rawMarks
   );
+
   const prevIndex = () => {
     const reverseIndexMap = indexMap.reverse();
     const reverseCardIndex = cards.length - 1 - cardIndex;
@@ -102,7 +113,7 @@ export function PageNav({ state, revealed, setRevealed }) {
     state.apply({
       type: "update",
       args: {
-        cards,
+        cards
       }
     })
   };
@@ -120,7 +131,9 @@ export function PageNav({ state, revealed, setRevealed }) {
         state={state}
         marks={marks}
         bgClassname={bgClassname}
-        getMarkFromColor={getMarkFromColor} />
+        getMarkFromColor={getMarkFromColor}
+        setFilterMark={setFilterMark}
+      />
       </div>
       <div className="-mt-px flex">
       {
@@ -129,7 +142,6 @@ export function PageNav({ state, revealed, setRevealed }) {
           <a
           href="#"
           onClick={() => {
-            cards[cardIndex].flipped = true;
             setRevealed(true);
             state.apply({
               type: "update",
@@ -233,16 +245,18 @@ export function PageNav({ state, revealed, setRevealed }) {
         href="#"
         onClick={() => {
           const card = cards[cardIndex];
-          card.flipped = false;
-          card.mark = card.selectedMark;
-          card.selectedMark = card.undefined;
+          card.mark = card.selectedMark || card.mark;
+          card.selectedMark = undefined;
           setRevealed(false);
           setSelectedMark(marks[0]);
+          const newCardIndex = prevIndex();
+          setCards([...cards]);
+          setCardIndex(newCardIndex);
           state.apply({
             type: "update",
             args: {
-              cards,
-              cardIndex: prevIndex(),
+              cards: [...cards],
+              cardIndex: newCardIndex,
             }
           })
         }}
@@ -256,16 +270,18 @@ export function PageNav({ state, revealed, setRevealed }) {
           href="#"
           onClick={() => {
             const card = cards[cardIndex];
-            card.flipped = false;
-            card.mark = card.selectedMark;
-            card.selectedMark = card.undefined;
+            card.mark = card.selectedMark || card.mark;
+            card.selectedMark = undefined;
             setRevealed(false);
             setSelectedMark(marks[0]);
+            const newCardIndex = nextIndex();
+            setCards([...cards]);
+            setCardIndex(newCardIndex);
             state.apply({
               type: "update",
               args: {
-                cards,
-                cardIndex: nextIndex(),
+                cards: [...cards],
+                cardIndex: newCardIndex,
               }
             })
           }}

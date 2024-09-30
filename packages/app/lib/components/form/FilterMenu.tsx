@@ -20,16 +20,12 @@ export function FilterMenu({
   marks,
   bgClassname,
   getMarkFromColor,
+  setFilterMark,
 }) {
   const [ selected, setSelected ] = useState(getMarkFromColor(state.data.filterMark));
   useEffect(() => {
     const { color: filterMark } = selected;
-    state.apply({
-      type: "update",
-      args: {
-        filterMark,
-      },
-    })
+    setFilterMark(filterMark);
   }, [selected]);
 
   return (

@@ -66,6 +66,7 @@ export class Transformer extends BasisTransformer {
     this.visit(node.elts[0], {...options, type: "flashcards"}, async (e0, v0) => {
       this.visit(node.elts[1], options, async (e1, v1) => {
         const data = options?.data || {};
+        console.log("FLASHCARDS() data=" + JSON.stringify(data, null, 2));
         const err = [];
         const val = {
           type: "flashcards",

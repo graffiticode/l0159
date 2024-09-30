@@ -41,7 +41,7 @@ export const View = () => {
         ...args,
       };
     case "update":
-      setRecompile(true);
+      setRecompile(false);
       return {
         ...data,
         ...args,

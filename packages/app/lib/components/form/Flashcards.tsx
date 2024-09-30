@@ -25,10 +25,16 @@ function classNames(...classes) {
 
 export const Flashcards = ({ state }) => {
   const [ revealed, setRevealed ] = useState(false);
-  const { cards, cardIndex } = state.data;
+  const [ cards, setCards ] = useState([]);
+  const [ cardIndex, setCardIndex ] = useState(0);
+  useEffect(() => {
+    const { cards, cardIndex } = state.data;
+    setCards(cards);
+    setCardIndex(cardIndex);
+  }, []);
   const flipCard = index => {
     setRevealed(true);
-    cards[index].flipped = true;
+    setCards([...cards]);
     state.apply({
       type: "update",
       args: {
@@ -37,6 +43,7 @@ export const Flashcards = ({ state }) => {
     });
   };
   return (
+    cards.length === 0 && <div /> ||
     <div className="grid grid-cols-12 border-green-300 border-blue-300 border-red-300">
       <div className="col-span-12">
       <ul role="list" className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-1 sm:gap-x-6 xl:gap-x-8">
@@ -48,7 +55,7 @@ export const Flashcards = ({ state }) => {
             className="group aspect-h-5 aspect-w-10 block w-full overflow-hidden"
           >
           {
-            card.flipped &&
+            revealed &&
               <div
                 className={classNames(
                  "flex items-center justify-center my-auto py-auto"
@@ -92,7 +99,15 @@ export const Flashcards = ({ state }) => {
       ))}
     </ul>
       <div className="mx-4">
-      <PageNav state={state} revealed={revealed} setRevealed={setRevealed} />
+      <PageNav
+    state={state}
+    revealed={revealed}
+    setRevealed={setRevealed}
+    cards={cards}
+    setCards={setCards}
+    cardIndex={cardIndex}
+    setCardIndex={setCardIndex}
+      />
       </div>
     </div>
       </div>
