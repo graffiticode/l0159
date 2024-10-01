@@ -212,7 +212,9 @@ export function PageNav({
                 <span
                   aria-hidden="true"
                   className={classNames(
-                    bgClassname(rawMarks[1].color),
+                    "bg-[#F78A72]",
+                    "hover:bg-[#F77356]",
+                    "active:bg-[#ED5B3B]",
                     'h-8 w-8 rounded-full')}
                 >
                   <XMarkIcon className="m-2 w-4 h-4" />
@@ -234,7 +236,9 @@ export function PageNav({
                 <span
                   aria-hidden="true"
                   className={classNames(
-                    bgClassname(rawMarks[2].color),
+                    "bg-[#EFCB4B]",
+                    "hover:bg-[#EBB92F]",
+                    "active:bg-[#E59D1B]",
                     'h-8 w-8 rounded-full')}
                 >
                   <MinusIcon className="m-2 w-4 h-4" />
@@ -256,7 +260,9 @@ export function PageNav({
                 <span
                   aria-hidden="true"
                   className={classNames(
-                    bgClassname(rawMarks[3].color),
+                    "bg-[#ACDC79]",
+                    "hover:bg-[#89C24E]",
+                    "active:bg-[#669F2A]",
                     'h-8 w-8 rounded-full')}
                 >
                   <CheckIcon className="m-2 w-4 h-4" />
