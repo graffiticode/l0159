@@ -21,14 +21,11 @@ export function FilterMenu({
   bgClassname,
   getMarkFromColor,
   setFilterMark,
-  setCardIndex,
-  firstIndex,
 }) {
   const [ selected, setSelected ] = useState(getMarkFromColor(state.data.filterMark));
   useEffect(() => {
     const { color: filterMark } = selected;
     setFilterMark(filterMark);
-    setCardIndex(firstIndex());
   }, [selected]);
 
   return (

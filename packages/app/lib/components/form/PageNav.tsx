@@ -118,10 +118,9 @@ export function PageNav({
         )
         .filter(index => index !== -1)
         .findIndex(index => (
-          console.log("*index=" + index + " cardIndex=" + cardIndex),
           index === cardIndex
         )) + 1;
-  console.log("PageNav() filteredIndex=" + filteredIndex);
+
   const { manualNav } = state.data;
   const handleChange = value => {
     if (manualNav) {
@@ -167,8 +166,6 @@ export function PageNav({
         bgClassname={bgClassname}
         getMarkFromColor={getMarkFromColor}
         setFilterMark={setFilterMark}
-        setCardIndex={setCardIndex}
-        firstIndex={firstIndex}
       />
       </div>
       <div className="-mt-px flex">
