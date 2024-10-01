@@ -156,10 +156,7 @@ export function PageNav({
       aria-label="Pagination"
       className="flex items-center justify-between bg-white px-4 sm:px-6 h-12"
     >
-      <div className="-mt-px flex flex-col w-0 flex-1">
-        <div className="text-xs text-left font-light text-gray-600 pb-2 pt-1">
-          Cards by confidence level
-        </div>
+      <div className="-mt-px flex flex-col w-0 flex-1 pt-5">
       <FilterMenu
         state={state}
         marks={marks}
