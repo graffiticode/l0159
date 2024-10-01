@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ArrowRightIcon,
   ArrowLeftIcon,
@@ -55,6 +55,10 @@ export function PageNav({
   const [ filterMark, setFilterMark ] = useState(colors.gray);
   const [ selectedMark, setSelectedMark ] = useState(rawMarks[0]);
 
+  useEffect(() => {
+    setCardIndex(firstIndex());
+  }, [filterMark]);
+  
   const indexMap = cards.map(
     card => filterMark === colors.gray && !card.mark || card.mark === filterMark
   );
@@ -97,6 +101,14 @@ export function PageNav({
     return 0;
   }
 
+  const firstIndex = () => {
+    const index = indexMap.findIndex(val => val);
+    if (index > -1) {
+      return index;
+    }
+    return 0;
+  }
+
   const filteredCount = indexMap.filter(val => val).length;
   const filteredIndex = cards
         .map((card, index) =>
@@ -105,8 +117,11 @@ export function PageNav({
             -1
         )
         .filter(index => index !== -1)
-        .findIndex(index => index === cardIndex) + 1;
-
+        .findIndex(index => (
+          console.log("*index=" + index + " cardIndex=" + cardIndex),
+          index === cardIndex
+        )) + 1;
+  console.log("PageNav() filteredIndex=" + filteredIndex);
   const { manualNav } = state.data;
   const handleChange = value => {
     if (manualNav) {
@@ -152,6 +167,8 @@ export function PageNav({
         bgClassname={bgClassname}
         getMarkFromColor={getMarkFromColor}
         setFilterMark={setFilterMark}
+        setCardIndex={setCardIndex}
+        firstIndex={firstIndex}
       />
       </div>
       <div className="-mt-px flex">
