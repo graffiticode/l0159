@@ -107,15 +107,34 @@ export function PageNav({
         .filter(index => index !== -1)
         .findIndex(index => index === cardIndex) + 1;
 
+  const { manualNav } = state.data;
   const handleChange = value => {
-    setSelectedMark(value);
-    cards[cardIndex].selectedMark = value.color;
-    state.apply({
-      type: "update",
-      args: {
-        cards
-      }
-    })
+    if (manualNav) {
+      setSelectedMark(value);
+      setCards([...cards]);
+      cards[cardIndex].selectedMark = value.color;
+      state.apply({
+        type: "update",
+        args: {
+          cards,
+        }
+      })
+    } else {
+      const card = cards[cardIndex];
+      card.mark = value.color;
+      setRevealed(false);
+      setSelectedMark(marks[0]);
+      const newCardIndex = nextIndex();
+      setCards([...cards]);
+      setCardIndex(newCardIndex);
+      state.apply({
+        type: "update",
+        args: {
+          cards,
+          cardIndex: newCardIndex,
+        }
+      })
+    }
   };
 
   return (
