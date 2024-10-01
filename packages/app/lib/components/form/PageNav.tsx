@@ -85,7 +85,7 @@ export function PageNav({
     if (index > -1) {
       return cards.length - 1 - index;
     }
-    return 0;
+    return -1;
   }
 
   const nextIndex = () => {
@@ -98,7 +98,7 @@ export function PageNav({
     if (index > -1) {
       return index;
     }
-    return 0;
+    return -1;
   }
 
   const firstIndex = () => {
@@ -106,7 +106,7 @@ export function PageNav({
     if (index > -1) {
       return index;
     }
-    return 0;
+    return -1;
   }
 
   const filteredCount = indexMap.filter(val => val).length;
@@ -166,6 +166,7 @@ export function PageNav({
         bgClassname={bgClassname}
         getMarkFromColor={getMarkFromColor}
         setFilterMark={setFilterMark}
+        setRevealed={setRevealed}
       />
       </div>
       <div className="-mt-px flex">
@@ -175,6 +176,7 @@ export function PageNav({
           <a
           href="#"
           onClick={() => {
+            if (cardIndex < 0) return;
             setRevealed(true);
             state.apply({
               type: "update",
@@ -277,6 +279,7 @@ export function PageNav({
       <a
         href="#"
         onClick={() => {
+          if (cardIndex < 0) return;
           const card = cards[cardIndex];
           card.mark = card.selectedMark || card.mark;
           card.selectedMark = undefined;
@@ -302,6 +305,7 @@ export function PageNav({
         <a
           href="#"
           onClick={() => {
+            if (cardIndex < 0) return;
             const card = cards[cardIndex];
             card.mark = card.selectedMark || card.mark;
             card.selectedMark = undefined;

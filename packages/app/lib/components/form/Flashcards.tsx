@@ -12,7 +12,7 @@ const KaTeX = ({ latex }) => {
     katex.render(latex, ref.current, {
       displayMode: true,
       output: "html",
-      throwOnError: true
+      throwOnError: false,
     });
   }, [latex]);
   return <div ref={ref} />;
@@ -22,6 +22,20 @@ function classNames(...classes) {
   const className = classes.filter(Boolean).join(' ')
   return className;
 }
+
+const BlankCard = () =>
+      <li key={-1} className="relative">
+        <div className="group aspect-h-5 aspect-w-10 block w-full overflow-hidden">
+          <div className="flex items-center justify-center my-auto py-auto">
+            <div className="flex items-center justify-center rounded-lg m-4 border-gray-50 border border-0.5 shadow-lg w-11/12 h-5/6">
+              <div className="text-xl font-semibold text-slate-700">
+                [empty]
+              </div>
+            </div>
+          </div>
+        </div>
+     </li>
+
 
 export const Flashcards = ({ state }) => {
   const [ revealed, setRevealed ] = useState(false);
@@ -42,6 +56,7 @@ export const Flashcards = ({ state }) => {
       <div className="col-span-12">
       <ul role="list" className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-1 sm:gap-x-6 xl:gap-x-8">
       {
+        cardIndex === -1 && <BlankCard /> ||
         cards.slice(cardIndex, cardIndex + 1).map((card, index) => (
           <li key={index} className="relative">
           <div

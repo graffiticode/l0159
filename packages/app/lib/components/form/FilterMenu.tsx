@@ -21,11 +21,13 @@ export function FilterMenu({
   bgClassname,
   getMarkFromColor,
   setFilterMark,
+  setRevealed,
 }) {
   const [ selected, setSelected ] = useState(getMarkFromColor(state.data.filterMark));
   useEffect(() => {
     const { color: filterMark } = selected;
     setFilterMark(filterMark);
+    setRevealed(false);
   }, [selected]);
 
   return (
