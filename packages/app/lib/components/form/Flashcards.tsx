@@ -47,7 +47,7 @@ export const Flashcards = ({ state }) => {
     setCardIndex(cardIndex);
   }, []);
   const flipCard = () => {
-    setRevealed(true);
+    setRevealed(!revealed);
     setCards([...cards]);
   };
   return (
