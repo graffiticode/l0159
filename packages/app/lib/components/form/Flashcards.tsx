@@ -28,7 +28,7 @@ const BlankCard = () =>
         <div className="group aspect-h-5 aspect-w-10 block w-full overflow-hidden">
           <div className="flex items-center justify-center my-auto py-auto">
             <div className="flex items-center justify-center rounded-lg m-4 border-gray-50 border border-0.5 shadow-lg w-11/12 h-5/6">
-              <div className="text-xl font-semibold text-slate-700">
+              <div className="text-xl font-medium tracking-wide text-slate-500">
                 [empty]
               </div>
             </div>
