@@ -89,6 +89,11 @@ export function PageNav({
   }
 
   const nextIndex = () => {
+    // Called when card.mark has changed, so recompute indexMap. Refactor.
+    const indexMap = cards.map(
+      card => filterMark === colors.gray && !card.mark || card.mark === filterMark
+    );
+
     let index;
     index = indexMap.findIndex((val, index) => index > cardIndex && val)
     if (index > -1) {
@@ -138,8 +143,8 @@ export function PageNav({
       card.mark = value.color;
       setRevealed(false);
       setSelectedMark(marks[0]);
-      const newCardIndex = nextIndex();
       setCards([...cards]);
+      const newCardIndex = nextIndex();
       setCardIndex(newCardIndex);
       state.apply({
         type: "update",
