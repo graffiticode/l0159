@@ -3,6 +3,7 @@ import 'katex/dist/katex.min.css';
 
 //import { PageNav } from "./PageNav";
 import { Flashcards } from "./Flashcards";
+import { Match } from "./Match";
 
 import "../../index.css";
 import { useEffect, useState, useRef } from "react";
@@ -104,6 +105,8 @@ export const Form = ({ state }) => {
     state.data.cards && (
       type === "flashcards" &&
         <Flashcards state={state} /> ||
+        type === "match" &&
+        <Match state={state} /> ||
         <div className="grid grid-cols-12 border-green-300 border-blue-300 border-red-300">
         <div className="col-span-10">
         <ul role="list" className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-4 sm:gap-x-6 xl:gap-x-8">
@@ -123,21 +126,21 @@ export const Form = ({ state }) => {
               {
                 card.face.indexOf("https") >= 0 &&
                   <img alt="" src={card.face} className="p-2 pointer-events-none object-cover group-hover:opacity-75" /> ||
-                  <div className="text-4xl font-bold text-slate-700">
+                  <div className="text-xl font-bold text-slate-700">
                   <KaTeX latex={card.face} />
                   </div>
               }
               </div> ||
               <div
                 className={classNames(
-                 "flex items-center justify-center my-auto py-auto rounded-lg border border-2",
+                  "flex items-center justify-center my-auto py-auto rounded-lg border border-2",
                   card.matched && `bg-${card.color}-100 border-${card.color}-300`
                 )}>
               {
                 !card.matched && (
                   card.back.indexOf("https") >= 0 &&
                     <img alt="" src={card.back} className="pointer-events-none group-hover:opacity-75" /> ||
-                  <div className="text-4xl font-bold text-slate-700">
+                  <div className="text-xl font-bold text-slate-700">
                   <KaTeX latex={card.back} />
                   </div>
                 ) ||
