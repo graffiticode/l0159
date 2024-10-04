@@ -86,22 +86,30 @@ export const Match = ({ state }) => {
                     flipped &&
                       <div
                         className={classNames(
-                          "flex items-center justify-center my-auto py-auto rounded-lg border border-2",
-                          matched && "border-green-300" || "border-blue-600"
+                          "flex items-center justify-center my-auto py-auto"
                         )}>
-                        <div className="text-xl font-bold text-slate-700">
+                        <div
+                          className={classNames(
+                            "flex items-center justify-center w-11/12 h-5/6 text-xl font-bold text-slate-700 rounded-lg m-4 border-gray-50 border border-0.5 shadow-lg",
+                            matched && "bg-green-50" || "bg-gray-100"
+                          )}>
                           <KaTeX latex={face} />
                         </div>
                       </div> ||
                       <div
                         className={classNames(
-                          "flex items-center justify-center my-auto py-auto rounded-lg border border-2",
-                          matched && `bg-green-50 border-green-100`
-                        )}> {
-                          <div className="text-xl font-bold text-slate-700">
-                            <KaTeX latex={back} />
+                          "flex items-center justify-center my-auto py-auto",
+                        )}>
+                          <div className={classNames(
+                                 "flex items-center justify-center w-11/12 h-5/6 text-xl font-bold text-slate-700 rounded-lg m-4 border-gray-50 border border-0.5 shadow-lg",
+                                 matched && `bg-green-50`
+                               )}
+                          > {
+                            !matched &&
+                              <KaTeX latex={back} /> ||
+                              <div />
+                          }
                           </div>
-                        }
                       </div>
                   }
                     <button
