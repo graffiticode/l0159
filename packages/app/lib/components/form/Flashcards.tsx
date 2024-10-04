@@ -1,5 +1,4 @@
-import React from "react";   // for emacs jsx mode
-
+import React from "react"; React;   // for emacs jsx mode
 import katex from 'katex';
 import 'katex/dist/katex.min.css';
 

@@ -1,7 +1,8 @@
+import React from "react"; React;  // for emacs jsx mode
 import katex from 'katex';
 import 'katex/dist/katex.min.css';
 import "../../index.css";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const KaTeX = ({ latex }) => {
   const ref = useRef();
@@ -34,7 +35,7 @@ export const Match = ({ state }) => {
     const count = flippedCards.length;
     if (count === 0) {
     } else if (count === 1) {
-      cards[index].color = player.color;
+      cards[index].color = "blue";
     } else if (count === 2) {
       if (flippedCards[0].factId === flippedCards[1].factId) {
         flippedCards[0].matched = true;
@@ -45,11 +46,10 @@ export const Match = ({ state }) => {
             card.flipped = false
           ));
         } else {
-          cards[index].color = player.color;
+          cards[index].color = "blue";
         }
       } else {
-        cards[index].color = player.color;
-        setPlayer(nextPlayer(player));
+        cards[index].color = "blue";
       }
     } else {
       // Turn flipped cards over.
@@ -58,9 +58,10 @@ export const Match = ({ state }) => {
         card.flipped = false
       ));
       // Flip current card face up.
-      cards[index].color = player.color;
+      cards[index].color = "blue";
       cards[index].flipped = !cards[index].flipped;
     }
+    setCards([...cards]);
     state.apply({
       type: "update",
       args: {
@@ -69,51 +70,40 @@ export const Match = ({ state }) => {
     });
   };
   return (
-    cards.length === 0 && <div></div> ||
+    cards.length === 0 &&
+      <div /> ||
       <div className="grid grid-cols-12 border-green-300 border-blue-300 border-red-300">
         <div className="col-span-10">
-          <ul role="list" className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-4 sm:gap-x-6 xl:gap-x-8">
-            {
-              cards.map((card, index) => (
+          <ul role="list" className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-4 sm:gap-x-6 xl:gap-x-8"> {
+            cards.map((card, index) => {
+              const { face, back, flipped, matched } = card;
+              return (
                 <li key={index} className="relative">
                   <div
                     onClick={() => flipCard(index)}
                     className="group aspect-h-7 aspect-w-10 block w-full overflow-hidden"
-                  >
-                    {
-                      card.flipped &&
-                        <div
-                          className={classNames(
-                            "flex items-center justify-center my-auto py-auto rounded-lg",
-                            card.matched &&
-                              "border border-2 border-green-300" ||
-                              "border border-2 border-blue-600"
-                          )}>
-                          {
-                            card.face.indexOf("https") >= 0 &&
-                              <img alt="" src={card.face} className="p-2 pointer-events-none object-cover group-hover:opacity-75" /> ||
-                              <div className="text-xl font-bold text-slate-700">
-                                <KaTeX latex={card.face} />
-                              </div>
-                          }
-                        </div> ||
-                        <div
-                          className={classNames(
-                            "flex items-center justify-center my-auto py-auto rounded-lg border border-2",
-                            card.matched && `bg-${card.color}-100 border-${card.color}-300`
-                          )}>
-                          {
-                            !card.matched && (
-                              card.back.indexOf("https") >= 0 &&
-                                <img alt="" src={card.back} className="pointer-events-none group-hover:opacity-75" /> ||
-                                <div className="text-xl font-bold text-slate-700">
-                                  <KaTeX latex={card.back} />
-                                </div>
-                            ) ||
-                              <div />
-                          }
+                  > {
+                    flipped &&
+                      <div
+                        className={classNames(
+                          "flex items-center justify-center my-auto py-auto rounded-lg border border-2",
+                          matched && "border-green-300" || "border-blue-600"
+                        )}>
+                        <div className="text-xl font-bold text-slate-700">
+                          <KaTeX latex={face} />
                         </div>
-                    }
+                      </div> ||
+                      <div
+                        className={classNames(
+                          "flex items-center justify-center my-auto py-auto rounded-lg border border-2",
+                          matched && `bg-green-50 border-green-100`
+                        )}> {
+                          <div className="text-xl font-bold text-slate-700">
+                            <KaTeX latex={back} />
+                          </div>
+                        }
+                      </div>
+                  }
                     <button
                       type="button"
                       className="absolute inset-0 focus:outline-none"
@@ -122,7 +112,8 @@ export const Match = ({ state }) => {
                     </button>
                   </div>
                 </li>
-              ))}
+              )})
+          }
           </ul>
         </div>
       </div>
