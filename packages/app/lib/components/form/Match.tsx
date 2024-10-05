@@ -21,11 +21,20 @@ function classNames(...classes) {
   return className;
 }
 
+const shuffle = unshuffled =>
+      unshuffled.map(value => ({ value, sort: Math.random() }))
+      .sort((a, b) => a.sort - b.sort)
+      .map(({ value }) => value);
+
+const RESHUFFLE = true;
+
 export const Match = ({ state }) => {
   const [ cards, setCards ] = useState([]);
+  const [ flippedCount, setFlippedCount ] = useState(0);
   useEffect(() => {
     const { cards } = state.data;
-    setCards(cards);
+    const shuffledCards = RESHUFFLE && shuffle(cards) || cards;
+    setCards(shuffledCards);
   }, []);
   const flipCard = (index) => {
     if (!cards[index].matched) {
@@ -33,6 +42,7 @@ export const Match = ({ state }) => {
     }
     const flippedCards = cards.filter(card => card.flipped);
     const count = flippedCards.length;
+    setFlippedCount(count);
     if (count === 0) {
     } else if (count === 1) {
       cards[index].color = "blue";
@@ -90,8 +100,10 @@ export const Match = ({ state }) => {
                         )}>
                         <div
                           className={classNames(
-                            "flex items-center justify-center w-11/12 h-5/6 text-xl font-bold text-slate-700 rounded-lg m-4 border-gray-50 border border-0.5 shadow-lg",
-                            matched && "bg-green-50" || "bg-gray-100"
+                            "flex items-center justify-center w-11/12 h-5/6 text-md font-bold text-slate-700 rounded-lg m-4 border-gray-50 border border-0.5 shadow-lg",
+                            flippedCount < 2 && "bg-gray-100" ||
+                              matched && "bg-green-50" ||
+                              "bg-red-50"
                           )}>
                           <KaTeX latex={face} />
                         </div>
@@ -101,8 +113,8 @@ export const Match = ({ state }) => {
                           "flex items-center justify-center my-auto py-auto",
                         )}>
                           <div className={classNames(
-                                 "flex items-center justify-center w-11/12 h-5/6 text-xl font-bold text-slate-700 rounded-lg m-4 border-gray-50 border border-0.5 shadow-lg",
-                                 matched && `bg-green-50`
+                                 "flex items-center justify-center w-11/12 h-5/6 text-md font-bold text-slate-700 rounded-lg m-4 border-gray-50 border border-0.5 shadow-lg",
+                                 matched && "bg-green-50"
                                )}
                           > {
                             !matched &&
