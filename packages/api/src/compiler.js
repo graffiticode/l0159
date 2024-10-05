@@ -13,7 +13,7 @@ const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 const createBack = ({ type, fact, id, index }) => (
   console.log("createBack() type=" + type + " index=" + index + " fact=" + JSON.stringify(fact, null, 2)),
   type === "match" && fact[index] ||
-    type === "memory" && letters[id] ||
+    type === "memory" && `\\text{${letters[id]}}` ||
     type === "flashcards" && index === 0 && fact[0] ||
     null
 );
