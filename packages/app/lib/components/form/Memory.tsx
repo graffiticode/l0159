@@ -103,7 +103,7 @@ export const Memory = ({ state }) => {
                         <div
                           className={classNames(
                             "flex items-center justify-center w-11/12 h-5/6 text-md font-bold text-slate-700 rounded-lg m-4 border-gray-50 border border-0.5 shadow-lg",
-                            flippedCount < 2 && "bg-gray-100" ||
+                            flippedCount !== 2 && "bg-gray-100" ||
                               matched && "bg-green-50" ||
                               "bg-red-50"
                           )}>
