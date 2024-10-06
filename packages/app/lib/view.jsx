@@ -70,15 +70,6 @@ export const View = () => {
 
   useEffect(() => {
     setRecompile(true);
-    // if (facts) {
-    //   const cards = shuffle(cardsFromFacts(facts));
-    //   state.apply({
-    //     type: "update",
-    //     args: {
-    //       cards,
-    //     },
-    //   });
-    // }
   }, []);
 
   const dataResp = useSWR(
