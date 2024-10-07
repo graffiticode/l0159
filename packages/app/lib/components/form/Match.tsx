@@ -28,6 +28,26 @@ const shuffle = unshuffled =>
 
 const RESHUFFLE = true;
 
+const getTextSize = text => {
+  const rawText = text
+        .replace(/\\times/g, "x")
+        .replace(/\\div/g, "/")
+        .replace(/\\times/g, "x")
+        .replace(/\\text/g, "")
+        .replace(/\\underline/g, "")
+        .replace(/{/g, "")
+        .replace(/}/g, "")
+        .replace(/\\,/g, "")
+        .replace(/\\\s/g, "")
+  const len = rawText.length;
+  const textSize =
+        len <= 4 && "text-xl"||
+        len < 8 && "text-lg" ||
+        len < 12 && "text-sm" ||
+        "text-xs";
+  return textSize;
+}
+
 export const Match = ({ state }) => {
   const [ cards, setCards ] = useState([]);
   const [ flippedCount, setFlippedCount ] = useState(0);
@@ -103,7 +123,8 @@ export const Match = ({ state }) => {
                             "flex items-center justify-center w-11/12 h-5/6 text-md font-bold text-slate-700 rounded-lg m-4 border-gray-50 border border-0.5 shadow-lg",
                             flippedCount !== 2 && "bg-gray-100" ||
                               matched && "bg-green-50" ||
-                              "bg-red-50"
+                              "bg-red-50",
+                            getTextSize(face)
                           )}>
                           <KaTeX latex={face} />
                         </div>
@@ -114,7 +135,8 @@ export const Match = ({ state }) => {
                         )}>
                           <div className={classNames(
                                  "flex items-center justify-center w-11/12 h-5/6 text-md font-bold text-slate-700 rounded-lg m-4 border-gray-50 border border-0.5 shadow-lg",
-                                 matched && "bg-green-50"
+                                 matched && "bg-green-50",
+                                 getTextSize(back)
                                )}
                           > {
                             !matched &&

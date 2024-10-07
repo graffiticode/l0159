@@ -37,6 +37,23 @@ const BlankCard = () =>
   </div>
 </li>
 
+const getTextSize = text => {
+  const rawText = text
+        .replace(/\\times/g, "x")
+        .replace(/\\div/g, "/")
+        .replace(/\\times/g, "x")
+        .replace(/\\text/g, "")
+        .replace(/\\underline/g, "")
+        .replace(/{/g, "")
+        .replace(/}/g, "")
+        .replace(/\\,/g, "")
+        .replace(/\\\s/g, "")
+  const len = rawText.length;
+  const textSize =
+        len < 12 && "text-5xl" ||
+        "text-4xl";
+  return textSize;
+}
 
 export const Flashcards = ({ state }) => {
   const [ revealed, setRevealed ] = useState(false);
@@ -63,40 +80,49 @@ export const Flashcards = ({ state }) => {
                     <div
                       onClick={() => flipCard()}
                       className="group aspect-h-5 aspect-w-10 block w-full overflow-hidden"
-                    >
-                      {
-                        revealed &&
-                          <div
-                            className={classNames(
-                              "flex items-center justify-center my-auto py-auto"
-                            )}>
-                            <div className="flex items-center justify-center rounded-lg m-4 border-gray-50 border border-0.5 shadow-lg w-11/12 h-5/6">
-                              {
-                                card.face.indexOf("https") >= 0 &&
-                                  <img alt="" src={card.face} className="p-2 pointer-events-none object-cover group-hover:opacity-75" /> ||
-                                  <div className="text-5xl font-bold text-slate-700">
-                                    <KaTeX latex={card.face} />
-                                  </div>
-                              }
-                            </div>
-                          </div> ||
-                          <div
-                            className={classNames(
-                              "flex items-center justify-center py-auto my-auto"
-                            )}>
-                            <div className="flex items-center justify-center rounded-lg m-4 border-gray-50 border border-0.5 shadow-lg w-11/12 h-5/6">
-                              {
-                                !card.matched && (
-                                  card.back.indexOf("https") >= 0 &&
-                                    <img alt="" src={card.back} className="pointer-events-none group-hover:opacity-75" /> ||
-                                    <div className="text-5xl font-bold text-slate-700">
-                                      <KaTeX latex={card.back} />
-                                    </div>
-                                ) ||
-                                  <div />
-                              }
-                            </div>
+                    > {
+                      revealed &&
+                        <div
+                          className={classNames(
+                            "flex items-center justify-center my-auto py-auto"
+                          )}>
+                          <div className="flex items-center justify-center rounded-lg m-4 border-gray-50 border border-0.5 shadow-lg w-11/12 h-5/6">
+                            {
+                              card.face.indexOf("https") >= 0 &&
+                                <img alt="" src={card.face} className="p-2 pointer-events-none object-cover group-hover:opacity-75" /> ||
+                                <div
+                                  className={classNames(
+                                    "font-bold text-slate-700",
+                                    getTextSize(card.face)
+                                  )}
+                                >
+                                  <KaTeX latex={card.face} />
+                                </div>
+                            }
                           </div>
+                        </div> ||
+                        <div
+                          className={classNames(
+                            "flex items-center justify-center py-auto my-auto"
+                          )}>
+                          <div className="flex items-center justify-center rounded-lg m-4 border-gray-50 border border-0.5 shadow-lg w-11/12 h-5/6">
+                            {
+                              !card.matched && (
+                                card.back.indexOf("https") >= 0 &&
+                                  <img alt="" src={card.back} className="pointer-events-none group-hover:opacity-75" /> ||
+                                  <div
+                                    className={classNames(
+                                      "font-bold text-slate-700",
+                                      getTextSize(card.back)
+                                    )}
+                                  >
+                                    <KaTeX latex={card.back} />
+                                  </div>
+                              ) ||
+                                <div />
+                            }
+                          </div>
+                        </div>
                       }
                       <button
                         type="button"
