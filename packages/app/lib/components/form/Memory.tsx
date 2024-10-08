@@ -50,6 +50,19 @@ const getTextSize = text => {
   return textSize;
 }
 
+const matchFacts = ({facts, flippedCards}) => (
+  // It's a match if they have the same factId or they have the same fact value
+  // but don't have the same face value (i.e. they aren't identical cards) and
+  // aren't both the first fact of its pair.
+  console.log("matchFacts() flippedCards=" + JSON.stringify(flippedCards, null, 2)),
+  console.log("matchFacts() facts=" + JSON.stringify(facts, null, 2)),
+  flippedCards[0].factId === flippedCards[1].factId || (
+    facts[flippedCards[0].factId][0] === facts[flippedCards[1].factId][0] ||
+      facts[flippedCards[0].factId][1] === facts[flippedCards[1].factId][1]
+  ) && flippedCards[0].face !== flippedCards[1].face &&
+    flippedCards[0].id % 2 !== flippedCards[1].id % 2
+);
+
 export const Memory = ({ state }) => {
   const [ cards, setCards ] = useState([]);
   const [ flippedCount, setFlippedCount ] = useState(0);
@@ -69,7 +82,8 @@ export const Memory = ({ state }) => {
     } else if (count === 1) {
       cards[index].color = "blue";
     } else if (count === 2) {
-      if (flippedCards[0].factId === flippedCards[1].factId) {
+      const { facts } = state.data;
+      if (matchFacts({facts, flippedCards})) {
         flippedCards[0].matched = true;
         flippedCards[1].matched = true;
         if (cards[index].factId !== flippedCards[0].factId) {
