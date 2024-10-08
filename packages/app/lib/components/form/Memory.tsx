@@ -54,8 +54,6 @@ const matchFacts = ({facts, flippedCards}) => (
   // It's a match if they have the same factId or they have the same fact value
   // but don't have the same face value (i.e. they aren't identical cards) and
   // aren't both the first fact of its pair.
-  console.log("matchFacts() flippedCards=" + JSON.stringify(flippedCards, null, 2)),
-  console.log("matchFacts() facts=" + JSON.stringify(facts, null, 2)),
   flippedCards[0].factId === flippedCards[1].factId || (
     facts[flippedCards[0].factId][0] === facts[flippedCards[1].factId][0] ||
       facts[flippedCards[0].factId][1] === facts[flippedCards[1].factId][1]
@@ -71,40 +69,35 @@ export const Memory = ({ state }) => {
     const shuffledCards = RESHUFFLE && shuffle(cards) || cards;
     setCards(shuffledCards);
   }, []);
-  const flipCard = (index) => {
+
+  const flipCard = index => {
     if (!cards[index].matched) {
       cards[index].flipped = !cards[index].flipped;
     }
     const flippedCards = cards.filter(card => card.flipped);
     const count = flippedCards.length;
     setFlippedCount(count);
-    if (count === 0) {
-    } else if (count === 1) {
-      cards[index].color = "blue";
-    } else if (count === 2) {
+    if (count === 2) {
       const { facts } = state.data;
       if (matchFacts({facts, flippedCards})) {
         flippedCards[0].matched = true;
         flippedCards[1].matched = true;
-        if (cards[index].factId !== flippedCards[0].factId) {
-          // Clicked on already matched card (flipped card count is still two).
+        if (cards[index].id !== flippedCards[0].id &&
+            cards[index].id !== flippedCards[1].id) {
+          // If clicked card is not a flipped card then flip it. This happens
+          // when an already matched card is clicked so the flip count is still
+          // two.
           flippedCards.forEach(card => (
             card.flipped = false
           ));
-        } else {
-          cards[index].color = "blue";
         }
-      } else {
-        cards[index].color = "blue";
       }
-    } else {
-      // Turn flipped cards over.
+    } else if (count !== 1) {
+      // If more than two cards are flipped then turn them all over.
       flippedCards.forEach(card => (
-        card.color = card.matched && card.color || null,
         card.flipped = false
       ));
-      // Flip current card face up.
-      cards[index].color = "blue";
+      // And then flip current card face up again.
       cards[index].flipped = !cards[index].flipped;
     }
     setCards([...cards]);
@@ -115,6 +108,7 @@ export const Memory = ({ state }) => {
       },
     });
   };
+
   return (
     cards.length === 0 &&
       <div /> ||
