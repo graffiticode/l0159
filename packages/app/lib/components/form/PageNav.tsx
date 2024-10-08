@@ -174,9 +174,8 @@ export function PageNav({
       <div className="-mt-px flex">
       {
         !revealed &&
-          <div className="font-light text-xs text-white ring-indigo-600 hover:ring-1 bg-indigo-600 rounded-full px-6 p-2 mt-7">
+          <div className="font-light text-xs text-white ring-indigo-600 hover:ring-1 bg-indigo-600 rounded-full px-6 p-2 mt-7 cursor-pointer">
           <a
-          href=""
           onClick={() => {
             if (cardIndex < 0) return;
             setRevealed(true);
@@ -285,7 +284,6 @@ export function PageNav({
         <span className="font-medium">{filteredCount}</span>
       </p>
       <a
-        href=""
         onClick={() => {
           if (cardIndex < 0) return;
           const card = cards[cardIndex];
@@ -306,12 +304,11 @@ export function PageNav({
         }}
       >
       <ArrowLeftIcon aria-hidden="true" className={classNames(
-        "relative inline-flex items-center ring-1 ring-inset ring-gray-300 focus-visible:outline-offset-0 rounded-full mx-1 p-2 mt-6 h-8 w-8",
+        "relative inline-flex items-center ring-1 ring-inset ring-gray-300 focus-visible:outline-offset-0 rounded-full mx-1 p-2 mt-6 h-8 w-8 cursor-pointer",
         "hover:bg-gray-100 bg-white"
       )} />
         </a>
         <a
-          href=""
           onClick={() => {
             if (cardIndex < 0) return;
             const card = cards[cardIndex];
@@ -332,7 +329,7 @@ export function PageNav({
           }}
         >
       <ArrowRightIcon aria-hidden="true" className={classNames(
-        "relative inline-flex items-center ring-1 ring-inset ring-gray-300 focus-visible:outline-offset-0 rounded-full mx-1 p-2 mt-6 h-8 w-8",
+        "relative inline-flex items-center ring-1 ring-inset ring-gray-300 focus-visible:outline-offset-0 rounded-full mx-1 p-2 mt-6 h-8 w-8 cursor-pointer",
         "hover:bg-gray-100 bg-white"
       )} />
         </a>
