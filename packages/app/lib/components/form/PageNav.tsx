@@ -176,7 +176,7 @@ export function PageNav({
         !revealed &&
           <div className="font-light text-xs text-white ring-indigo-600 hover:ring-1 bg-indigo-600 rounded-full px-6 p-2 mt-7">
           <a
-          href="#"
+          href=""
           onClick={() => {
             if (cardIndex < 0) return;
             setRevealed(true);
@@ -285,7 +285,7 @@ export function PageNav({
         <span className="font-medium">{filteredCount}</span>
       </p>
       <a
-        href="#"
+        href=""
         onClick={() => {
           if (cardIndex < 0) return;
           const card = cards[cardIndex];
@@ -311,7 +311,7 @@ export function PageNav({
       )} />
         </a>
         <a
-          href="#"
+          href=""
           onClick={() => {
             if (cardIndex < 0) return;
             const card = cards[cardIndex];
