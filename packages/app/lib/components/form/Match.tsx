@@ -52,7 +52,6 @@ const matchFacts = ({facts, flippedCards}) => (
   // It's a match if they have the same factId or they have the same fact value
   // but don't have the same face value (i.e. they aren't identical cards) and
   // aren't both the first fact of its pair.
-  console.log("matchFacts() flippedCards=" + JSON.stringify(flippedCards, null, 2)),
   console.log("matchFacts() facts=" + JSON.stringify(facts, null, 2)),
   flippedCards[0].factId === flippedCards[1].factId || (
     facts[flippedCards[0].factId][0] === facts[flippedCards[1].factId][0] ||
@@ -74,6 +73,7 @@ export const Match = ({ state }) => {
       cards[index].flipped = !cards[index].flipped;
     }
     const flippedCards = cards.filter(card => card.flipped);
+    console.log("flipCard() flippedCards=" + JSON.stringify(flippedCards, null, 2)),
     const count = flippedCards.length;
     setFlippedCount(count);
     if (count === 0) {
