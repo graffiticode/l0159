@@ -110,7 +110,7 @@ export const Match = ({ state }) => {
   return (
     cards.length === 0 &&
       <div /> ||
-      <div className="grid grid-cols-12 border-green-300 border-blue-300 border-red-300">
+      <div className="grid grid-cols-12 border-green-300 border-blue-300 border-red-300 bg-gray-50">
         <div className="col-span-10">
           <ul role="list" className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-4 sm:gap-x-6 xl:gap-x-8"> {
             cards.map((card, index) => {
@@ -142,7 +142,7 @@ export const Match = ({ state }) => {
                           "flex items-center justify-center my-auto py-auto",
                         )}>
                           <div className={classNames(
-                                 "flex items-center justify-center w-11/12 h-5/6 font-bold text-slate-700 rounded-lg m-4 border-gray-50 border border-0.5 shadow-lg",
+                                 "flex items-center justify-center w-11/12 h-5/6 font-bold text-slate-700 rounded-lg m-4 border-gray-50 border border-0.5 shadow-lg bg-white",
                                  matched && "bg-green-50",
                                  getTextSize(back)
                                )}

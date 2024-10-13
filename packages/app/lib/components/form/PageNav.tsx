@@ -1,9 +1,10 @@
+import React from "react"; React;
 import { useEffect, useState } from "react";
 import {
-  ArrowRightIcon,
-  ArrowLeftIcon,
+//  ArrowRightIcon,
+//  ArrowLeftIcon,
   CheckIcon,
-  MinusIcon,
+//  MinusIcon,
   XMarkIcon,
 } from '@heroicons/react/20/solid'
 
@@ -65,28 +66,28 @@ export function PageNav({
 
   const marks = cards.reduce(
     (marks, card) =>
-      marks.map(mark => (
-        (mark.color === card.mark || mark.color === colors.gray && !card.mark) &&
-          {...mark, count: mark.count + 1} ||
-          mark
-      )),
+    marks.map(mark => (
+      (mark.color === card.mark || mark.color === colors.gray && !card.mark) &&
+        {...mark, count: mark.count + 1} ||
+        mark
+    )),
     rawMarks
   );
 
-  const prevIndex = () => {
-    const reverseIndexMap = indexMap.reverse();
-    const reverseCardIndex = cards.length - 1 - cardIndex;
-    let index;
-    index = reverseIndexMap.findIndex((val, index) => index > reverseCardIndex && val)
-    if (index > -1) {
-      return cards.length - 1 - index;
-    }
-    index = reverseIndexMap.findIndex((val, index) => index <= reverseCardIndex && val)
-    if (index > -1) {
-      return cards.length - 1 - index;
-    }
-    return -1;
-  }
+  // const prevIndex = () => {
+  //   const reverseIndexMap = indexMap.reverse();
+  //   const reverseCardIndex = cards.length - 1 - cardIndex;
+  //   let index;
+  //   index = reverseIndexMap.findIndex((val, index) => index > reverseCardIndex && val)
+  //   if (index > -1) {
+  //     return cards.length - 1 - index;
+  //   }
+  //   index = reverseIndexMap.findIndex((val, index) => index <= reverseCardIndex && val)
+  //   if (index > -1) {
+  //     return cards.length - 1 - index;
+  //   }
+  //   return -1;
+  // }
 
   const nextIndex = () => {
     // Called when card.mark has changed, so recompute indexMap. Refactor.
@@ -114,17 +115,17 @@ export function PageNav({
     return -1;
   }
 
-  const filteredCount = indexMap.filter(val => val).length;
-  const filteredIndex = cards
-        .map((card, index) =>
-          (filterMark === colors.gray && card.mark === undefined || card.mark === filterMark) ?
-            index :
-            -1
-        )
-        .filter(index => index !== -1)
-        .findIndex(index => (
-          index === cardIndex
-        )) + 1;
+  // const filteredCount = indexMap.filter(val => val).length;
+  // const filteredIndex = cards
+  //       .map((card, index) =>
+  //         (filterMark === colors.gray && card.mark === undefined || card.mark === filterMark) ?
+  //           index :
+  //           -1
+  //       )
+  //       .filter(index => index !== -1)
+  //       .findIndex(index => (
+  //         index === cardIndex
+  //       )) + 1;
 
   const { manualNav } = state.data;
   const handleChange = value => {
@@ -159,126 +160,131 @@ export function PageNav({
   return (
     <nav
       aria-label="Pagination"
-      className="flex items-center justify-between bg-white px-4 sm:px-6 h-12"
+      className="flex justify-start bg-white px-4 sm:px-6 h-12"
     >
       <div className="-mt-px flex flex-col w-0 flex-1 pt-5">
-      <FilterMenu
-        state={state}
-        marks={marks}
-        bgClassname={bgClassname}
-        getMarkFromColor={getMarkFromColor}
-        setFilterMark={setFilterMark}
-        setRevealed={setRevealed}
-      />
+        <FilterMenu
+          state={state}
+          marks={marks}
+          bgClassname={bgClassname}
+          getMarkFromColor={getMarkFromColor}
+          setFilterMark={setFilterMark}
+          setRevealed={setRevealed}
+        />
       </div>
-      <div className="-mt-px flex">
-      {
-        !revealed &&
-          <div className="font-light text-xs text-white ring-indigo-600 hover:ring-1 bg-indigo-600 rounded-full px-6 p-2 mt-7 cursor-pointer">
-          <a
-          onClick={() => {
-            if (cardIndex < 0) return;
-            setRevealed(true);
-            state.apply({
-              type: "update",
-              args: {
-                cards,
-                cardIndex,
-              }
-            })
-          }}
-        >
-          Reveal
-        </a>
-          </div> ||
-          <div className="flex-col">
-          <div className="text-xs text-center font-light text-gray-600 pb-3 pt-1">
-            Confidence level
+      <div className="-mt-px flex items-center justify-center">
+        {
+          !revealed &&
+            <div className="font-light text-xs text-white ring-indigo-600 hover:ring-1 bg-indigo-600 rounded-full px-6 p-2 mt-7 cursor-pointer">
+              <a
+                onClick={() => {
+                  if (cardIndex < 0) return;
+                  setRevealed(true);
+                  state.apply({
+                    type: "update",
+                    args: {
+                      cards,
+                      cardIndex,
+                    }
+                  })
+                }}
+              >
+                Reveal
+              </a>
+            </div> ||
+            <div className="flex-col justify-end w-48">
+              {/*
+              <div className="text-xs text-center font-light text-gray-600 pb-3 pt-1">
+                Confidence level
+                </div>
+               */}
+              <div className="-mt-px flex justify-end px-auto">
+                <RadioGroup value={selectedMark} onChange={handleChange}>
+                  <div className={
+                         classNames(
+                           "flex flex-col justify-end gap-1 mt-4"
+                         )}>
+                    <RadioGroup.Option
+                      key={rawMarks[1].name}
+                      value={rawMarks[1]}
+                      className={({ checked }) => (
+                        classNames(
+                          ringClassname(rawMarks[1].color),
+                          checked ? 'ring ring-offset-1' : '',
+                          'relative -m-0.5 flex cursor-pointer items-center justify-end rounded-full p-0.5 focus:outline-none'
+                        ))}>
+                      <RadioGroup.Label as="span" className="mr-2 text-xs font-normal">
+                        I need more practice
+                      </RadioGroup.Label>
+                      <span
+                        aria-hidden="true"
+                        className={classNames(
+                          "bg-[#F78A72]",
+                          "hover:bg-[#F77356]",
+                          "active:bg-[#ED5B3B]",
+                          'h-8 w-8 rounded-full')}
+                      >
+                        <XMarkIcon className="m-2 w-4 h-4" />
+                      </span>
+                    </RadioGroup.Option>
+                    {/*
+                       <RadioGroup.Option
+                       key={rawMarks[2].name}
+                       value={rawMarks[2]}
+                       className={({ checked }) =>
+                       classNames(
+                       ringClassname(rawMarks[2].color),
+                       checked ? 'ring ring-offset-1' : '',
+                       'relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 focus:outline-none'
+                       )}
+                       >
+                       <RadioGroup.Label as="span" className="sr-only">
+                       {rawMarks[2].name}
+                       </RadioGroup.Label>
+                       <span
+                       aria-hidden="true"
+                       className={classNames(
+                       "bg-[#EFCB4B]",
+                       "hover:bg-[#EBB92F]",
+                       "active:bg-[#E59D1B]",
+                       'h-8 w-8 rounded-full')}
+                       >
+                       <MinusIcon className="m-2 w-4 h-4" />
+                       </span>
+                       </RadioGroup.Option>
+                     */}
+                    <RadioGroup.Option
+                      key={rawMarks[3].name}
+                      value={rawMarks[3]}
+                      className={({ checked }) =>
+                        classNames(
+                          ringClassname(rawMarks[3].color),
+                          checked ? 'ring ring-offset-1' : '',
+                          'relative -m-0.5 flex cursor-pointer items-center justify-end rounded-full p-0.5 focus:outline-none'
+                        )}
+                    >
+                      <RadioGroup.Label as="span" className="mr-2 text-xs front-normal">
+                        I got this
+                      </RadioGroup.Label>
+                      <span
+                        aria-hidden="true"
+                        className={classNames(
+                          "bg-[#ACDC79]",
+                          "hover:bg-[#89C24E]",
+                          "active:bg-[#669F2A]",
+                          'h-8 w-8 rounded-full')}
+                      >
+                        <CheckIcon className="m-2 w-4 h-4" />
+                      </span>
+                    </RadioGroup.Option>
+                </div>
+              </RadioGroup>
+            </div>
           </div>
-          <div className="-mt-px flex justify-center items-center px-auto">
-          <RadioGroup value={selectedMark} onChange={handleChange}>
-            <div className={
-             classNames(
-               "flex items-center space-x-3"
-             )}>
-              <RadioGroup.Option
-                key={rawMarks[1].name}
-                value={rawMarks[1]}
-                className={({ checked }) => (
-                  classNames(
-                    ringClassname(rawMarks[1].color),
-                    checked ? 'ring ring-offset-1' : '',
-                    'relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 focus:outline-none'
-                  ))}>
-                <RadioGroup.Label as="span" className="sr-only">
-                  {rawMarks[1].name}
-                </RadioGroup.Label>
-                <span
-                  aria-hidden="true"
-                  className={classNames(
-                    "bg-[#F78A72]",
-                    "hover:bg-[#F77356]",
-                    "active:bg-[#ED5B3B]",
-                    'h-8 w-8 rounded-full')}
-                >
-                  <XMarkIcon className="m-2 w-4 h-4" />
-                </span>
-              </RadioGroup.Option>
-              <RadioGroup.Option
-                key={rawMarks[2].name}
-                value={rawMarks[2]}
-                className={({ checked }) =>
-                  classNames(
-                    ringClassname(rawMarks[2].color),
-                    checked ? 'ring ring-offset-1' : '',
-                    'relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 focus:outline-none'
-                  )}
-              >
-                <RadioGroup.Label as="span" className="sr-only">
-                  {rawMarks[2].name}
-                </RadioGroup.Label>
-                <span
-                  aria-hidden="true"
-                  className={classNames(
-                    "bg-[#EFCB4B]",
-                    "hover:bg-[#EBB92F]",
-                    "active:bg-[#E59D1B]",
-                    'h-8 w-8 rounded-full')}
-                >
-                  <MinusIcon className="m-2 w-4 h-4" />
-                </span>
-              </RadioGroup.Option>
-              <RadioGroup.Option
-                key={rawMarks[3].name}
-                value={rawMarks[3]}
-                className={({ checked }) =>
-                  classNames(
-                    ringClassname(rawMarks[3].color),
-                    checked ? 'ring ring-offset-1' : '',
-                    'relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 focus:outline-none'
-                  )}
-              >
-                <RadioGroup.Label as="span" className="sr-only">
-                  {rawMarks[3].name}
-                </RadioGroup.Label>
-                <span
-                  aria-hidden="true"
-                  className={classNames(
-                    "bg-[#ACDC79]",
-                    "hover:bg-[#89C24E]",
-                    "active:bg-[#669F2A]",
-                    'h-8 w-8 rounded-full')}
-                >
-                  <CheckIcon className="m-2 w-4 h-4" />
-                </span>
-              </RadioGroup.Option>
-              </div>
-            </RadioGroup>
-        </div>
-      </div>
-      }
+        }
     </div>
-      <div className="-mt-px flex w-0 flex-1 justify-end">
+    {/*
+    <div className="-mt-px flex w-0 flex-1 justify-end">
       <p className="text-xs text-gray-700 pt-8 pr-2">
         <span className="font-medium">{filteredIndex}</span> /{' '}
         <span className="font-medium">{filteredCount}</span>
@@ -303,37 +309,38 @@ export function PageNav({
           })
         }}
       >
-      <ArrowLeftIcon aria-hidden="true" className={classNames(
-        "relative inline-flex items-center ring-1 ring-inset ring-gray-300 focus-visible:outline-offset-0 rounded-full mx-1 p-2 mt-6 h-8 w-8 cursor-pointer",
-        "hover:bg-gray-100 bg-white"
-      )} />
-        </a>
-        <a
-          onClick={() => {
-            if (cardIndex < 0) return;
-            const card = cards[cardIndex];
-            card.mark = card.selectedMark || card.mark;
-            card.selectedMark = undefined;
-            setRevealed(false);
-            setSelectedMark(marks[0]);
-            const newCardIndex = nextIndex();
-            setCards([...cards]);
-            setCardIndex(newCardIndex);
-            state.apply({
-              type: "update",
-              args: {
-                cards: [...cards],
-                cardIndex: newCardIndex,
-              }
-            })
-          }}
-        >
-      <ArrowRightIcon aria-hidden="true" className={classNames(
-        "relative inline-flex items-center ring-1 ring-inset ring-gray-300 focus-visible:outline-offset-0 rounded-full mx-1 p-2 mt-6 h-8 w-8 cursor-pointer",
-        "hover:bg-gray-100 bg-white"
-      )} />
-        </a>
+        <ArrowLeftIcon aria-hidden="true" className={classNames(
+                         "relative inline-flex items-center ring-1 ring-inset ring-gray-300 focus-visible:outline-offset-0 rounded-full mx-1 p-2 mt-6 h-8 w-8 cursor-pointer",
+                         "hover:bg-gray-100 bg-white"
+                       )} />
+      </a>
+      <a
+        onClick={() => {
+          if (cardIndex < 0) return;
+          const card = cards[cardIndex];
+          card.mark = card.selectedMark || card.mark;
+          card.selectedMark = undefined;
+          setRevealed(false);
+          setSelectedMark(marks[0]);
+          const newCardIndex = nextIndex();
+          setCards([...cards]);
+          setCardIndex(newCardIndex);
+          state.apply({
+            type: "update",
+            args: {
+              cards: [...cards],
+              cardIndex: newCardIndex,
+            }
+          })
+        }}
+      >
+        <ArrowRightIcon aria-hidden="true" className={classNames(
+                          "relative inline-flex items-center ring-1 ring-inset ring-gray-300 focus-visible:outline-offset-0 rounded-full mx-1 p-2 mt-6 h-8 w-8 cursor-pointer",
+                          "hover:bg-gray-100 bg-white"
+                        )} />
+      </a>
       </div>
-   </nav>
+     */}
+    </nav>
   )
 }
