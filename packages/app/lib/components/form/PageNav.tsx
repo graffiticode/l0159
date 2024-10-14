@@ -37,7 +37,7 @@ const ringClassname = mark =>
 
 const rawMarks = [
   { id: 1, name: "Show all", color: colors.gray, count: 0 },
-  { id: 2, name: "Low", color: colors.red, count: 0 },
+  { id: 2, name: "More practice", color: colors.red, count: 0 },
   { id: 3, name: "Medium", color: colors.yellow, count: 0 },
   { id: 4, name: "High", color: colors.green, count: 0 },
 ];
@@ -115,17 +115,17 @@ export function PageNav({
     return -1;
   }
 
-  // const filteredCount = indexMap.filter(val => val).length;
-  // const filteredIndex = cards
-  //       .map((card, index) =>
-  //         (filterMark === colors.gray && card.mark === undefined || card.mark === filterMark) ?
-  //           index :
-  //           -1
-  //       )
-  //       .filter(index => index !== -1)
-  //       .findIndex(index => (
-  //         index === cardIndex
-  //       )) + 1;
+  const filteredCount = indexMap.filter(val => val).length;
+  const filteredIndex = cards
+        .map((card, index) =>
+          (filterMark === colors.gray && card.mark === undefined || card.mark === filterMark) ?
+            index :
+            -1
+        )
+        .filter(index => index !== -1)
+        .findIndex(index => (
+          index === cardIndex
+        )) + 1;
 
   const { manualNav } = state.data;
   const handleChange = value => {
@@ -198,11 +198,11 @@ export function PageNav({
                 Confidence level
                 </div>
                */}
-              <div className="-mt-px flex justify-end px-auto">
+              <div className="-mt-px flex justify-end px-auto pt-6">
                 <RadioGroup value={selectedMark} onChange={handleChange}>
                   <div className={
                          classNames(
-                           "flex flex-col justify-end gap-1 mt-4"
+                           "flex flex-col gap-2"
                          )}>
                     <RadioGroup.Option
                       key={rawMarks[1].name}
@@ -211,11 +211,8 @@ export function PageNav({
                         classNames(
                           ringClassname(rawMarks[1].color),
                           checked ? 'ring ring-offset-1' : '',
-                          'relative -m-0.5 flex cursor-pointer items-center justify-end rounded-full p-0.5 focus:outline-none'
+                          'relative -m-0.5 flex cursor-pointer items-center justify-start rounded-full p-0.5 focus:outline-none'
                         ))}>
-                      <RadioGroup.Label as="span" className="mr-2 text-xs font-normal">
-                        I need more practice
-                      </RadioGroup.Label>
                       <span
                         aria-hidden="true"
                         className={classNames(
@@ -226,6 +223,9 @@ export function PageNav({
                       >
                         <XMarkIcon className="m-2 w-4 h-4" />
                       </span>
+                      <RadioGroup.Label as="span" className="ml-2 text-xs font-normal">
+                        Need more practice
+                      </RadioGroup.Label>
                     </RadioGroup.Option>
                     {/*
                        <RadioGroup.Option
@@ -260,12 +260,9 @@ export function PageNav({
                         classNames(
                           ringClassname(rawMarks[3].color),
                           checked ? 'ring ring-offset-1' : '',
-                          'relative -m-0.5 flex cursor-pointer items-center justify-end rounded-full p-0.5 focus:outline-none'
+                          'relative -m-0.5 flex cursor-pointer items-center justify-start rounded-full p-0.5 focus:outline-none'
                         )}
                     >
-                      <RadioGroup.Label as="span" className="mr-2 text-xs front-normal">
-                        I got this
-                      </RadioGroup.Label>
                       <span
                         aria-hidden="true"
                         className={classNames(
@@ -276,6 +273,9 @@ export function PageNav({
                       >
                         <CheckIcon className="m-2 w-4 h-4" />
                       </span>
+                      <RadioGroup.Label as="span" className="ml-2 text-xs front-normal">
+                        I got this
+                      </RadioGroup.Label>
                     </RadioGroup.Option>
                 </div>
               </RadioGroup>
@@ -283,12 +283,12 @@ export function PageNav({
           </div>
         }
     </div>
-    {/*
     <div className="-mt-px flex w-0 flex-1 justify-end">
       <p className="text-xs text-gray-700 pt-8 pr-2">
         <span className="font-medium">{filteredIndex}</span> /{' '}
         <span className="font-medium">{filteredCount}</span>
       </p>
+    {/*
       <a
         onClick={() => {
           if (cardIndex < 0) return;
@@ -339,8 +339,8 @@ export function PageNav({
                           "hover:bg-gray-100 bg-white"
                         )} />
       </a>
-      </div>
      */}
+      </div>
     </nav>
   )
 }
