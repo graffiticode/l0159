@@ -36,7 +36,7 @@ const ringClassname = mark =>
       "bg-[#DDDDDD]";
 
 const rawMarks = [
-  { id: 1, name: "Unmarked", color: colors.gray, count: 0 },
+  { id: 1, name: "Show all", color: colors.gray, count: 0 },
   { id: 2, name: "Low", color: colors.red, count: 0 },
   { id: 3, name: "Medium", color: colors.yellow, count: 0 },
   { id: 4, name: "High", color: colors.green, count: 0 },
