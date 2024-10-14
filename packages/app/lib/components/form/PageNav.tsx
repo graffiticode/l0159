@@ -36,10 +36,10 @@ const ringClassname = mark =>
       "bg-[#DDDDDD]";
 
 const rawMarks = [
-  { id: 1, name: "Show all", color: colors.gray, count: 0 },
+  { id: 1, name: "All cards", color: colors.gray, count: 0 },
   { id: 2, name: "More practice", color: colors.red, count: 0 },
-  { id: 3, name: "Medium", color: colors.yellow, count: 0 },
-  { id: 4, name: "High", color: colors.green, count: 0 },
+//  { id: 3, name: "Medium", color: colors.yellow, count: 0 },
+  { id: 3, name: "Got this!", color: colors.green, count: 0 },
 ];
 
 const getMarkFromColor = color => rawMarks.find(mark => mark.color === color) || rawMarks[0];
@@ -55,19 +55,25 @@ export function PageNav({
 }) {
   const [ filterMark, setFilterMark ] = useState(colors.gray);
   const [ selectedMark, setSelectedMark ] = useState(rawMarks[0]);
+  //const [ indexMap, setIndexMap ] = useState([]);
+
+  const handleFilterChange = filterMark => {
+    // const indexMap = cards.map(
+    //   card => filterMark === colors.gray || card.mark === filterMark
+    // );
+//    setIndexMap(indexMap);
+    setCardIndex(firstIndex(filterMark));
+    setFilterMark(filterMark);
+  };
 
   useEffect(() => {
-    setCardIndex(firstIndex());
-  }, [filterMark]);
+    handleFilterChange(colors.gray);
+  }, []);
   
-  const indexMap = cards.map(
-    card => filterMark === colors.gray && !card.mark || card.mark === filterMark
-  );
-
   const marks = cards.reduce(
     (marks, card) =>
     marks.map(mark => (
-      (mark.color === card.mark || mark.color === colors.gray && !card.mark) &&
+      (mark.color === card.mark || mark.color === colors.gray) &&
         {...mark, count: mark.count + 1} ||
         mark
     )),
@@ -92,7 +98,7 @@ export function PageNav({
   const nextIndex = () => {
     // Called when card.mark has changed, so recompute indexMap. Refactor.
     const indexMap = cards.map(
-      card => filterMark === colors.gray && !card.mark || card.mark === filterMark
+      card => filterMark === colors.gray || card.mark === filterMark
     );
 
     let index;
@@ -100,14 +106,17 @@ export function PageNav({
     if (index > -1) {
       return index;
     }
-    index = indexMap.findIndex((val, index) => index <= cardIndex && val)
-    if (index > -1) {
-      return index;
-    }
+    // index = indexMap.findIndex((val, index) => index <= cardIndex && val)
+    // if (index > -1) {
+    //   return index;
+    // }
     return -1;
   }
 
-  const firstIndex = () => {
+  const firstIndex = filterMark => {
+    const indexMap = cards.map(
+      card => filterMark === colors.gray || card.mark === filterMark
+    );
     const index = indexMap.findIndex(val => val);
     if (index > -1) {
       return index;
@@ -115,10 +124,21 @@ export function PageNav({
     return -1;
   }
 
-  const filteredCount = indexMap.filter(val => val).length;
-  const filteredIndex = cards
-        .map((card, index) =>
-          (filterMark === colors.gray && card.mark === undefined || card.mark === filterMark) ?
+  // FIXME these use stale state.
+  const filteredCount =
+        cards.map(
+          (card, index) =>
+          (filterMark === colors.gray || card.mark === filterMark) ?
+            index :
+            -1
+        )
+        .filter(index => index !== -1)
+        .length;
+  
+  const filteredIndex =
+        cards.map(
+          (card, index) =>
+          (filterMark === colors.gray || card.mark === filterMark) ?
             index :
             -1
         )
@@ -126,7 +146,7 @@ export function PageNav({
         .findIndex(index => (
           index === cardIndex
         )) + 1;
-
+  
   const { manualNav } = state.data;
   const handleChange = value => {
     if (manualNav) {
@@ -162,13 +182,13 @@ export function PageNav({
       aria-label="Pagination"
       className="flex justify-start bg-white px-4 sm:px-6 h-12"
     >
-      <div className="-mt-px flex flex-col w-0 flex-1 pt-5">
+      <div className="-mt-px flex flex-col w-0 flex-1 pt-1">
         <FilterMenu
           state={state}
           marks={marks}
           bgClassname={bgClassname}
           getMarkFromColor={getMarkFromColor}
-          setFilterMark={setFilterMark}
+          setFilterMark={handleFilterChange}
           setRevealed={setRevealed}
         />
       </div>
@@ -224,41 +244,15 @@ export function PageNav({
                         <XMarkIcon className="m-2 w-4 h-4" />
                       </span>
                       <RadioGroup.Label as="span" className="ml-2 text-xs font-normal">
-                        Need more practice
+                        I need more practice
                       </RadioGroup.Label>
                     </RadioGroup.Option>
-                    {/*
-                       <RadioGroup.Option
-                       key={rawMarks[2].name}
-                       value={rawMarks[2]}
-                       className={({ checked }) =>
-                       classNames(
-                       ringClassname(rawMarks[2].color),
-                       checked ? 'ring ring-offset-1' : '',
-                       'relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 focus:outline-none'
-                       )}
-                       >
-                       <RadioGroup.Label as="span" className="sr-only">
-                       {rawMarks[2].name}
-                       </RadioGroup.Label>
-                       <span
-                       aria-hidden="true"
-                       className={classNames(
-                       "bg-[#EFCB4B]",
-                       "hover:bg-[#EBB92F]",
-                       "active:bg-[#E59D1B]",
-                       'h-8 w-8 rounded-full')}
-                       >
-                       <MinusIcon className="m-2 w-4 h-4" />
-                       </span>
-                       </RadioGroup.Option>
-                     */}
                     <RadioGroup.Option
-                      key={rawMarks[3].name}
-                      value={rawMarks[3]}
+                      key={rawMarks[2].name}
+                      value={rawMarks[2]}
                       className={({ checked }) =>
                         classNames(
-                          ringClassname(rawMarks[3].color),
+                          ringClassname(rawMarks[2].color),
                           checked ? 'ring ring-offset-1' : '',
                           'relative -m-0.5 flex cursor-pointer items-center justify-start rounded-full p-0.5 focus:outline-none'
                         )}
@@ -274,7 +268,7 @@ export function PageNav({
                         <CheckIcon className="m-2 w-4 h-4" />
                       </span>
                       <RadioGroup.Label as="span" className="ml-2 text-xs front-normal">
-                        I got this
+                        I got this!
                       </RadioGroup.Label>
                     </RadioGroup.Option>
                 </div>
@@ -284,9 +278,17 @@ export function PageNav({
         }
     </div>
     <div className="-mt-px flex w-0 flex-1 justify-end">
-      <p className="text-xs text-gray-700 pt-8 pr-2">
-        <span className="font-medium">{filteredIndex}</span> /{' '}
-        <span className="font-medium">{filteredCount}</span>
+      <p className="text-gray-700 pt-8 pr-2">
+        {
+          filteredCount < 1 &&
+            <span className="text-sm font-normal">Stack empty. Pick another stack.</span> ||
+          filteredIndex < 1 &&
+            <span className="text-sm font-normal">All cards flipped</span> ||
+            <>
+              <span className="font-medium text-sm">{filteredIndex} / {' '}</span>
+              <span className="font-medium text-sm">{filteredCount}</span>
+            </>
+        }
       </p>
     {/*
       <a

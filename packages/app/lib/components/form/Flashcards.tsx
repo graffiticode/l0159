@@ -28,9 +28,12 @@ const BlankCard = () =>
 <li key={-1} className="relative">
   <div className="group aspect-h-5 aspect-w-10 block w-full overflow-hidden">
     <div className="flex items-center justify-center my-auto py-auto">
-      <div className="flex items-center justify-center rounded-lg m-4 border-gray-50 border border-0.5 shadow-lg w-11/12 h-5/6">
+      <div className="flex flex-col items-center justify-center rounded-lg m-4 border-gray-50 border border-0.5 shadow-lg w-11/12 h-5/6">
         <div className="text-xl font-medium tracking-wide text-slate-500">
-          [empty]
+          All done!
+        </div>
+        <div className="text-sm font-medium tracking-wide text-slate-500">
+          Pick a new stack.
         </div>
       </div>
     </div>
