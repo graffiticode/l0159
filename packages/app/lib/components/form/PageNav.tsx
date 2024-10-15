@@ -25,18 +25,25 @@ const colors = {
 };
 
 const bgClassname = mark =>
-      mark === "#FFFFFF" && "bg-[#FFFFFF]" ||
+      mark === "#DDDDDD" && "bg-[#DDDDDD]" ||
       mark === "#F78A72" && "bg-[#F78A72]" ||
       mark === "#EFCB4B" && "bg-[#EFCB4B]" ||
       mark === "#ACDC79" && "bg-[#ACDC79]" ||
-      "bg-[#DDDDDD]";
+      "bg-[#FFFFFF] ring-1 ring-inset ring-gray-400";
 
 const ringClassname = mark =>
-      mark === "#FFFFFF" && "ring-[#AAAAAA]" ||
+      mark === "#DDDDDD" && "ring-[#DDDDDD]" ||
       mark === "#F78A72" && "ring-[#F78A72]" ||
       mark === "#EFCB4B" && "ring-[#EFCB4B]" ||
       mark === "#ACDC79" && "ring-[#ACDC79]" ||
-      "bg-[#DDDDDD]";
+      "bg-[#FFFFFF]";
+
+const shuffle = unshuffled =>
+      unshuffled.map(value => ({ value, sort: Math.random() }))
+      .sort((a, b) => a.sort - b.sort)
+      .map(({ value }) => value);
+
+const RESHUFFLE = true;
 
 export function PageNav({
   state,
@@ -48,23 +55,19 @@ export function PageNav({
   setCardIndex,
 }) {
   const rawMarks = [
-    { id: 1, name: "All cards", color: colors.white, count: cards.length },
+    { id: 1, name: "Unmarked", color: colors.gray, count: 0 },
     { id: 2, name: "More practice", color: colors.red, count: 0 },
     { id: 3, name: "Got this!", color: colors.green, count: 0 },
-    { id: 4, name: "Unmarked", color: colors.gray, count: 0 },
+    { id: 4, name: "All cards", color: colors.white, count: cards.length },
   ];
   const [ filterMark, setFilterMark ] = useState(colors.white);
   const [ selectedMark, setSelectedMark ] = useState(rawMarks[0]);
-  //const [ indexMap, setIndexMap ] = useState([]);
   const getMarkFromColor = color => rawMarks.find(mark => mark.color === color) || rawMarks[0];
 
-
   const handleFilterChange = filterMark => {
-    // const indexMap = cards.map(
-    //   card => filterMark === colors.gray || card.mark === filterMark
-    // );
-//    setIndexMap(indexMap);
-    setCardIndex(firstIndex(filterMark));
+    const shuffledCards = RESHUFFLE && shuffle(cards);
+    setCards(shuffledCards);
+    setCardIndex(firstIndex(shuffledCards, filterMark));
     setFilterMark(filterMark);
   };
 
@@ -118,7 +121,7 @@ export function PageNav({
     return -1;
   }
 
-  const firstIndex = filterMark => {
+  const firstIndex = (cards, filterMark) => {
     const indexMap = cards.map(card =>
       filterMark === colors.white ||
         filterMark === colors.gray && card.mark === undefined ||
@@ -205,15 +208,11 @@ export function PageNav({
       <div className="-mt-px flex items-center justify-center">
         {
           !revealed &&
-            <div
-              className={classNames(
-                "font-light text-xs rounded-full px-6 p-2 mt-9 cursor-pointer",
-                cardIndex < 0 && "bg-gray-400 text-white" || "text-white bg-indigo-600 hover:ring-2 ring-indigo-600"
-              )}
-            >
-              <a
-                onClick={() => {
-                  if (cardIndex < 0) return;
+            <a
+              onClick={() => {
+                if (filteredIndex === 0 && filteredCount > 0) {
+                  handleFilterChange(filterMark)
+                } else if (filteredIndex > 0) {
                   setRevealed(true);
                   state.apply({
                     type: "update",
@@ -222,17 +221,22 @@ export function PageNav({
                       cardIndex,
                     }
                   })
-                }}
+                }
+              }}
+            >
+              <div
+                className={classNames(
+                  "font-light text-xs rounded-full px-6 p-2 mt-9",
+                  filteredCount === 0 && "bg-gray-400 text-white" || "cursor-pointer text-white bg-indigo-600 hover:ring-2 ring-indigo-600"
+                )}
               >
-                Reveal
-              </a>
-            </div> ||
+                {
+                  filteredIndex === 0 && filteredCount > 0 && "Retry" ||
+                    "Reveal"
+                }
+              </div>
+            </a> ||
             <div className="flex-col justify-end w-48">
-              {/*
-              <div className="text-xs text-center font-light text-gray-600 pb-3 pt-1">
-                Confidence level
-                </div>
-               */}
               <div className="-mt-px flex justify-end px-auto pt-10">
                 <RadioGroup value={selectedMark} onChange={handleChange}>
                   <div className={
@@ -305,7 +309,7 @@ export function PageNav({
             </>
          */}
         {
-          filteredCount > 0 &&
+          filteredIndex > 0 && filteredCount > 0 &&
             <>
               <span className="font-normal text-sm">{filteredIndex} / {' '}</span>
               <span className="font-normal text-sm">{filteredCount}</span>
