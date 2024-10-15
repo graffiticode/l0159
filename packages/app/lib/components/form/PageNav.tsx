@@ -131,7 +131,6 @@ export function PageNav({
     return -1;
   }
 
-  // FIXME these use stale state.
   const filteredCount =
         cards.map(
           (card, index) =>
@@ -193,7 +192,7 @@ export function PageNav({
       aria-label="Pagination"
       className="flex justify-start bg-white px-4 sm:px-6 h-12"
     >
-      <div className="-mt-px flex flex-col w-0 flex-1 pt-1">
+      <div className="-mt-px flex flex-col w-0 flex-1 pt-0">
         <FilterMenu
           state={state}
           marks={marks}
@@ -206,7 +205,12 @@ export function PageNav({
       <div className="-mt-px flex items-center justify-center">
         {
           !revealed &&
-            <div className="font-light text-xs text-white ring-indigo-600 hover:ring-1 bg-indigo-600 rounded-full px-6 p-2 mt-7 cursor-pointer">
+            <div
+              className={classNames(
+                "font-light text-xs rounded-full px-6 p-2 mt-9 cursor-pointer",
+                cardIndex < 0 && "bg-gray-400 text-white" || "text-white bg-indigo-600 hover:ring-2 ring-indigo-600"
+              )}
+            >
               <a
                 onClick={() => {
                   if (cardIndex < 0) return;
@@ -229,7 +233,7 @@ export function PageNav({
                 Confidence level
                 </div>
                */}
-              <div className="-mt-px flex justify-end px-auto pt-6">
+              <div className="-mt-px flex justify-end px-auto pt-10">
                 <RadioGroup value={selectedMark} onChange={handleChange}>
                   <div className={
                          classNames(
@@ -289,8 +293,8 @@ export function PageNav({
         }
     </div>
     <div className="-mt-px flex w-0 flex-1 justify-end">
-      <p className="text-gray-700 pt-8 pr-2">
-        {
+      <p className="text-gray-700 text-center align-top pt-8 pr-2">
+        {/*
           filteredCount < 1 &&
             <span className="text-sm font-normal">Stack empty. Pick another stack.</span> ||
           filteredIndex < 1 &&
@@ -298,6 +302,13 @@ export function PageNav({
             <>
               <span className="font-medium text-sm">{filteredIndex} / {' '}</span>
               <span className="font-medium text-sm">{filteredCount}</span>
+            </>
+         */}
+        {
+          filteredCount > 0 &&
+            <>
+              <span className="font-normal text-sm">{filteredIndex} / {' '}</span>
+              <span className="font-normal text-sm">{filteredCount}</span>
             </>
         }
       </p>
