@@ -144,9 +144,9 @@ export const Match = ({ state }) => {
                         )}>
                         <div
                           className={classNames(
-                            "flex items-center justify-center w-11/12 h-5/6 font-bold text-slate-700 rounded-2xl m-4 border-gray-50 border border-0.5 shadow-lg",
+                            "flex items-center justify-center w-11/12 h-5/6 font-bold text-slate-700 rounded-xl m-4 border-gray-50 border border-0.5 shadow-lg",
                             flippedCount !== 2 &&
-                              `border border-2 border-indigo-600 ${BG_GRAY}` ||
+                              `ring ring-4 ring-indigo-600 ${BG_GRAY}` ||
                               matched && BG_GREEN || BG_RED,
                             getTextSize(face)
                           )}>
@@ -158,7 +158,7 @@ export const Match = ({ state }) => {
                           "flex items-center justify-center my-auto py-auto",
                         )}>
                           <div className={classNames(
-                                 "flex items-center justify-center w-11/12 h-5/6 font-bold rounded-2xl m-4 border-gray-50 border border-0.5 shadow-lg",
+                                 "flex items-center justify-center w-11/12 h-5/6 font-bold rounded-xl m-4 border-gray-50 border border-0.5 shadow-lg",
                                  TEXT_BLACK,
                                  matched && BG_GREEN || BG_GRAY,
                                  getTextSize(back)
