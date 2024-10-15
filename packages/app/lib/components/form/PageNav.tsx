@@ -21,28 +21,22 @@ const colors = {
   red: "#F78A72",
   yellow: "#EFCB4B",
   green: "#ACDC79",
+  white: "#FFFFFF",
 };
 
 const bgClassname = mark =>
+      mark === "#FFFFFF" && "bg-[#FFFFFF]" ||
       mark === "#F78A72" && "bg-[#F78A72]" ||
       mark === "#EFCB4B" && "bg-[#EFCB4B]" ||
       mark === "#ACDC79" && "bg-[#ACDC79]" ||
       "bg-[#DDDDDD]";
 
 const ringClassname = mark =>
+      mark === "#FFFFFF" && "ring-[#AAAAAA]" ||
       mark === "#F78A72" && "ring-[#F78A72]" ||
       mark === "#EFCB4B" && "ring-[#EFCB4B]" ||
       mark === "#ACDC79" && "ring-[#ACDC79]" ||
       "bg-[#DDDDDD]";
-
-const rawMarks = [
-  { id: 1, name: "All cards", color: colors.gray, count: 0 },
-  { id: 2, name: "More practice", color: colors.red, count: 0 },
-//  { id: 3, name: "Medium", color: colors.yellow, count: 0 },
-  { id: 3, name: "Got this!", color: colors.green, count: 0 },
-];
-
-const getMarkFromColor = color => rawMarks.find(mark => mark.color === color) || rawMarks[0];
 
 export function PageNav({
   state,
@@ -53,9 +47,17 @@ export function PageNav({
   cardIndex,
   setCardIndex,
 }) {
-  const [ filterMark, setFilterMark ] = useState(colors.gray);
+  const rawMarks = [
+    { id: 1, name: "All cards", color: colors.white, count: cards.length },
+    { id: 2, name: "More practice", color: colors.red, count: 0 },
+    { id: 3, name: "Got this!", color: colors.green, count: 0 },
+    { id: 4, name: "Unmarked", color: colors.gray, count: 0 },
+  ];
+  const [ filterMark, setFilterMark ] = useState(colors.white);
   const [ selectedMark, setSelectedMark ] = useState(rawMarks[0]);
   //const [ indexMap, setIndexMap ] = useState([]);
+  const getMarkFromColor = color => rawMarks.find(mark => mark.color === color) || rawMarks[0];
+
 
   const handleFilterChange = filterMark => {
     // const indexMap = cards.map(
@@ -67,13 +69,14 @@ export function PageNav({
   };
 
   useEffect(() => {
-    handleFilterChange(colors.gray);
+    handleFilterChange(colors.white);
   }, []);
-  
+
   const marks = cards.reduce(
     (marks, card) =>
     marks.map(mark => (
-      (mark.color === card.mark || mark.color === colors.gray) &&
+      (mark.color === card.mark ||
+       mark.color === colors.gray && card.mark === undefined) &&
         {...mark, count: mark.count + 1} ||
         mark
     )),
@@ -97,9 +100,11 @@ export function PageNav({
 
   const nextIndex = () => {
     // Called when card.mark has changed, so recompute indexMap. Refactor.
-    const indexMap = cards.map(
-      card => filterMark === colors.gray || card.mark === filterMark
-    );
+    const indexMap =
+          cards.map(card =>
+            filterMark === colors.white ||
+              filterMark === colors.gray && card.mark === undefined ||
+              card.mark === filterMark);
 
     let index;
     index = indexMap.findIndex((val, index) => index > cardIndex && val)
@@ -114,8 +119,10 @@ export function PageNav({
   }
 
   const firstIndex = filterMark => {
-    const indexMap = cards.map(
-      card => filterMark === colors.gray || card.mark === filterMark
+    const indexMap = cards.map(card =>
+      filterMark === colors.white ||
+        filterMark === colors.gray && card.mark === undefined ||
+        card.mark === filterMark
     );
     const index = indexMap.findIndex(val => val);
     if (index > -1) {
@@ -128,7 +135,9 @@ export function PageNav({
   const filteredCount =
         cards.map(
           (card, index) =>
-          (filterMark === colors.gray || card.mark === filterMark) ?
+          (filterMark === colors.white ||
+           filterMark === colors.gray && card.mark === undefined ||
+           card.mark === filterMark) ?
             index :
             -1
         )
@@ -138,7 +147,9 @@ export function PageNav({
   const filteredIndex =
         cards.map(
           (card, index) =>
-          (filterMark === colors.gray || card.mark === filterMark) ?
+          (filterMark === colors.white ||
+           filterMark === colors.gray && card.mark === undefined ||
+           card.mark === filterMark) ?
             index :
             -1
         )
@@ -188,7 +199,7 @@ export function PageNav({
           marks={marks}
           bgClassname={bgClassname}
           getMarkFromColor={getMarkFromColor}
-          setFilterMark={handleFilterChange}
+          handleFilterChange={handleFilterChange}
           setRevealed={setRevealed}
         />
       </div>

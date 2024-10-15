@@ -22,26 +22,30 @@ export function FilterMenu({
   marks,
   bgClassname,
   getMarkFromColor,
-  setFilterMark,
+  handleFilterChange,
   setRevealed,
 }) {
   const [ selected, setSelected ] = useState(getMarkFromColor(state.data.filterMark));
   const handleChange = selected => {
     const { color: filterMark } = selected;
-    setFilterMark(filterMark);
+    handleFilterChange(filterMark);
     setRevealed(false);
     setSelected(selected)
   };
   return (
     <Listbox value={selected} onChange={handleChange}>
-      <Label className="block text-xs font-normal leading-6 text-gray-900">Card stack</Label>
+      <Label className="block text-xs font-normal leading-6 text-gray-900">
+        Choose a card stack
+      </Label>
       <div className="relative mt-1">
         <ListboxButton className="w-48 relative cursor-default rounded-md bg-white py-1 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none sm:text-xs sm:leading-6">
-
-          <span className={classNames(
-                  "absolute inset-y-0 left-0 w-4 h-4 m-2 rounded-full",
-                  bgClassname(selected.color)
-                )}/>
+          <span
+            className={classNames(
+              "absolute inset-y-0 left-0 w-4 h-4 m-2 rounded-full",
+              bgClassname(selected.color),
+              selected.color === marks[0].color && "ring-1 ring-inset ring-gray-400",
+            )}
+          />
           <span className="ml-4 px-2 text-xs font-light group-data-[selected]:font-semibold">
             {selected.name}
           </span>
@@ -55,7 +59,7 @@ export function FilterMenu({
           transition
           className="absolute z-10 mt-1 max-h-60 overflow-auto rounded-md bg-white py-1 text-xs font-light shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none data-[closed]:data-[leave]:opacity-0 data-[leave]:transition data-[leave]:duration-100 data-[leave]:ease-in sm:text-xs"
         >
-          {marks.map((mark) => (
+          {marks.map((mark, index) => (
             <ListboxOption
               key={mark.id}
               value={mark}
@@ -65,7 +69,8 @@ export function FilterMenu({
                 <span
                   className={classNames(
                     "absolute inset-y-0 left-0 w-4 h-4 m-2 rounded-full",
-                    bgClassname(mark.color)
+                    bgClassname(mark.color),
+                    index === 0 && "ring-1 ring-inset ring-gray-400",
                   )}/>
                 <span className="p-2 text-xs font-light group-data-[selected]:font-semibold">
                   {mark.name}
