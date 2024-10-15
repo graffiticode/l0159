@@ -63,6 +63,7 @@ const matchFacts = ({facts, flippedCards}) => (
 const BG_RED = "bg-[#FBC4B8]";
 const BG_GREEN = "bg-[#D5EDBC]";
 const BG_GRAY = "bg-gray-200";
+const BG_SKY = "bg-[#B5DDFF]";
 const TEXT_BLACK = "text-[#364153]";
 
 export const Match = ({ state }) => {
@@ -115,14 +116,21 @@ export const Match = ({ state }) => {
     });
   };
 
+  const { useBgTexture } = state.data;
   return (
     cards.length === 0 &&
       <div /> ||
       <div
-        className="grid grid-cols-12 w-full h-full p-10"
-        style={{
-          backgroundImage: `url(${backgroundImage})`,
-        }}
+        className={classNames(
+          "grid grid-cols-12 p-10 bg-repeat w-full h-screen",
+          BG_SKY
+        )}
+        style={
+          useBgTexture && {
+            backgroundImage: `url(${backgroundImage})`,
+          } ||
+            {}
+        }
       >
         <div className="col-span-10">
           <ul role="list" className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-4 sm:gap-x-6 xl:gap-x-8"> {
