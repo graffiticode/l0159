@@ -3,6 +3,7 @@ import katex from 'katex';
 import 'katex/dist/katex.min.css';
 import "../../index.css";
 import { useEffect, useRef, useState } from "react";
+import backgroundImage from '../../images/blue-texture.png';
 
 const KaTeX = ({ latex }) => {
   const ref = useRef();
@@ -59,6 +60,11 @@ const matchFacts = ({facts, flippedCards}) => (
     flippedCards[0].id % 2 !== flippedCards[1].id % 2
 );
 
+const BG_RED = "bg-[#FBC4B8]";
+const BG_GREEN = "bg-[#D5EDBC]";
+const BG_GRAY = "bg-gray-200";
+const TEXT_BLACK = "text-[#364153]";
+
 export const Match = ({ state }) => {
   const [ cards, setCards ] = useState([]);
   const [ flippedCount, setFlippedCount ] = useState(0);
@@ -68,6 +74,8 @@ export const Match = ({ state }) => {
     setCards(shuffledCards);
   }, []);
 
+
+  // TODO if blur and count is 2, then flip.
   const flipCard = index => {
     if (!cards[index].matched) {
       cards[index].flipped = !cards[index].flipped;
@@ -110,7 +118,12 @@ export const Match = ({ state }) => {
   return (
     cards.length === 0 &&
       <div /> ||
-      <div className="grid grid-cols-12 border-green-300 border-blue-300 border-red-300 bg-gray-50">
+      <div
+        className="grid grid-cols-12 w-full h-full p-10"
+        style={{
+          backgroundImage: `url(${backgroundImage})`,
+        }}
+      >
         <div className="col-span-10">
           <ul role="list" className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-4 sm:gap-x-6 xl:gap-x-8"> {
             cards.map((card, index) => {
@@ -119,7 +132,10 @@ export const Match = ({ state }) => {
                 <li key={index} className="relative">
                   <div
                     onClick={() => flipCard(index)}
-                    className="group aspect-h-7 aspect-w-10 block w-full overflow-hidden"
+                    className={classNames(
+                      matched && !flipped && "hidden",
+                      "group aspect-h-7 aspect-w-10 block w-full overflow-hidden"
+                    )}
                   > {
                     flipped &&
                       <div
@@ -128,10 +144,10 @@ export const Match = ({ state }) => {
                         )}>
                         <div
                           className={classNames(
-                            "flex items-center justify-center w-11/12 h-5/6 font-bold text-slate-700 rounded-lg m-4 border-gray-50 border border-0.5 shadow-lg",
-                            flippedCount !== 2 && "bg-gray-100" ||
-                              matched && "bg-green-50" ||
-                              "bg-red-50",
+                            "flex items-center justify-center w-11/12 h-5/6 font-bold text-slate-700 rounded-2xl m-4 border-gray-50 border border-0.5 shadow-lg",
+                            flippedCount !== 2 &&
+                              `border border-2 border-indigo-600 ${BG_GRAY}` ||
+                              matched && BG_GREEN || BG_RED,
                             getTextSize(face)
                           )}>
                           <KaTeX latex={face} />
@@ -142,8 +158,9 @@ export const Match = ({ state }) => {
                           "flex items-center justify-center my-auto py-auto",
                         )}>
                           <div className={classNames(
-                                 "flex items-center justify-center w-11/12 h-5/6 font-bold text-slate-700 rounded-lg m-4 border-gray-50 border border-0.5 shadow-lg bg-white",
-                                 matched && "bg-green-50",
+                                 "flex items-center justify-center w-11/12 h-5/6 font-bold rounded-2xl m-4 border-gray-50 border border-0.5 shadow-lg",
+                                 TEXT_BLACK,
+                                 matched && BG_GREEN || BG_GRAY,
                                  getTextSize(back)
                                )}
                           > {
