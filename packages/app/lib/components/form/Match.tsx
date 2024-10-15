@@ -62,7 +62,7 @@ const matchFacts = ({facts, flippedCards}) => (
 
 const BG_RED = "bg-[#FBC4B8]";
 const BG_GREEN = "bg-[#D5EDBC]";
-const BG_GRAY = "bg-gray-200";
+//const BG_GRAY = "bg-gray-200";
 const BG_SKY = "bg-[#B5DDFF]";
 const TEXT_BLACK = "text-[#364153]";
 
@@ -154,7 +154,7 @@ export const Match = ({ state }) => {
                           className={classNames(
                             "flex items-center justify-center w-11/12 h-5/6 font-bold text-slate-700 rounded-xl m-4 border-gray-50 border border-0.5 shadow-lg",
                             flippedCount !== 2 &&
-                              `ring ring-4 ring-indigo-600 ${BG_GRAY}` ||
+                              "ring ring-4 ring-indigo-600 bg-white" ||
                               matched && BG_GREEN || BG_RED,
                             getTextSize(face)
                           )}>
@@ -168,7 +168,7 @@ export const Match = ({ state }) => {
                           <div className={classNames(
                                  "flex items-center justify-center w-11/12 h-5/6 font-bold rounded-xl m-4 border-gray-50 border border-0.5 shadow-lg",
                                  TEXT_BLACK,
-                                 matched && BG_GREEN || BG_GRAY,
+                                 matched && BG_GREEN || "bg-white",
                                  getTextSize(back)
                                )}
                           > {
