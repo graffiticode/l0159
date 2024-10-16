@@ -3,6 +3,7 @@ import katex from 'katex';
 import 'katex/dist/katex.min.css';
 import "../../index.css";
 import { useEffect, useRef, useState } from "react";
+import backgroundImage from '../../images/blue-texture.png';
 
 const KaTeX = ({ latex }) => {
   const ref = useRef();
@@ -27,8 +28,6 @@ const shuffle = unshuffled =>
       unshuffled.map(value => ({ value, sort: Math.random() }))
       .sort((a, b) => a.sort - b.sort)
       .map(({ value }) => value);
-
-const RESHUFFLE = true;
 
 const getTextSize = text => {
   const rawText = text
@@ -61,6 +60,13 @@ const matchFacts = ({facts, flippedCards}) => (
     flippedCards[0].id % 2 !== flippedCards[1].id % 2
 );
 
+const BG_RED = "bg-[#FBC4B8]";
+const BG_GREEN = "bg-[#D5EDBC]";
+const BG_SKY = "bg-[#B5DDFF]";
+const TEXT_BLACK = "text-[#364153]";
+
+const RESHUFFLE = false;
+
 export const Memory = ({ state }) => {
   const [ cards, setCards ] = useState([]);
   const [ flippedCount, setFlippedCount ] = useState(0);
@@ -70,8 +76,9 @@ export const Memory = ({ state }) => {
     setCards(shuffledCards);
   }, []);
 
-  const flipCard = index => {
-    if (!cards[index].matched) {
+  const flipCards = index => {
+    // index === -1 on blur.
+    if (index >= 0 && !cards[index].matched) {
       cards[index].flipped = !cards[index].flipped;
     }
     const flippedCards = cards.filter(card => card.flipped);
@@ -82,7 +89,8 @@ export const Memory = ({ state }) => {
       if (matchFacts({facts, flippedCards})) {
         flippedCards[0].matched = true;
         flippedCards[1].matched = true;
-        if (cards[index].id !== flippedCards[0].id &&
+        if (index < 0 ||
+            cards[index].id !== flippedCards[0].id &&
             cards[index].id !== flippedCards[1].id) {
           // If clicked card is not a flipped card then flip it. This happens
           // when an already matched card is clicked so the flip count is still
@@ -92,7 +100,7 @@ export const Memory = ({ state }) => {
           ));
         }
       }
-    } else if (count !== 1) {
+    } else if (index >= 0 && count > 2) {
       // If more than two cards are flipped then turn them all over.
       flippedCards.forEach(card => (
         card.flipped = false
@@ -109,19 +117,34 @@ export const Memory = ({ state }) => {
     });
   };
 
+  const { useBgTexture } = state.data;
   return (
     cards.length === 0 &&
       <div /> ||
-      <div className="grid grid-cols-12 border-green-300 border-blue-300 border-red-300">
-        <div className="col-span-10">
-          <ul role="list" className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-4 sm:gap-x-6 xl:gap-x-8"> {
+      <div
+        className={classNames(
+          "p-10 min-h-screen w-full bg-repeat bg-auto bg-center",
+          BG_SKY
+        )}
+        style={
+          useBgTexture && {
+            backgroundImage: `url(${backgroundImage})`,
+          } || {}
+        }
+      >
+        <ul role="list" className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-4 sm:gap-x-6 xl:gap-x-8">
+          {
             cards.map((card, index) => {
-              const { face, flipped, matched } = card;
+              const { face, back, flipped, matched } = card;
               return (
                 <li key={index} className="relative">
                   <div
-                    onClick={() => flipCard(index)}
-                    className="group aspect-h-7 aspect-w-10 block w-full overflow-hidden"
+                    onBlur={() => flipCards(-1)}
+                    onClick={() => flipCards(index)}
+                    className={classNames(
+                      matched && !flipped && "hidden",
+                      "group aspect-h-7 aspect-w-10 block w-full overflow-hidden"
+                    )}
                   > {
                     flipped &&
                       <div
@@ -130,10 +153,10 @@ export const Memory = ({ state }) => {
                         )}>
                         <div
                           className={classNames(
-                            "flex items-center justify-center w-11/12 h-5/6 font-bold text-slate-700 rounded-lg m-4 border-gray-50 border border-0.5 shadow-lg",
-                            flippedCount !== 2 && "bg-gray-100" ||
-                              matched && "bg-green-50" ||
-                              "bg-red-50",
+                            "flex items-center justify-center w-11/12 h-5/6 font-bold text-slate-700 rounded-xl m-4 border-gray-50 border border-0.5 shadow-lg",
+                            flippedCount !== 2 &&
+                              "ring ring-4 ring-indigo-600 bg-white" ||
+                              matched && BG_GREEN || BG_RED,
                             getTextSize(face)
                           )}>
                           <KaTeX latex={face} />
@@ -143,16 +166,18 @@ export const Memory = ({ state }) => {
                         className={classNames(
                           "flex items-center justify-center my-auto py-auto",
                         )}>
-                          <div className={classNames(
-                                 "flex items-center justify-center w-11/12 h-5/6 text-xl font-bold text-slate-700 rounded-lg m-4 border-gray-50 border border-0.5 shadow-lg",
-                                 matched && "bg-green-50"
-                               )}
-                          > {
-                            !matched &&
-                              <KaTeX latex={`\\text{${letters[index]}}`} /> ||
-                              <div />
-                          }
-                          </div>
+                        <div className={classNames(
+                               "flex items-center justify-center w-11/12 h-5/6 font-bold rounded-xl m-4 border-gray-50 border border-0.5 shadow-lg",
+                               TEXT_BLACK,
+                               matched && BG_GREEN || "bg-white",
+                               getTextSize(back)
+                             )}
+                        > {
+                          !matched &&
+                            <KaTeX latex={`\\text{${letters[index]}}`} /> ||
+                            <div />
+                        }
+                        </div>
                       </div>
                   }
                     <button
@@ -165,8 +190,7 @@ export const Memory = ({ state }) => {
                 </li>
               )})
           }
-          </ul>
-        </div>
+        </ul>
       </div>
   )
 }

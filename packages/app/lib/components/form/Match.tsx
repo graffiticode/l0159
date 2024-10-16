@@ -27,8 +27,6 @@ const shuffle = unshuffled =>
       .sort((a, b) => a.sort - b.sort)
       .map(({ value }) => value);
 
-const RESHUFFLE = false;
-
 const getTextSize = text => {
   const rawText = text
         .replace(/\\times/g, "x")
@@ -62,9 +60,10 @@ const matchFacts = ({facts, flippedCards}) => (
 
 const BG_RED = "bg-[#FBC4B8]";
 const BG_GREEN = "bg-[#D5EDBC]";
-//const BG_GRAY = "bg-gray-200";
 const BG_SKY = "bg-[#B5DDFF]";
 const TEXT_BLACK = "text-[#364153]";
+
+const RESHUFFLE = false;
 
 export const Match = ({ state }) => {
   const [ cards, setCards ] = useState([]);
@@ -122,75 +121,74 @@ export const Match = ({ state }) => {
       <div /> ||
       <div
         className={classNames(
-          "p-10 min-h-screen w-screen bg-repeat bg-auto bg-center",
+          "p-10 min-h-screen w-full bg-repeat bg-auto bg-center",
           BG_SKY
         )}
         style={
           useBgTexture && {
             backgroundImage: `url(${backgroundImage})`,
-          } ||
-            {}
+          } || {}
         }
       >
-          <ul role="list" className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-4 sm:gap-x-6 xl:gap-x-8">
-            {
-              cards.map((card, index) => {
-                const { face, back, flipped, matched } = card;
-                return (
-                  <li key={index} className="relative">
-                    <div
-                      onBlur={() => flipCards(-1)}
-                      onClick={() => flipCards(index)}
-                      className={classNames(
-                        matched && !flipped && "hidden",
-                        "group aspect-h-7 aspect-w-10 block w-full overflow-hidden"
-                      )}
-                    > {
-                      flipped &&
+        <ul role="list" className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-4 sm:gap-x-6 xl:gap-x-8">
+          {
+            cards.map((card, index) => {
+              const { face, back, flipped, matched } = card;
+              return (
+                <li key={index} className="relative">
+                  <div
+                    onBlur={() => flipCards(-1)}
+                    onClick={() => flipCards(index)}
+                    className={classNames(
+                      matched && !flipped && "hidden",
+                      "group aspect-h-7 aspect-w-10 block w-full overflow-hidden"
+                    )}
+                  > {
+                    flipped &&
+                      <div
+                        className={classNames(
+                          "flex items-center justify-center my-auto py-auto"
+                        )}>
                         <div
                           className={classNames(
-                            "flex items-center justify-center my-auto py-auto"
+                            "flex items-center justify-center w-11/12 h-5/6 font-bold text-slate-700 rounded-xl m-4 border-gray-50 border border-0.5 shadow-lg",
+                            flippedCount !== 2 &&
+                              "ring ring-4 ring-indigo-600 bg-white" ||
+                              matched && BG_GREEN || BG_RED,
+                            getTextSize(face)
                           )}>
-                          <div
-                            className={classNames(
-                              "flex items-center justify-center w-11/12 h-5/6 font-bold text-slate-700 rounded-xl m-4 border-gray-50 border border-0.5 shadow-lg",
-                              flippedCount !== 2 &&
-                                "ring ring-4 ring-indigo-600 bg-white" ||
-                                matched && BG_GREEN || BG_RED,
-                              getTextSize(face)
-                            )}>
-                            <KaTeX latex={face} />
-                          </div>
-                        </div> ||
-                        <div
-                          className={classNames(
-                            "flex items-center justify-center my-auto py-auto",
-                          )}>
-                          <div className={classNames(
-                                 "flex items-center justify-center w-11/12 h-5/6 font-bold rounded-xl m-4 border-gray-50 border border-0.5 shadow-lg",
-                                 TEXT_BLACK,
-                                 matched && BG_GREEN || "bg-white",
-                                 getTextSize(back)
-                               )}
-                          > {
-                            !matched &&
-                              <KaTeX latex={back} /> ||
-                              <div />
-                          }
-                          </div>
+                          <KaTeX latex={face} />
                         </div>
-                    }
-                      <button
-                        type="button"
-                        className="absolute inset-0 focus:outline-none"
-                      >
-                        <span className="sr-only">View details for {card.face}</span>
-                      </button>
-                    </div>
-                  </li>
-                )})
-            }
-          </ul>
+                      </div> ||
+                      <div
+                        className={classNames(
+                          "flex items-center justify-center my-auto py-auto",
+                        )}>
+                        <div className={classNames(
+                               "flex items-center justify-center w-11/12 h-5/6 font-bold rounded-xl m-4 border-gray-50 border border-0.5 shadow-lg",
+                               TEXT_BLACK,
+                               matched && BG_GREEN || "bg-white",
+                               getTextSize(back)
+                             )}
+                        > {
+                          !matched &&
+                            <KaTeX latex={back} /> ||
+                            <div />
+                        }
+                        </div>
+                      </div>
+                  }
+                    <button
+                      type="button"
+                      className="absolute inset-0 focus:outline-none"
+                    >
+                      <span className="sr-only">View details for {card.face}</span>
+                    </button>
+                  </div>
+                </li>
+              )})
+          }
+        </ul>
       </div>
   )
 }
