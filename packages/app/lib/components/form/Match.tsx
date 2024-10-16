@@ -122,7 +122,7 @@ export const Match = ({ state }) => {
       <div /> ||
       <div
         className={classNames(
-          "grid grid-cols-12 p-10 bg-repeat w-full h-screen",
+          "p-10 bg-repeat w-full h-screen",
           BG_SKY
         )}
         style={
@@ -132,7 +132,6 @@ export const Match = ({ state }) => {
             {}
         }
       >
-        <div className="col-span-10">
           <ul role="list" className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-4 sm:gap-x-6 xl:gap-x-8">
             {
               cards.map((card, index) => {
@@ -192,7 +191,6 @@ export const Match = ({ state }) => {
                 )})
             }
           </ul>
-        </div>
       </div>
   )
 }
