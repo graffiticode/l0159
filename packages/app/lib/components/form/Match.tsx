@@ -27,7 +27,7 @@ const shuffle = unshuffled =>
       .sort((a, b) => a.sort - b.sort)
       .map(({ value }) => value);
 
-const RESHUFFLE = true;
+const RESHUFFLE = false;
 
 const getTextSize = text => {
   const rawText = text
@@ -76,7 +76,7 @@ export const Match = ({ state }) => {
   }, []);
 
   const flipCards = index => {
-    // `index === -1` on blur.
+    // index === -1 on blur.
     if (index >= 0 && !cards[index].matched) {
       cards[index].flipped = !cards[index].flipped;
     }
