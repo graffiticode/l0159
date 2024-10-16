@@ -122,7 +122,7 @@ export const Match = ({ state }) => {
       <div /> ||
       <div
         className={classNames(
-          "p-10 bg-repeat w-full h-screen bg-cover bg-fixed",
+          "p-10 bg-repeat w-screen h-screen bg-cover bg-fixed",
           BG_SKY
         )}
         style={
