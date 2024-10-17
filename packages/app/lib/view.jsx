@@ -35,7 +35,11 @@ export const View = () => {
   const [ state ] = useState(createState({}, (data, { type, args }) => {
     // console.log("L0159 state.apply() type=" + type + " args=" + JSON.stringify(args, null, 2));
     switch (type) {
-    case "compiled":
+    case "init":
+      return {
+        ...args,
+      };
+    case "compile":
       return {
         ...data,
         ...args,
@@ -58,6 +62,13 @@ export const View = () => {
       setId(params.get("id"));
       const accessToken = params.get("access_token");
       setAccessToken(accessToken);
+      const data = params.get("data");
+      if (data) {
+        state.apply({
+          type: "init",
+          args: JSON.parse(data),
+        });
+      }
     }
   }, [window.location.search]);
 
@@ -82,7 +93,7 @@ export const View = () => {
 
   if (dataResp.data) {
     state.apply({
-      type: "compiled",
+      type: "compile",
       args: dataResp.data,
     });
     setDoGetData(false);
@@ -99,7 +110,7 @@ export const View = () => {
 
   if (compileResp.data) {
     state.apply({
-      type: "compiled",
+      type: "compile",
       args: compileResp.data,
     });
     setRecompile(false);
