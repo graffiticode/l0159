@@ -33,7 +33,7 @@ const BlankCard = () =>
           All done!
         </div>
         <div className="text-sm font-medium tracking-wide text-slate-500">
-          Pick a stack with unmarked cards.
+          Pick a stack with cards in it.
         </div>
       </div>
     </div>
