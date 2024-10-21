@@ -231,7 +231,8 @@ export function PageNav({
                 )}
               >
                 {
-                  filteredIndex === 0 && filteredCount > 0 && "Retry" ||
+                  filteredIndex === 0 && filteredCount > 0 &&
+                    "Retry" ||
                     "Reveal"
                 }
               </div>

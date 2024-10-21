@@ -66,13 +66,25 @@ const TEXT_BLACK = "text-[#364153]";
 const RESHUFFLE = false;
 
 export const Match = ({ state }) => {
+  const [ replay, setReplay ] = useState(true);
   const [ cards, setCards ] = useState([]);
   const [ flippedCount, setFlippedCount ] = useState(0);
+  const [ unmatchedCount, setUnmatchedCount ] = useState(0);
+  const [ missCount, setMissCount ] = useState(0);
+
   useEffect(() => {
-    const { cards } = state.data;
-    const shuffledCards = RESHUFFLE && shuffle(cards) || cards;
-    setCards(shuffledCards);
-  }, []);
+    if (replay) {
+      const cards = state.data.cards.map(
+        card => ({...card, matched: false, flipped: false})
+      );
+      const shuffledCards = RESHUFFLE && shuffle(cards) || cards;
+      setCards(shuffledCards);
+      setUnmatchedCount(cards.length);
+      setMissCount(0);
+      setFlippedCount(0);
+      setReplay(false);
+    }
+  }, [replay]);
 
   const flipCards = index => {
     // index === -1 on blur.
@@ -80,9 +92,9 @@ export const Match = ({ state }) => {
       cards[index].flipped = !cards[index].flipped;
     }
     const flippedCards = cards.filter(card => card.flipped);
-    const count = flippedCards.length;
-    setFlippedCount(count);
-    if (count === 2) {
+    const flippedCount = flippedCards.length;
+    setFlippedCount(flippedCount);
+    if (flippedCount === 2) {
       const { facts } = state.data;
       if (matchFacts({facts, flippedCards})) {
         flippedCards[0].matched = true;
@@ -97,8 +109,12 @@ export const Match = ({ state }) => {
             card.flipped = false
           ));
         }
+        const unmatchedCount = cards.filter(card => !card.matched).length;
+        setUnmatchedCount(unmatchedCount);
+      } else if (index !== -1) {
+        setMissCount(missCount => missCount + 1);
       }
-    } else if (index >= 0 && count > 2) {
+    } else if (index >= 0 && flippedCount > 2) {
       // If more than two cards are flipped then turn them all over.
       flippedCards.forEach(card => (
         card.flipped = false
@@ -130,65 +146,93 @@ export const Match = ({ state }) => {
           } || {}
         }
       >
-        <ul role="list" className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-4 sm:gap-x-6 xl:gap-x-8">
-          {
-            cards.map((card, index) => {
-              const { face, back, flipped, matched } = card;
-              return (
-                <li key={index} className="relative">
+        {
+          unmatchedCount === 0 &&
+            <div className="flex flex-col w-full min-h-screen items-center justify-center gap-4">
+              <div className="text-md font-semibold text-slate-700">
+                {
+                  missCount === 0 &&
+                    "Hurray! You didn't miss any matches." ||
+                    `Oops! You missed ${missCount} ${missCount === 1 && "match" || "matches"}.`
+                }
+              </div>
+              <div className="pb-20">
+                <a
+                  onClick={() => {
+                    setReplay(true);
+                  }}
+                >
                   <div
-                    onBlur={() => flipCards(-1)}
-                    onClick={() => flipCards(index)}
                     className={classNames(
-                      matched && !flipped && "hidden",
-                      "group aspect-h-7 aspect-w-10 block w-full overflow-hidden"
+                      "font-light rounded-full px-6 p-2",
+                      "cursor-pointer text-white bg-indigo-600 hover:ring-2 ring-indigo-600"
                     )}
-                  > {
-                    flipped &&
-                      <div
-                        className={classNames(
-                          "flex items-center justify-center my-auto py-auto"
-                        )}>
-                        <div
-                          className={classNames(
-                            "flex items-center justify-center w-11/12 h-5/6 font-bold text-slate-700 rounded-xl m-4 border-gray-50 border border-0.5 shadow-lg",
-                            flippedCount !== 2 &&
-                              "ring ring-4 ring-indigo-600 bg-white" ||
-                              matched && BG_GREEN || BG_RED,
-                            getTextSize(face)
-                          )}>
-                          <KaTeX latex={face} />
-                        </div>
-                      </div> ||
-                      <div
-                        className={classNames(
-                          "flex items-center justify-center my-auto py-auto",
-                        )}>
-                        <div className={classNames(
-                               "flex items-center justify-center w-11/12 h-5/6 font-bold rounded-xl m-4 border-gray-50 border border-0.5 shadow-lg",
-                               TEXT_BLACK,
-                               matched && BG_GREEN || "bg-white",
-                               getTextSize(back)
-                             )}
-                        > {
-                          !matched &&
-                            <KaTeX latex={back} /> ||
-                            <div />
-                        }
-                        </div>
-                      </div>
-                  }
-                    <button
-                      type="button"
-                      className="absolute inset-0 focus:outline-none"
-                    >
-                      <span className="sr-only">View details for {card.face}</span>
-                    </button>
+                  >
+                    Play again
                   </div>
-                </li>
-              )})
-          }
-        </ul>
+                </a>
+              </div>
+            </div> ||
+            <ul role="list" className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-4 sm:gap-x-6 xl:gap-x-8">
+              {
+                cards.map((card, index) => {
+                  const { face, back, flipped, matched } = card;
+                  return (
+                    <li key={index} className="relative">
+                      <div
+                        onBlur={() => flipCards(-1)}
+                        onClick={() => flipCards(index)}
+                        className={classNames(
+                          matched && !flipped && "hidden",
+                          "group aspect-h-7 aspect-w-10 block w-full overflow-hidden"
+                        )}
+                      > {
+                        flipped &&
+                          <div
+                            className={classNames(
+                              "flex items-center justify-center my-auto py-auto"
+                            )}>
+                            <div
+                              className={classNames(
+                                "flex items-center justify-center w-11/12 h-5/6 font-bold text-slate-700 rounded-xl m-4 border-gray-50 border border-0.5 shadow-lg",
+                                flippedCount !== 2 &&
+                                  "ring ring-4 ring-indigo-600 bg-white" ||
+                                  matched && BG_GREEN || BG_RED,
+                                getTextSize(face)
+                              )}>
+                              <KaTeX latex={face} />
+                            </div>
+                          </div> ||
+                          <div
+                            className={classNames(
+                              "flex items-center justify-center my-auto py-auto",
+                            )}>
+                            <div className={classNames(
+                                   "flex items-center justify-center w-11/12 h-5/6 font-bold rounded-xl m-4 border-gray-50 border border-0.5 shadow-lg",
+                                   TEXT_BLACK,
+                                   matched && BG_GREEN || "bg-white",
+                                   getTextSize(back)
+                                 )}
+                            > {
+                              !matched &&
+                                <KaTeX latex={back} /> ||
+                                <div />
+                            }
+                            </div>
+                          </div>
+                      }
+                        <button
+                          type="button"
+                          className="absolute inset-0 focus:outline-none"
+                        >
+                          <span className="sr-only">View details for {card.face}</span>
+                        </button>
+                      </div>
+                    </li>
+                  )})
+              }
+            </ul>
+        }
       </div>
   )
 }
