@@ -155,7 +155,7 @@ export const Memory = ({ state }) => {
                 {
                   missCount === 0 &&
                     "Wow! You didn't miss any matches." ||
-                    `You found all the matches with ${missCount} extra ${missCount === 1 && "try" || "tries"}.`
+                    `Hooray! You found all the matches with ${missCount} extra ${missCount === 1 && "try" || "tries"}.`
                 }
               </div>
               <div className="pb-20">
