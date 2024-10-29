@@ -33,7 +33,7 @@ export const View = () => {
   const [ height, setHeight ] = useState(0);
 
   const [ state ] = useState(createState({}, (data, { type, args }) => {
-    // console.log("L0159 state.apply() type=" + type + " args=" + JSON.stringify(args, null, 2));
+    console.log("L0159 state.apply() type=" + type + " args=" + JSON.stringify(args, null, 2));
     switch (type) {
     case "init":
       return {

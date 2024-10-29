@@ -4,6 +4,7 @@ import 'katex/dist/katex.min.css';
 import "../../index.css";
 import { useEffect, useRef, useState } from "react";
 import backgroundImage from '../../images/blue-texture.png';
+import { Confetti } from "./Confetti";
 
 const KaTeX = ({ latex }) => {
   const ref = useRef();
@@ -151,6 +152,7 @@ export const Memory = ({ state }) => {
         {
           unmatchedCount === 0 &&
             <div className="flex flex-col w-full min-h-screen items-center justify-center gap-4">
+              <Confetti />
               <div className="text-md font-semibold text-slate-700">
                 {
                   missCount === 0 &&

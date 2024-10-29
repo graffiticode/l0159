@@ -4,7 +4,11 @@ export default {
     "./lib/**/*.{html,js,jsx,ts,tsx}"
   ],
   theme: {
-    extend: {},
+    extend: {
+      animation: {
+        fall: 'fall 3s linear infinite',
+      },
+    },
   },
   plugins: [
     require('@tailwindcss/aspect-ratio'),
