@@ -11,3 +11,23 @@
     opacity: 0.5;
   }
 }
+@keyframes launch {
+  0% {
+    transform: translateY(0) scale(0.3);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-80vh) scale(0.5);
+    opacity: 0.7;
+  }
+}
+@keyframes explode {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(5);
+    opacity: 1;
+  }
+}

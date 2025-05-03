@@ -50,18 +50,6 @@ export class Checker extends BasisChecker {
 }
 
 export class Transformer extends BasisTransformer {
-  HELLO(node, options, resume) {
-    this.visit(node.elts[0], options, async (e0, v0) => {
-      const data = options?.data || {};
-      const err = [];
-      const val = {
-        ...data,
-        hello: data.hello !== undefined ? data.hello : v0,
-      };
-      resume(err, val);
-    });
-  }
-
   FLASHCARDS(node, options, resume) {
     this.visit(node.elts[0], {...options, type: "flashcards"}, async (e0, v0) => {
       this.visit(node.elts[1], options, async (e1, v1) => {

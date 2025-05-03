@@ -5,6 +5,7 @@ import "../../index.css";
 import { useEffect, useRef, useState } from "react";
 import backgroundImage from '../../images/blue-texture.png';
 import { Confetti } from "./Confetti";
+//import { Fireworks } from "./Fireworks";
 
 const KaTeX = ({ latex }) => {
   const ref = useRef();
