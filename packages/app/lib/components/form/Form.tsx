@@ -5,7 +5,9 @@ import { Match } from "./Match";
 import { Memory } from "./Memory";
 
 import "../../index.css";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import katex from 'katex';
+import 'katex/dist/katex.min.css';
 import backgroundImage from '../../images/blue-texture.png';
 
 const BG_SKY = "bg-[#B5DDFF]";
@@ -13,6 +15,18 @@ const BG_SKY = "bg-[#B5DDFF]";
 function classNames(...classes) {
   const className = classes.filter(Boolean).join(' ')
   return className;
+}
+
+const KaTeX = ({ latex }) => {
+  const ref = useRef();
+  useEffect(() => {
+    katex.render(latex, ref.current, {
+      displayMode: true,
+      output: "html",
+      throwOnError: false,
+    });
+  }, [latex]);
+  return <div ref={ref} />;
 }
 
 const shuffle = unshuffled =>
@@ -51,7 +65,13 @@ export const Form = ({ state }) => {
           } || {}
         }
       >
-        {title && <p className="text-5xl font-normal mb-4 text-center flex items-center justify-center h-20 font-garamond">{title}</p>}
+        {title &&
+          <div className="mb-4 text-center flex items-center justify-center h-20">
+            <div className="text-5xl font-garamond">
+              <KaTeX latex={title} />
+            </div>
+          </div>
+        }
         {type === "flashcards" && <Flashcards state={state} /> ||
           type === "match" && <Match state={state} /> ||
           type === "memory" && <Memory state={state} /> ||
