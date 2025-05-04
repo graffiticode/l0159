@@ -8,6 +8,13 @@ import "../../index.css";
 import { useEffect } from "react";
 import backgroundImage from '../../images/blue-texture.png';
 
+const BG_SKY = "bg-[#B5DDFF]";
+
+function classNames(...classes) {
+  const className = classes.filter(Boolean).join(' ')
+  return className;
+}
+
 const shuffle = unshuffled =>
       unshuffled.map(value => ({ value, sort: Math.random() }))
       .sort((a, b) => a.sort - b.sort)
@@ -34,13 +41,17 @@ export const Form = ({ state }) => {
   return (
     state.data.cards && (
       <div
+        className={classNames(
+          "p-10 min-h-screen w-full bg-repeat bg-auto bg-center",
+          BG_SKY
+        )}
         style={
           useBgTexture && {
             backgroundImage: `url(${backgroundImage})`
           } || {}
         }
       >
-        {title && <p className="text-5xl font-normal mb-4 text-center flex items-center justify-center h-20">{title}</p>}
+        {title && <p className="text-5xl font-normal mb-4 text-center flex items-center justify-center h-20 font-garamond">{title}</p>}
         {type === "flashcards" && <Flashcards state={state} /> ||
           type === "match" && <Match state={state} /> ||
           type === "memory" && <Memory state={state} /> ||

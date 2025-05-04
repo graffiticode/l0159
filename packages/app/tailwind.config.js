@@ -10,6 +10,9 @@ export default {
         launch: 'launch 1.2s ease-out forwards',
         explode: 'explode 0.8s ease-out forwards',
       },
+      fontFamily: {
+        'garamond': ['"EB Garamond"', 'serif'],
+      },
     },
   },
   plugins: [
