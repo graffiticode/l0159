@@ -193,7 +193,7 @@ export function PageNav({
   return (
     <nav
       aria-label="Pagination"
-      className="flex justify-start bg-white px-4 sm:px-6 h-12"
+      className="flex justify-start bg-transparent px-4 sm:px-6 h-20 py-3 mt-2"
     >
       <div className="-mt-px flex flex-col w-0 flex-1 pt-0">
         <FilterMenu
@@ -226,7 +226,7 @@ export function PageNav({
             >
               <div
                 className={classNames(
-                  "font-light text-xs rounded-full px-6 p-2 mt-9",
+                  "font-light text-xs rounded-full px-6 p-2 mt-3",
                   filteredCount === 0 && "bg-gray-400 text-white" || "cursor-pointer text-white bg-indigo-600 hover:ring-2 ring-indigo-600"
                 )}
               >
@@ -238,7 +238,7 @@ export function PageNav({
               </div>
             </a> ||
             <div className="flex-col justify-end w-48">
-              <div className="-mt-px flex justify-end px-auto pt-10">
+              <div className="-mt-px flex justify-end px-auto pt-1">
                 <RadioGroup value={selectedMark} onChange={handleChange}>
                   <div className={
                          classNames(
@@ -298,7 +298,7 @@ export function PageNav({
         }
     </div>
     <div className="-mt-px flex w-0 flex-1 justify-end">
-      <p className="text-gray-700 text-center align-top pt-8 pr-2">
+      <p className="text-gray-700 text-center align-top pt-4 pr-2">
         {/*
           filteredCount < 1 &&
             <span className="text-sm font-normal">Stack empty. Pick another stack.</span> ||

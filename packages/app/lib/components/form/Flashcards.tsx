@@ -1,9 +1,7 @@
 import React from "react"; React;   // for emacs jsx mode
 import katex from 'katex';
 import 'katex/dist/katex.min.css';
-
 import { PageNav } from "./PageNav";
-
 import "../../index.css";
 import { useEffect, useRef, useState } from "react";
 
@@ -28,7 +26,7 @@ const BlankCard = () =>
 <li key={-1} className="relative">
   <div className="group aspect-h-5 aspect-w-10 block w-full overflow-hidden">
     <div className="flex items-center justify-center my-auto py-auto">
-      <div className="flex flex-col items-center justify-center rounded-lg m-4 border-gray-50 border border-0.5 shadow-lg w-11/12 h-5/6">
+      <div className="flex flex-col items-center justify-center rounded-lg m-4 border-gray-50 border border-0.5 shadow-lg w-11/12 h-5/6 bg-white">
         <div className="text-xl font-medium tracking-wide text-slate-500">
           All done!
         </div>
@@ -73,7 +71,11 @@ export const Flashcards = ({ state }) => {
   };
   return (
     cards.length === 0 && <div></div> ||
-      <div className="grid grid-cols-12 border-green-300 border-blue-300 border-red-300">
+      <div
+        className={classNames(
+          "grid grid-cols-12 border-green-300 border-blue-300 border-red-300",
+        )}
+      >
         <div className="col-span-12">
           <ul role="list" className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-1 sm:gap-x-6 xl:gap-x-8">
             {
@@ -89,7 +91,7 @@ export const Flashcards = ({ state }) => {
                           className={classNames(
                             "flex items-center justify-center my-auto py-auto"
                           )}>
-                          <div className="flex items-center justify-center rounded-lg m-4 border-gray-50 border border-0.5 shadow-lg w-11/12 h-5/6">
+                          <div className="flex items-center justify-center rounded-lg m-4 border-gray-50 border border-0.5 shadow-lg w-11/12 h-5/6 bg-white">
                             {
                               card.face.indexOf("https") >= 0 &&
                                 <img alt="" src={card.face} className="p-2 pointer-events-none object-cover group-hover:opacity-75" /> ||
@@ -108,7 +110,7 @@ export const Flashcards = ({ state }) => {
                           className={classNames(
                             "flex items-center justify-center py-auto my-auto"
                           )}>
-                          <div className="flex items-center justify-center rounded-lg m-4 border-gray-50 border border-0.5 shadow-lg w-11/12 h-5/6">
+                          <div className="flex items-center justify-center rounded-lg m-4 border-gray-50 border border-0.5 shadow-lg w-11/12 h-5/6 bg-white">
                             {
                               !card.matched && (
                                 card.back.indexOf("https") >= 0 &&
@@ -137,7 +139,7 @@ export const Flashcards = ({ state }) => {
                   </li>
                 ))}
           </ul>
-          <div className="mx-4">
+          <div className="mx-4 mb-8 pt-2">
             <PageNav
               state={state}
               revealed={revealed}

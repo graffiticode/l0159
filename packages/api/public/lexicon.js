@@ -246,5 +246,12 @@ export const lexicon = {
     "name": "FACTS",
     "cls": "function",
     "length": 1
+  },
+  "title": {
+    "tk": 1,
+    "name": "TITLE",
+    "cls": "function",
+    "length": 2,
+    "arity": 2
   }
 }
