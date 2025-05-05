@@ -7,23 +7,35 @@ import {
 
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
+const stripLatexDelimiters = (text) => {
+  if (typeof text === 'string' && text.startsWith('$') && text.endsWith('$')) {
+    return text.slice(1, -1);
+  }
+  return text;
+};
+
 // match - front and back same fact
 // memory - front fact, back letter
 // flashcards - front fact, back matching fact
-const createBack = ({ type, fact, id, index }) => (
-  console.log("createBack() type=" + type + " index=" + index + " fact=" + JSON.stringify(fact, null, 2)),
-  type === "match" && fact[index] ||
+const createBack = ({ type, fact, id, index }) => {
+  const factText = fact[index] ? stripLatexDelimiters(fact[index]) : null;
+  return (
+    type === "match" && factText ||
     type === "memory" && `\\text{${letters[id]}}` ||
-    type === "flashcards" && index === 0 && fact[0] ||
+    type === "flashcards" && index === 0 && stripLatexDelimiters(fact[0]) ||
     null
-);
+  );
+};
 
-const createFace = ({ type, fact, index }) => (
-  type === "match" && fact[index] ||
-    type === "memory" && fact[index] ||
-    type === "flashcards" && index === 0 && fact[1] ||
+const createFace = ({ type, fact, index }) => {
+  const factText = fact[index] ? stripLatexDelimiters(fact[index]) : null;
+  return (
+    type === "match" && factText ||
+    type === "memory" && factText ||
+    type === "flashcards" && index === 0 && stripLatexDelimiters(fact[1]) ||
     null
-);
+  );
+};
 
 const cardPairsFromFacts = (facts, type) => (
   facts.map((fact, index) => [{
