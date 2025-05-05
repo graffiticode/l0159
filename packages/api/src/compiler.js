@@ -130,9 +130,13 @@ export class Transformer extends BasisTransformer {
     this.visit(node.elts[0], options, async (e0, v0) => {
       this.visit(node.elts[1], options, async (e1, v1) => {
         const data = options?.data || {};
+        let title = v0;
+        if (typeof title === 'string' && !title.includes('\\text{')) {
+          title = `\\text{${title}}`;
+        }
         const err = [];
         const val = {
-          title: v0,
+          title: title,
           ...v1,
           ...data,
         };
