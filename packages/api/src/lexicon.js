@@ -29,5 +29,12 @@ export const lexicon = {
     "cls": "function",
     "length": 2,
     "arity": 2
+  },
+  "instructions" : {
+    "tk": 1,
+    "name": "INSTRUCTIONS",
+    "cls": "function",
+    "length": 2,
+    "arity": 2
   }
 }

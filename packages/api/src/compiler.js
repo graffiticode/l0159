@@ -145,6 +145,25 @@ export class Transformer extends BasisTransformer {
     });
   }
 
+  INSTRUCTIONS(node, options, resume) {
+    this.visit(node.elts[0], options, async (e0, v0) => {
+      this.visit(node.elts[1], options, async (e1, v1) => {
+        const data = options?.data || {};
+        let instructions = v0;
+        if (typeof instructions === 'string' && !instructions.includes('\\text{')) {
+          instructions = `\\text{${instructions}}`;
+        }
+        const err = [];
+        const val = {
+          instructions: instructions,
+          ...v1,
+          ...data,
+        };
+        resume(err, val);
+      });
+    });
+  }
+
   IMG(node, options, resume) {
     this.visit(node.elts[0], options, async (e0, v0) => {
       const data = options?.data || {};
