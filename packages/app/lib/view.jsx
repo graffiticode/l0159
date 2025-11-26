@@ -28,6 +28,7 @@ const cardsFromFacts = facts =>
 export const View = () => {
   const [ id, setId ] = useState();
   const [ accessToken, setAccessToken ] = useState();
+  const [ targetOrigin, setTargetOrigin ] = useState();
   const [ doGetData, setDoGetData ] = useState(true);
   const [ recompile, setRecompile ] = useState(false);
   const [ height, setHeight ] = useState(0);
@@ -62,6 +63,7 @@ export const View = () => {
       setId(params.get("id"));
       const accessToken = params.get("access_token");
       setAccessToken(accessToken);
+      setTargetOrigin(params.get("origin"));
       const data = params.get("data");
       if (data) {
         state.apply({
@@ -82,6 +84,20 @@ export const View = () => {
   useEffect(() => {
     setRecompile(true);
   }, []);
+
+  // Post onload message when view first renders
+  useEffect(() => {
+    if (targetOrigin) {
+      window.parent.postMessage({ type: "onload", version: state.version, data: state.data }, targetOrigin);
+    }
+  }, [targetOrigin]);
+
+  // Post state data to parent when it changes
+  useEffect(() => {
+    if (targetOrigin) {
+      window.parent.postMessage(state.data, targetOrigin);
+    }
+  }, [JSON.stringify(state.data), targetOrigin]);
 
   const dataResp = useSWR(
     doGetData && id && {
