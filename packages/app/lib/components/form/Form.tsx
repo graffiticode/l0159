@@ -17,6 +17,21 @@ function classNames(...classes) {
   return className;
 }
 
+function renderErrors(errors: string[]) {
+  return (
+    <div className="flex flex-col gap-2">
+      {errors.map((error, i) => (
+        <div
+          key={i}
+          className="rounded-md p-3 border text-sm bg-red-50 border-red-200 text-red-800"
+        >
+          {error}
+        </div>
+      ))}
+    </div>
+  );
+}
+
 const KaTeX = ({ latex }) => {
   const ref = useRef();
   useEffect(() => {
@@ -35,6 +50,9 @@ const shuffle = unshuffled =>
       .map(({ value }) => value);
 
 export const Form = ({ state }) => {
+  if (Array.isArray(state.data?.ERRORS) && state.data.ERRORS.length > 0) {
+    return renderErrors(state.data.ERRORS);
+  }
   const { type, pairs, title } = state.data;
   useEffect(() => {
     // Shuffle the deck with each reload.
