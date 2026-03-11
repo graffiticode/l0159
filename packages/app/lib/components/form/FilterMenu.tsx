@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 import React from "react"; React;  // For emacs mode
 import { useState } from "react";
 import {

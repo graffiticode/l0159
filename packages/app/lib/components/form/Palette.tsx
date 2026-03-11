@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 function classNames(...classes) {
   const className = classes.filter(Boolean).join(' ')
   return className;

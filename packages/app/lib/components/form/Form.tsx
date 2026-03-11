@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 import React from "react"; React;  // for emacs jsx mode
 
 import { Flashcards } from "./Flashcards";
