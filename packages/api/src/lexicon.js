@@ -1,41 +1,52 @@
 // SPDX-License-Identifier: MIT
 export const lexicon = {
-  "flashcards" : {
+  "flashcards": {
     "tk": 1,
     "name": "FLASHCARDS",
     "cls": "function",
-    "length": 2
+    "length": 2,
+    "arity": 2
   },
-  "match" : {
+  "match": {
     "tk": 1,
     "name": "MATCH",
     "cls": "function",
-    "length": 2
+    "length": 2,
+    "arity": 2
   },
-  "memory" : {
+  "memory": {
     "tk": 1,
     "name": "MEMORY",
     "cls": "function",
-    "length": 2
+    "length": 2,
+    "arity": 2
   },
-  "facts" : {
+  "facts": {
     "tk": 1,
     "name": "FACTS",
     "cls": "function",
-    "length": 1
+    "length": 1,
+    "arity": 1
   },
-  "title" : {
+  "title": {
     "tk": 1,
     "name": "TITLE",
     "cls": "function",
     "length": 2,
     "arity": 2
   },
-  "instructions" : {
+  "instructions": {
     "tk": 1,
     "name": "INSTRUCTIONS",
     "cls": "function",
     "length": 2,
     "arity": 2
+  },
+  "img": {
+    "tk": 1,
+    "name": "IMG",
+    "cls": "function",
+    "length": 1,
+    "arity": 1
   }
 }
