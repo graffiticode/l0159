@@ -1,0 +1,41 @@
+{
+  "id": "0159",
+  "description": "Authors interactive card-game items — flashcards (flip to reveal), matching (pair terms with definitions), and memory (concentration-style pair-finding). Produces a program built from a `facts` list of two-element `[front back]` pairs, wrapped in one of `flashcards`, `match`, or `memory`, with optional `title` and `instructions`. Card content can be plain text, LaTeX math (`$x^2$`), or image URLs. Describe the game mode, the deck of pairs, and any title or instructions — L0159 emits the configured deck.",
+  "supported_item_types": [
+    "flashcards_deck",
+    "match_game",
+    "memory_game"
+  ],
+  "example_prompts": [
+    {
+      "prompt": "Make a flashcard deck titled 'Spanish Vocab' with five pairs: hola/hello, adiós/goodbye, por favor/please, gracias/thank you, agua/water.",
+      "produces": "flashcards_deck",
+      "notes": "Vocabulary flashcards with five explicit pairs and a title — exercises the plain `flashcards facts [...]` pattern with a `title` wrapper."
+    },
+    {
+      "prompt": "Build a matching game titled 'State Capitals' with the instruction 'Match each state to its capital.' Pairs: California/Sacramento, Texas/Austin, Florida/Tallahassee, New York/Albany, Illinois/Springfield.",
+      "produces": "match_game",
+      "notes": "Match-mode with both `title` and `instructions` wrappers, five pairs — the canonical term/definition pairing pattern."
+    },
+    {
+      "prompt": "Memory game 'Times Tables' with the prompt 'Find the pairs that compute to the same value.' Pairs: 2×6 / 12, 3×4 / 12, 5×2 / 10, 10×1 / 10.",
+      "produces": "memory_game",
+      "notes": "Memory-mode with same-value pairs (two 12s, two 10s) — exercises the concentration-style flip-and-match pattern with a mathematical equivalence twist."
+    },
+    {
+      "prompt": "Flashcards for LaTeX-rendered math: $x^2 + 2x + 1$ / $(x+1)^2$; $a^2 - b^2$ / $(a+b)(a-b)$; $\\sin^2 x + \\cos^2 x$ / $1$.",
+      "produces": "flashcards_deck",
+      "notes": "Three algebra identity pairs with $...$ math rendering — pins down that card content is LaTeX-capable."
+    },
+    {
+      "prompt": "Match game for biology vocab: photosynthesis / process by which plants convert light to energy; mitosis / cell division producing two identical cells; osmosis / movement of water across a semipermeable membrane; respiration / process that releases energy from glucose.",
+      "produces": "match_game",
+      "notes": "Longer-text pairs (full definitions) — exercises match-mode's handling of asymmetric-length fronts vs. backs."
+    },
+    {
+      "prompt": "Memory game titled 'Flags and Countries' using image cards on one side and country names on the other, for France, Japan, Brazil, Egypt, and Canada.",
+      "produces": "memory_game",
+      "notes": "Mixes `img \"URL\"` cards with text cards inside the same deck — exercises the image-card path in memory-mode."
+    }
+  ]
+}
