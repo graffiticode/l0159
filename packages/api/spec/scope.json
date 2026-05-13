@@ -9,6 +9,7 @@
     "Optional deck title and instructions"
   ],
   "out_of_scope": [
+    "Any study tool that isn't flashcards, matching, or memory card games (trivia quizzes, MCQ banks, word searches, crosswords, fill-in-the-blank drills, vocabulary lookup tools)",
     "Scored assessments (rubrics, answer keys, graded items) — use L0158",
     "Spaced repetition scheduling or retention tracking",
     "Dynamic deck generation — facts are literal in the program",
