@@ -1,0 +1,19 @@
+{
+  "id": "0159",
+  "summary": "Authors flashcard decks, matching games, and memory card games — interactive items driven by a list of two-sided fact pairs with optional LaTeX math.",
+  "in_scope": [
+    "Flashcard study decks (front / back fact pairs)",
+    "Matching games where players pair related terms",
+    "Memory card games where players flip hidden cards to find pairs",
+    "LaTeX math in card text (e.g. \"$x^2$\")",
+    "Optional deck title and instructions"
+  ],
+  "out_of_scope": [
+    "Scored assessments (rubrics, answer keys, graded items) — use L0158",
+    "Spaced repetition scheduling or retention tracking",
+    "Dynamic deck generation — facts are literal in the program",
+    "Freeform diagrams or boards — use L0172",
+    "Games other than flashcards / match / memory (trivia, MCQ, word searches, crosswords)",
+    "Card ordering or shuffling policies — left to the renderer"
+  ]
+}
