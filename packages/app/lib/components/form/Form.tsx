@@ -51,8 +51,8 @@ const shuffle = unshuffled =>
       .map(({ value }) => value);
 
 export const Form = ({ state }) => {
-  if (Array.isArray(state.data?.errors) && state.data.errors.length > 0) {
-    return renderErrors(state.data.errors);
+  if (Array.isArray(state.data?.errors) && state.errors.length > 0) {
+    return renderErrors(state.errors);
   }
   const { type, pairs, title } = state.data;
   useEffect(() => {
