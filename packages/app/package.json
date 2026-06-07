@@ -1,5 +1,7 @@
 {
-  "publishConfig": { "access": "public" },
+  "publishConfig": {
+    "access": "public"
+  },
   "name": "@graffiticode/l0159",
   "version": "0.3.1",
   "type": "module",
@@ -27,6 +29,8 @@
     "pack": "rm *.tgz; npm pack ."
   },
   "dependencies": {
+    "@headlessui/react": "^2.1.8",
+    "@heroicons/react": "^2.1.5",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "assert": "^2.1.0",
     "bent": "^7.3.12",
